@@ -8,3 +8,6 @@ desktop.ini
 *.tmp
 tmp/
 .zcode/
+
+# skills CLI per-project install state
+skills-lock.json
