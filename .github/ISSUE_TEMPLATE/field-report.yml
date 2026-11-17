@@ -1,0 +1,99 @@
+name: "Field report (实测报告)"
+description: "Report how a skill actually performed — feeds the 相马经 ledger"
+title: "Field report: "
+labels: ["field-report"]
+body:
+  - type: markdown
+    attributes:
+      value: >
+        Thanks for feeding the 相马经 (skill-quality ledger) with real-world
+        evidence. `failed` reports are as welcome as `worked` ones — they are
+        exactly what turns "looks good" into "works well". Concrete facts
+        only; popularity means nothing here.
+
+  - type: input
+    id: skill_id
+    attributes:
+      label: "Skill id"
+      description: "Ledger id of the skill, in the form `<owner>/<repo>/<skill>`, e.g. `anthropics/skills/pdf`."
+      placeholder: "anthropics/skills/pdf"
+    validations:
+      required: true
+
+  - type: textarea
+    id: task
+    attributes:
+      label: "What did you attempt?"
+      description: "The concrete task you used the skill for (max 500 characters — the ledger enforces this)."
+      placeholder: "Merge two 40-page PDFs and extract tables from one of them."
+    validations:
+      required: true
+
+  - type: dropdown
+    id: verdict
+    attributes:
+      label: "Verdict"
+      description: "Did the skill accomplish the task?"
+      options:
+        - "worked"
+        - "partial"
+        - "failed"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: effectiveness
+    attributes:
+      label: "Effectiveness"
+      description: "1 = goal not achieved ... 5 = goal fully achieved"
+      options: ["1", "2", "3", "4", "5"]
+    validations:
+      required: true
+
+  - type: dropdown
+    id: efficiency
+    attributes:
+      label: "Efficiency"
+      description: "1 = heavy babysitting / huge token cost ... 5 = fast and hands-off"
+      options: ["1", "2", "3", "4", "5"]
+    validations:
+      required: true
+
+  - type: dropdown
+    id: reliability
+    attributes:
+      label: "Reliability"
+      description: "1 = failed most runs ... 5 = consistent, no retries needed"
+      options: ["1", "2", "3", "4", "5"]
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: "Evidence"
+      description: >
+        Concrete facts only: what you ran, what happened, errors seen, time/token
+        cost. Minimum ~30 characters. Vague praise ("great skill!", "works well")
+        gets rejected at intake — specifics survive review.
+      placeholder: "3/3 merges produced valid PDFs; table extraction returned 0 rows on the scanned page and errored with 'no text layer'; ~90s and ~40k tokens total."
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: "Environment"
+      description: "Optional — where it ran, as `agent: <agent>, os: <os>`."
+      placeholder: "agent: zcode, os: win32"
+    validations:
+      required: false
+
+  - type: input
+    id: reporter
+    attributes:
+      label: "Reporter"
+      description: "Optional — your name or handle. Leave blank to file anonymously."
+      placeholder: "@octocat"
+    validations:
+      required: false

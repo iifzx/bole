@@ -1,0 +1,59 @@
+{
+  "id": "anthropics/skills/webapp-testing",
+  "name": "webapp-testing",
+  "source": "skills.sh",
+  "url": "https://skills.sh/anthropics/skills/webapp-testing",
+  "description": "",
+  "best_for": [],
+  "popularity": {
+    "stars": null,
+    "installs": 207700,
+    "checked_at": "2026-11-18"
+  },
+  "static": {
+    "trigger": 4,
+    "structure": 5,
+    "actionability": 4,
+    "safety": 5,
+    "portability": 5,
+    "notes": [
+      "trigger: what is stated and keywords front-loaded ('Toolkit for interacting with and testing local web applications using Playwright') but no WHEN clause and no boundary clause; lint's desc_what warn is a heuristic miss on the gerund opening",
+      "structure: 91-line body with decision tree and clean progressive disclosure ('Reference Files - examples/ - Examples showing common patterns'); scripts/with_server.py and 3 example files verified to exist, no rotting dates",
+      "actionability: decision tree, numbered recon steps and a pitfall section ('Don't inspect the DOM before waiting for networkidle') but no dep check for playwright, no error handling in examples, no explicit verify loop",
+      "safety: no network exfiltration, no dangerous shell patterns; helper runs only local servers",
+      "portability: standard frontmatter and relative paths ('python scripts/with_server.py'); /tmp/inspect.png is Unix-flavored but trivial"
+    ],
+    "safety_flags": [],
+    "evaluator": "session-agentB-2026-11-18",
+    "evaluated_at": "2026-11-18"
+  },
+  "field": {
+    "effectiveness": 0,
+    "efficiency": 0,
+    "reliability": 0,
+    "n_reports": 0
+  },
+  "conflict_events": [],
+  "final": 92,
+  "confidence": 0.3,
+  "history": [
+    {
+      "at": "2026-11-18",
+      "event": "seed",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "note": "imported from skills.sh catalog — pending static evaluation"
+    },
+    {
+      "at": "2026-11-18",
+      "event": "static-eval",
+      "final": 92,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "note": "by session-agentB-2026-11-18"
+    }
+  ],
+  "reports": [],
+  "updated": "2026-11-18"
+}

@@ -26,6 +26,11 @@ secret-exfil detection, privilege/loop checks, portability rules):
 - safety: §D-0 pattern scan, secret+network proximity (≤5 lines), piped
   remote execution, `sudo`, `rm -rf`, env dumps, undocumented bundled scripts
 
+The lint also computes the skill's **content hash** and includes it in the
+`suggested_patch` — registering the evaluation pins the score to the exact
+content judged (`content_hash` on the record; `watch.js` detects later
+upstream drift and halves confidence until re-evaluation).
+
 The lint emits a `suggested_patch` (`--json`) with per-dimension suggestions
 and `evaluator: "mechanical-lint"`. **Your job is the judgment half**: read
 the skill yourself, raise or lower each dimension where the mechanical read
@@ -33,6 +38,29 @@ is wrong (lint cannot judge whether instructions are actually good), keep the
 evidence lines, set `evaluator` to `session-<timestamp>`, and register the
 merged evaluation with `node ledger.js static <patch.json>`. A mechanical
 baseline registered unreviewed is a bug, not a shortcut.
+
+## Phase 0.5 — trigger eval (make routing measurable)
+
+After judging, run the trigger harness (text-alignment heuristic, borrowed
+from sayed3li97/skillscore's eval design):
+
+```bash
+node scripts/lint.js eval init <path|--url …>   # scaffold 20 queries from the description
+# refine every query by hand, then:
+node scripts/lint.js eval run <path|--url …> eval-<name>.json
+```
+
+Put the emitted `trigger_eval` block (`rate`, `n_queries`) into the record.
+A rate below 0.6 means the description's routing surface is weak regardless
+of how good the body is — reflect that in the `trigger` dimension and say so
+in the notes.
+
+## Phase 0.7 — safety consensus
+
+Before settling `safety ≤ 3` or any flag at `high`/`critical`, re-judge the
+safety dimension **2–3 times independently** (fresh read, no peeking at prior
+scores) and require majority agreement. Single-pass safety verdicts on
+suspicious content are how false clears happen.
 
 Output a JSON block in this exact shape (goes into the record's `static`):
 

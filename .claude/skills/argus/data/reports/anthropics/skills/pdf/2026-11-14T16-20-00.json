@@ -1,0 +1,17 @@
+{
+  "id": "anthropics/skills/pdf",
+  "reported_at": "2026-11-14T16-20-00",
+  "task": "Fill a government form PDF with structured data and keep it signable",
+  "verdict": "partial",
+  "scores": {
+    "effectiveness": 4,
+    "efficiency": 3,
+    "reliability": 4
+  },
+  "evidence": "Form fields were filled correctly, but two fields used approximate coordinates and needed one manual adjustment pass before the layout looked right. Flatten/signature step required reading a reference doc not linked from the main workflow.",
+  "environment": {
+    "agent": "zcode",
+    "os": "win32"
+  },
+  "reporter": "seed-example"
+}

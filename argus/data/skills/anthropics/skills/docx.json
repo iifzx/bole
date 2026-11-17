@@ -49,9 +49,20 @@
       "confidence": 0.3,
       "n_reports": 0,
       "note": "illustrative seed entry: static rubric reading of SKILL.md, provisional until field reports arrive"
+    },
+    {
+      "at": "2026-11-18",
+      "event": "hash-pin",
+      "final": 92,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "note": "content hash pinned from live upstream (anthropics/skills/main/skills/docx/SKILL.md)"
     }
   ],
   "reports": [],
   "updated": "2026-11-18",
-  "conflict_events": []
+  "conflict_events": [],
+  "content_hash": "sha256:895d5aa6c4cd98e4aed4c995d846f056f3549086e79bcd6617afea6014f82288",
+  "hash_checked_at": "2026-11-18",
+  "hash_source_url": "https://raw.githubusercontent.com/anthropics/skills/main/skills/docx/SKILL.md"
 }

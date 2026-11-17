@@ -28,9 +28,11 @@ const INDEX_PATH = path.join(DATA_DIR, "index.json");
 const STALE_DAYS = 180;
 const DIMENSIONS_STATIC = ["trigger", "structure", "actionability", "safety", "portability"];
 const DIMENSIONS_FIELD = ["effectiveness", "efficiency", "reliability"];
-const HISTORY_EVENTS = ["seed", "static-eval", "report-added", "recompute", "score-conflict"];
+const HISTORY_EVENTS = ["seed", "static-eval", "report-added", "recompute", "score-conflict", "score-stale", "hash-pin"];
 const SOURCES = ["github", "skills.sh", "skillsmp", "clawhub", "manual", "unknown"];
 const VERDICTS = ["worked", "partial", "failed"];
+const SEVERITIES = ["info", "low", "medium", "high", "critical"];
+const HASH_RE = /^sha256:[0-9a-f]{64}$/;
 
 // ---------------------------------------------------------------- helpers --
 
@@ -147,6 +149,13 @@ function validateStatic(st, where) {
   }
   assert(Array.isArray(st.notes), `${where}: static.notes must be an array`);
   assert(Array.isArray(st.safety_flags), `${where}: static.safety_flags must be an array`);
+  for (const f of st.safety_flags) {
+    assert(f && typeof f === "object" && !Array.isArray(f), `${where}: safety_flags entries must be objects {severity, finding, detail, quote?}`);
+    assert(SEVERITIES.includes(f.severity), `${where}: safety_flags.severity must be one of ${SEVERITIES.join("|")}`);
+    assert(typeof f.finding === "string" && /^[a-z0-9_-]+$/.test(f.finding), `${where}: safety_flags.finding must be a kebab-case id`);
+    assert(typeof f.detail === "string" && f.detail.trim().length > 0, `${where}: safety_flags.detail required`);
+    assert(f.quote === undefined || typeof f.quote === "string", `${where}: safety_flags.quote must be a string`);
+  }
   assert(typeof st.evaluator === "string" && st.evaluator.length > 0, `${where}: static.evaluator required`);
   assert(isDate(st.evaluated_at), `${where}: static.evaluated_at must be YYYY-MM-DD`);
 }
@@ -195,6 +204,28 @@ function validateRecord(rec, where) {
   if (rec.conflict_events !== undefined) {
     assert(Array.isArray(rec.conflict_events), `${where}: conflict_events must be an array`);
     assert(rec.conflict_events.every(isStamp), `${where}: conflict_events entries must be YYYY-MM-DDTHH-mm-ss stamps`);
+  }
+  if (rec.content_hash !== undefined && rec.content_hash !== null) {
+    assert(typeof rec.content_hash === "string" && HASH_RE.test(rec.content_hash), `${where}: content_hash must be "sha256:<64 hex>"`);
+    assert(isDate(rec.hash_checked_at), `${where}: hash_checked_at must be YYYY-MM-DD`);
+    if (rec.hash_source_url !== undefined) {
+      assert(typeof rec.hash_source_url === "string" && /^https:\/\//.test(rec.hash_source_url), `${where}: hash_source_url must be an https URL`);
+    }
+  }
+  if (rec.stale !== undefined) assert(typeof rec.stale === "boolean", `${where}: stale must be a boolean`);
+  if (rec.stale_hash !== undefined && rec.stale_hash !== null) {
+    assert(typeof rec.stale_hash === "string" && HASH_RE.test(rec.stale_hash), `${where}: stale_hash must be "sha256:<64 hex>"`);
+  }
+  if (rec.duplicate_of !== undefined && rec.duplicate_of !== null) {
+    assertSafeId(rec.duplicate_of, `${where}: duplicate_of`);
+    assert(rec.duplicate_of !== rec.id, `${where}: a record cannot be its own duplicate`);
+  }
+  if (rec.trigger_eval !== undefined) {
+    const t = rec.trigger_eval;
+    assert(t && typeof t === "object" && !Array.isArray(t), `${where}: trigger_eval must be an object`);
+    assert(isNumInRange(t.rate, 0, 1), `${where}: trigger_eval.rate must be 0-1`);
+    assert(Number.isInteger(t.n_queries) && t.n_queries > 0, `${where}: trigger_eval.n_queries must be a positive integer`);
+    assert(isDate(t.ran_at), `${where}: trigger_eval.ran_at must be YYYY-MM-DD`);
   }
   assert(isDate(rec.updated), `${where}: updated must be YYYY-MM-DD`);
 }
@@ -254,14 +285,18 @@ function recomputeRecord(rec, reports) {
     const known = new Set(reports.map((r) => r.rep.reported_at));
     const conflicts = (rec.conflict_events || []).filter((stamp) => known.has(stamp)).length;
     conf *= Math.pow(0.85, conflicts);
+    if (rec.stale) conf *= 0.5; // upstream content changed since evaluation (scoring.md §5)
     if (rec.updated && Date.parse(today()) - Date.parse(rec.updated) > STALE_DAYS * 86400000) conf *= 0.9;
     if (s === null) conf = Math.min(conf, 0.7);
     rec.confidence = round2(Math.min(0.95, conf));
   }
 
-  // §6 red line: cap applies only when the safety dimension itself scored <= 2;
-  // advisory flags at safety >= 3 are transparency, not a verdict
-  if (rec.static && rec.static.safety <= 2 && rec.static.safety_flags.length > 0) rec.final = Math.min(rec.final, 40);
+  // §6 red line: a flag at high/critical severity caps the final score;
+  // info/low/medium flags are transparency, not a verdict
+  const maxSev = rec.static && Array.isArray(rec.static.safety_flags)
+    ? rec.static.safety_flags.reduce((m, f) => Math.max(m, SEVERITIES.indexOf(f.severity)), -1)
+    : -1;
+  if (maxSev >= SEVERITIES.indexOf("high")) rec.final = Math.min(rec.final, 40);
   rec.updated = today();
   return rec;
 }
@@ -346,6 +381,15 @@ function cmdAdd(reportFile) {
   if (target.static === null) console.log("  ! record has no static evaluation yet — run the rubric and use `static`");
 }
 
+/** Find another ledger record whose evaluated content hash matches (fork/copy detection). */
+function findDuplicateByHash(hash, selfId) {
+  for (const file of walkJsonFiles(SKILLS_DIR)) {
+    const rec = readJson(file);
+    if (rec.id !== selfId && rec.content_hash && rec.content_hash === hash) return rec.id;
+  }
+  return null;
+}
+
 function cmdStatic(patchFile) {
   assert(patchFile, "static: missing patch file argument");
   const patch = readJson(patchFile);
@@ -361,15 +405,33 @@ function cmdStatic(patchFile) {
   }
   if (target.source === "unknown" && patch.source && SOURCES.includes(patch.source)) target.source = patch.source;
 
+  let dupNote = "";
+  if (patch.content_hash !== undefined && patch.content_hash !== null) {
+    assert(typeof patch.content_hash === "string" && HASH_RE.test(patch.content_hash), "patch.content_hash must be sha256:<64hex>");
+    const dup = findDuplicateByHash(patch.content_hash, target.id);
+    if (dup) {
+      target.duplicate_of = dup;
+      dupNote = `  ! content-identical to ${dup} — recorded as duplicate_of`;
+    }
+    target.content_hash = patch.content_hash;
+    target.hash_checked_at = today();
+    delete target.stale;
+    delete target.stale_hash;
+  }
+
   const reports = loadReports(target);
   recomputeRecord(target, reports);
-  pushHistory(target, "static-eval", `by ${st.evaluator}${st.safety_flags.length ? ` (flags: ${st.safety_flags.join("; ")})` : ""}`);
+  const flagSummary = st.safety_flags.map((f) => `${f.severity}:${f.finding}`).join("; ");
+  pushHistory(target, "static-eval", `by ${st.evaluator}${flagSummary ? ` (flags: ${flagSummary})` : ""}`);
   saveRecord(target, file);
   buildIndex(false);
+  const maxSevIdx = st.safety_flags.reduce((m, f) => Math.max(m, SEVERITIES.indexOf(f.severity)), -1);
   console.log(`${isNew ? "created record" : "updated record"} ${target.id}`);
   console.log(`  static=${static100(target)?.toFixed(1)}  final=${target.final}  confidence=${target.confidence}`);
-  if (st.safety <= 2 && st.safety_flags.length > 0) console.log(`  !! RED LINE — final capped at 40; do not recommend silently (${st.safety_flags.join("; ")})`);
-  else if (st.safety_flags.length > 0) console.log(`  note: ${st.safety_flags.length} advisory safety flag(s) recorded for transparency (safety=${st.safety}, no cap)`);
+  if (patch.content_hash) console.log(`  pinned ${patch.content_hash.slice(0, 18)}… @ ${target.hash_checked_at}`);
+  if (maxSevIdx >= SEVERITIES.indexOf("high")) console.log(`  !! RED LINE — final capped at 40; do not recommend silently (${flagSummary})`);
+  else if (st.safety_flags.length > 0) console.log(`  note: ${st.safety_flags.length} advisory flag(s) recorded for transparency (max severity: ${SEVERITIES[maxSevIdx] ?? "none"}, no cap)`);
+  if (dupNote) console.log(dupNote);
 }
 
 function buildIndex(check) {
@@ -395,6 +457,8 @@ function buildIndex(check) {
       n_reports: r.field.n_reports,
       best_for: r.best_for,
       updated: r.updated,
+      stale: !!r.stale,
+      duplicate_of: r.duplicate_of || null,
     })),
   };
   const serialized = JSON.stringify(index, null, 2) + "\n";
@@ -426,6 +490,25 @@ function cmdRecompute() {
   }
   buildIndex(false);
   console.log(`recomputed ${count} record(s)`);
+}
+
+function cmdMarkStale(id, currentHash) {
+  assertSafeId(id, "id");
+  assert(currentHash && HASH_RE.test(currentHash), "mark-stale: current hash (sha256:<64hex>) required — compute it from the live upstream content");
+  const { rec, file } = loadRecord(id);
+  if (!rec) throw new Fail(`no record for ${id}`);
+  if (!rec.content_hash) throw new Fail(`${id} has no content_hash pinned — nothing to compare`);
+  if (currentHash === rec.content_hash) {
+    console.log(`${id}: upstream unchanged — not marking stale`);
+    return;
+  }
+  rec.stale = true;
+  rec.stale_hash = currentHash;
+  recomputeRecord(rec, loadReports(rec));
+  pushHistory(rec, "score-stale", `upstream changed (was ${rec.content_hash.slice(0, 18)}…, now ${currentHash.slice(0, 18)}…) — confidence halved pending re-evaluation`);
+  saveRecord(rec, file);
+  buildIndex(false);
+  console.log(`${id}: marked stale — confidence now ${rec.confidence}; re-evaluate and register a fresh static patch to clear`);
 }
 
 function cmdShow(id) {
@@ -492,7 +575,8 @@ const USAGE = `ledger.js — 相马经 maintenance CLI
   node ledger.js static <patch.json>
   node ledger.js build-index [--check]
   node ledger.js show <id>
-  node ledger.js recompute`;
+  node ledger.js recompute
+  node ledger.js mark-stale <id> <sha256:...>   upstream changed; halve confidence until re-evaluated`;
 
 function main(argv) {
   const [cmd, ...rest] = argv;
@@ -505,6 +589,7 @@ function main(argv) {
       case "build-index": buildIndex(rest.includes("--check")); break;
       case "show": cmdShow(rest[0]); break;
       case "recompute": cmdRecompute(); break;
+      case "mark-stale": cmdMarkStale(rest[0], rest[1]); break;
       default:
         console.log(USAGE);
         process.exit(cmd === undefined ? 0 : 2);

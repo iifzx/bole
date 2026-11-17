@@ -1,0 +1,77 @@
+{
+  "id": "anthropics/skills/pdf",
+  "name": "pdf",
+  "source": "github",
+  "url": "https://github.com/anthropics/skills",
+  "description": "Comprehensive PDF manipulation toolkit: create, edit, merge, split, extract text and tables, fill forms, and handle encrypted/scanned PDFs.",
+  "best_for": [
+    "pdf",
+    "merge",
+    "split",
+    "forms",
+    "table-extraction",
+    "document-processing"
+  ],
+  "popularity": {
+    "stars": null,
+    "installs": 231300,
+    "checked_at": "2026-11-18"
+  },
+  "static": {
+    "trigger": 5,
+    "structure": 5,
+    "actionability": 4,
+    "safety": 5,
+    "portability": 5,
+    "notes": [
+      "trigger: frontmatter states what (PDF processing) and when (any PDF task), with clear scope",
+      "structure: body split into references with command-level docs; scripts bundled",
+      "actionability: concrete workflows per task type; verification steps vary by workflow, hence 4",
+      "safety: destructive operations (overwrite/encrypt) are explicit and gated; no undeclared network calls",
+      "portability: standard frontmatter, PDF libraries commonly available"
+    ],
+    "safety_flags": [],
+    "evaluator": "seed-static",
+    "evaluated_at": "2026-11-18"
+  },
+  "field": {
+    "effectiveness": 4.5,
+    "efficiency": 3.5,
+    "reliability": 4.5,
+    "n_reports": 2
+  },
+  "final": 88,
+  "confidence": 0.5,
+  "history": [
+    {
+      "at": "2026-11-18",
+      "event": "seed",
+      "final": 96,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "note": "illustrative seed entry: static rubric reading of SKILL.md, provisional until field reports arrive"
+    },
+    {
+      "at": "2026-11-18",
+      "event": "report-added",
+      "final": 94,
+      "confidence": 0.4,
+      "n_reports": 1,
+      "note": "2026-11-10T09-30-00 (worked) by seed-example"
+    },
+    {
+      "at": "2026-11-18",
+      "event": "report-added",
+      "final": 88,
+      "confidence": 0.5,
+      "n_reports": 2,
+      "note": "2026-11-14T16-20-00 (partial) by seed-example"
+    }
+  ],
+  "reports": [
+    "2026-11-10T09-30-00.json",
+    "2026-11-14T16-20-00.json"
+  ],
+  "updated": "2026-11-18",
+  "conflict_events": []
+}

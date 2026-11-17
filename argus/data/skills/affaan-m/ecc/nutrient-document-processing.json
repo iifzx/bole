@@ -52,8 +52,19 @@
       "confidence": 0.3,
       "n_reports": 0,
       "note": "by session-agentC-2026-11-18"
+    },
+    {
+      "at": "2026-11-18",
+      "event": "hash-pin",
+      "final": 88,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "note": "content hash pinned from live upstream (affaan-m/ecc/main/skills/nutrient-document-processing/SKILL.md)"
     }
   ],
   "reports": [],
-  "updated": "2026-11-18"
+  "updated": "2026-11-18",
+  "content_hash": "sha256:2a8096af72efaeb29a4221929ac1f1ea9d97b95d44316720764fb7c191c7a5b9",
+  "hash_checked_at": "2026-11-18",
+  "hash_source_url": "https://raw.githubusercontent.com/affaan-m/ecc/main/skills/nutrient-document-processing/SKILL.md"
 }

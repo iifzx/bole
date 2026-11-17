@@ -52,8 +52,19 @@
       "confidence": 0.3,
       "n_reports": 0,
       "note": "by session-agentA-2026-11-18"
+    },
+    {
+      "at": "2026-11-18",
+      "event": "hash-pin",
+      "final": 92,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "note": "content hash pinned from live upstream (anthropics/skills/main/skills/canvas-design/SKILL.md)"
     }
   ],
   "reports": [],
-  "updated": "2026-11-18"
+  "updated": "2026-11-18",
+  "content_hash": "sha256:a1f288079624402f30682753c1d43920b6664785698d21d3e7aa197450a6448b",
+  "hash_checked_at": "2026-11-18",
+  "hash_source_url": "https://raw.githubusercontent.com/anthropics/skills/main/skills/canvas-design/SKILL.md"
 }

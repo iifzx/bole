@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>伯乐 · Argus — 相马经 Ledger</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --fg: #1f2328;
+    --muted: #59636e;
+    --card: #f6f8fa;
+    --border: #d1d9e0;
+    --link: #0969da;
+    --chip-bg: #eff2f5;
+    --green: #1a7f37;
+    --lime: #4d7c0f;
+    --amber: #9a6700;
+    --orange: #bc4c00;
+    --red: #cf222e;
+    --grey: #59636e;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0d1117;
+      --fg: #e6edf3;
+      --muted: #9198a1;
+      --card: #151b23;
+      --border: #3d444d;
+      --link: #4493f8;
+      --chip-bg: #212933;
+      --green: #3fb950;
+      --lime: #a3d655;
+      --amber: #d5a021;
+      --orange: #f0883e;
+      --red: #f85149;
+      --grey: #9198a1;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    line-height: 1.55;
+    font-size: 16px;
+  }
+  main { max-width: 960px; margin: 0 auto; padding: 36px 20px 48px; }
+  h1 { font-size: 1.6rem; margin: 0 0 4px; letter-spacing: 0.01em; }
+  .subtitle { color: var(--muted); margin: 0 0 24px; font-size: 0.95rem; }
+  a { color: var(--link); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .muted { color: var(--muted); }
+
+  #loading { color: var(--muted); }
+  .error {
+    background: var(--card);
+    border: 1px solid var(--red);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-bottom: 24px;
+  }
+
+  .stats { display: flex; flex-wrap: wrap; gap: 12px; margin: 0 0 24px; }
+  .stat {
+    flex: 1 1 150px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+  }
+  .stat .value { font-size: 1.5rem; font-weight: 650; font-variant-numeric: tabular-nums; }
+  .stat .label { color: var(--muted); font-size: 0.78rem; }
+
+  .table-scroll { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  th {
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+    color: var(--muted);
+    font-weight: 600;
+    border-bottom: 2px solid var(--border);
+  }
+  th:hover { color: var(--fg); }
+  th[aria-sort="ascending"]::after { content: " ▲"; }
+  th[aria-sort="descending"]::after { content: " ▼"; }
+  th.num, td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  td a { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.84rem; word-break: break-all; }
+
+  .score { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .score.green { color: var(--green); }
+  .score.lime { color: var(--lime); }
+  .score.amber { color: var(--amber); }
+  .score.orange { color: var(--orange); }
+  .score.red { color: var(--red); }
+  .score.grey { color: var(--grey); font-weight: 500; }
+
+  .conf .word { font-weight: 600; }
+  .conf .num { color: var(--muted); font-variant-numeric: tabular-nums; }
+
+  .chip {
+    display: inline-block;
+    background: var(--chip-bg);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 1px 8px;
+    font-size: 0.72rem;
+    margin: 1px 3px 1px 0;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .legend {
+    margin: 20px 0 0;
+    color: var(--muted);
+    font-size: 0.85rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+    align-items: center;
+  }
+  .swatch { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; }
+  .swatch.green { background: var(--green); }
+  .swatch.lime { background: var(--lime); }
+  .swatch.amber { background: var(--amber); }
+  .swatch.orange { background: var(--orange); }
+  .swatch.red { background: var(--red); }
+  .swatch.grey { background: var(--grey); }
+
+  footer {
+    margin-top: 32px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>伯乐 · Argus — 相马经 Ledger</h1>
+    <p class="subtitle">Skill quality, judged by real use — never by stars. 世有伯乐，然后有千里马。</p>
+  </header>
+
+  <p id="loading">Loading ledger index…</p>
+  <div id="error" class="error" hidden></div>
+
+  <section id="stats" class="stats" hidden>
+    <div class="stat"><div class="value" id="stat-total">–</div><div class="label">skills in ledger</div></div>
+    <div class="stat"><div class="value" id="stat-evaluated">–</div><div class="label">evaluated (final &gt; 0)</div></div>
+    <div class="stat"><div class="value" id="stat-pending">–</div><div class="label">pending</div></div>
+    <div class="stat"><div class="value" id="stat-confidence">–</div><div class="label">avg confidence of evaluated</div></div>
+  </section>
+
+  <section id="table-wrap" class="table-scroll" hidden>
+    <table id="ledger">
+      <thead>
+        <tr>
+          <th data-key="id" scope="col">Skill id</th>
+          <th data-key="final" scope="col" class="num">Final</th>
+          <th data-key="confidence" scope="col">Confidence</th>
+          <th data-key="n_reports" scope="col" class="num">Reports</th>
+          <th data-key="best_for" scope="col">Best for</th>
+          <th data-key="updated" scope="col">Updated</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </section>
+
+  <section class="legend" id="legend" hidden>
+    <span><span class="swatch green"></span>90–100</span>
+    <span><span class="swatch lime"></span>80–89</span>
+    <span><span class="swatch amber"></span>70–79</span>
+    <span><span class="swatch orange"></span>60–69</span>
+    <span><span class="swatch red"></span>&lt;60</span>
+    <span><span class="swatch grey"></span>0 = pending</span>
+    <span>pending = imported, awaiting rubric evaluation</span>
+    <span id="generated" class="muted"></span>
+  </section>
+
+  <footer>
+    <p>Scores are evidence-backed and star-free. Popularity is never a score. → <a href="https://github.com/iifzx/bole" target="_blank" rel="noopener">docs in the repo</a></p>
+  </footer>
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  var INDEX_URL = "https://raw.githubusercontent.com/iifzx/bole/main/argus/data/index.json";
+
+  var state = { key: "final", dir: -1 };
+  var skills = [];
+
+  function $(id) { return document.getElementById(id); }
+
+  function esc(value) {
+    return String(value).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  function toNum(v) { var n = Number(v); return Number.isFinite(n) ? n : 0; }
+
+  function confWord(c) {
+    if (c < 0.4) return "provisional";
+    if (c <= 0.7) return "usable";
+    return "battle-tested";
+  }
+
+  function finalClass(final) {
+    if (final === 0) return "grey";
+    if (final >= 90) return "green";
+    if (final >= 80) return "lime";
+    if (final >= 70) return "amber";
+    if (final >= 60) return "orange";
+    return "red";
+  }
+
+  var TEXT_KEYS = { id: true, updated: true };
+
+  function skillValue(s, key) {
+    switch (key) {
+      case "id": return String(s.id || "");
+      case "final": return toNum(s.final);
+      case "confidence": return toNum(s.confidence);
+      case "n_reports": return toNum(s.n_reports);
+      case "best_for": return Array.isArray(s.best_for) ? s.best_for.length : 0;
+      case "updated": return String(s.updated || "");
+      default: return "";
+    }
+  }
+
+  function cmp(a, b) {
+    var va = skillValue(a, state.key);
+    var vb = skillValue(b, state.key);
+    var r = TEXT_KEYS[state.key] ? String(va).localeCompare(String(vb)) : va - vb;
+    if (r !== 0) return r * state.dir;
+    return String(a.id || "").localeCompare(String(b.id || ""));
+  }
+
+  function renderStats() {
+    var evaluated = skills.filter(function (s) { return toNum(s.final) > 0; });
+    var pending = skills.length - evaluated.length;
+    var avgConf = evaluated.length
+      ? evaluated.reduce(function (acc, s) { return acc + toNum(s.confidence); }, 0) / evaluated.length
+      : 0;
+    $("stat-total").textContent = String(skills.length);
+    $("stat-evaluated").textContent = String(evaluated.length);
+    $("stat-pending").textContent = String(pending);
+    $("stat-confidence").textContent = avgConf.toFixed(2);
+  }
+
+  function rowHtml(s) {
+    var final = toNum(s.final);
+    var conf = toNum(s.confidence);
+    var owner = String(s.id || "").split("/")[0];
+    var ownerUrl = "https://github.com/" + encodeURIComponent(owner);
+    var chips = (Array.isArray(s.best_for) ? s.best_for : [])
+      .slice(0, 8)
+      .map(function (k) { return '<span class="chip">' + esc(k) + "</span>"; })
+      .join(" ");
+    var finalCell = final === 0
+      ? '<span class="score grey">pending</span>'
+      : '<span class="score ' + finalClass(final) + '">' + final + "</span>";
+    var badges = "";
+    if (s.stale) badges += ' <span class="chip" title="Upstream SKILL.md changed since evaluation — confidence halved until re-evaluated">⚠ stale</span>';
+    if (s.duplicate_of) badges += ' <span class="chip" title="Content-identical to another ledger entry">⧉ dup of ' + esc(s.duplicate_of) + "</span>";
+    return "<tr>" +
+      '<td><a href="' + ownerUrl + '" target="_blank" rel="noopener">' + esc(s.id || "") + "</a>" + badges + "</td>" +
+      '<td class="num">' + finalCell + "</td>" +
+      '<td class="conf"><span class="word">' + confWord(conf) + '</span> <span class="num">' + conf.toFixed(2) + "</span></td>" +
+      '<td class="num">' + toNum(s.n_reports) + "</td>" +
+      "<td>" + (chips || '<span class="muted">—</span>') + "</td>" +
+      "<td>" + esc(s.updated || "") + "</td>" +
+      "</tr>";
+  }
+
+  function renderTable() {
+    $("tbody").innerHTML = skills.slice().sort(cmp).map(rowHtml).join("");
+    var ths = document.querySelectorAll("#ledger th[data-key]");
+    for (var i = 0; i < ths.length; i++) {
+      var th = ths[i];
+      if (th.getAttribute("data-key") === state.key) {
+        th.setAttribute("aria-sort", state.dir === 1 ? "ascending" : "descending");
+      } else {
+        th.removeAttribute("aria-sort");
+      }
+    }
+  }
+
+  function showError(err) {
+    $("loading").hidden = true;
+    var box = $("error");
+    box.hidden = false;
+    var msg = err && err.message ? err.message : String(err);
+    box.innerHTML =
+      "<strong>Could not load the ledger index.</strong><br>" +
+      esc(msg) +
+      '<br>If you opened this page from disk (file://), the fetch is blocked by the browser — serve it over HTTP, or read the data directly in <a href="https://github.com/iifzx/bole/tree/main/argus/data">the repo</a>.';
+  }
+
+  function onHeaderClick(event) {
+    var key = event.currentTarget.getAttribute("data-key");
+    if (state.key === key) {
+      state.dir = -state.dir;
+    } else {
+      state.key = key;
+      state.dir = TEXT_KEYS[key] ? 1 : -1;
+    }
+    renderTable();
+  }
+
+  function init() {
+    var ths = document.querySelectorAll("#ledger th[data-key]");
+    for (var i = 0; i < ths.length; i++) {
+      ths[i].addEventListener("click", onHeaderClick);
+    }
+
+    fetch(INDEX_URL)
+      .then(function (res) {
+        if (!res.ok) throw new Error("HTTP " + res.status + " while fetching index.json");
+        return res.json();
+      })
+      .then(function (data) {
+        skills = Array.isArray(data && data.skills) ? data.skills : [];
+        if (!skills.length) throw new Error("index.json contains no skills");
+        $("loading").hidden = true;
+        $("stats").hidden = false;
+        $("table-wrap").hidden = false;
+        $("legend").hidden = false;
+        if (data.generated_at) $("generated").textContent = "index generated " + data.generated_at;
+        renderStats();
+        renderTable();
+      })
+      .catch(showError);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>

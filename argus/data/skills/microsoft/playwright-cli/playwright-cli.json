@@ -24,8 +24,18 @@
       "portability: override lint 5 down to 4 — nonstandard frontmatter field 'allowed-tools: Bash(playwright-cli:*) Bash(npx playwright:*) ...' uses space-separated syntax rather than a plain comma-separated tool list (lint's allowed_tools warn refers here); body itself is cross-platform and even documents Windows quirks ('Escape & with ^& in cmd.exe')"
     ],
     "safety_flags": [
-      "secret_proximity: reviewed false positive — 'TOKEN=$(playwright-cli --raw cookie-get session_id)' is legitimate cookie handling, not a credential",
-      "allowed-tools: space-separated non-standard list may break strict parsers expecting comma-separated tool names"
+      {
+        "severity": "low",
+        "finding": "secret-proximity-reviewed-false-positive",
+        "detail": "secret_proximity: reviewed false positive — 'TOKEN=$(playwright-cli --raw cookie-get session_id)' is legitimate cookie handling, not a credential",
+        "quote": ""
+      },
+      {
+        "severity": "medium",
+        "finding": "allowed-tools-space-separated-non",
+        "detail": "allowed-tools: space-separated non-standard list may break strict parsers expecting comma-separated tool names",
+        "quote": ""
+      }
     ],
     "evaluator": "session-agentB-2026-11-18",
     "evaluated_at": "2026-11-18"
@@ -55,8 +65,19 @@
       "confidence": 0.3,
       "n_reports": 0,
       "note": "by session-agentB-2026-11-18 (flags: secret_proximity: reviewed false positive — 'TOKEN=$(playwright-cli --raw cookie-get session_id)' is legitimate cookie handling, not a credential; allowed-tools: space-separated non-standard list may break strict parsers expecting comma-separated tool names)"
+    },
+    {
+      "at": "2026-11-18",
+      "event": "hash-pin",
+      "final": 84,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "note": "content hash pinned from live upstream (microsoft/playwright-cli/main/skills/playwright-cli/SKILL.md)"
     }
   ],
   "reports": [],
-  "updated": "2026-11-18"
+  "updated": "2026-11-18",
+  "content_hash": "sha256:b07a6cbe4e5b638046fe0b9df0e84783cb9899f0aed3db1eef915601c3260a64",
+  "hash_checked_at": "2026-11-18",
+  "hash_source_url": "https://raw.githubusercontent.com/microsoft/playwright-cli/main/skills/playwright-cli/SKILL.md"
 }

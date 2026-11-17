@@ -1,0 +1,62 @@
+{
+  "id": "microsoft/playwright-cli/playwright-cli",
+  "name": "playwright-cli",
+  "source": "skills.sh",
+  "url": "https://skills.sh/microsoft/playwright-cli/playwright-cli",
+  "description": "",
+  "best_for": [],
+  "popularity": {
+    "stars": null,
+    "installs": 218900,
+    "checked_at": "2026-11-18"
+  },
+  "static": {
+    "trigger": 4,
+    "structure": 4,
+    "actionability": 4,
+    "safety": 5,
+    "portability": 4,
+    "notes": [
+      "trigger: what is stated with strong keywords ('Automate browser interactions, test web pages and work with Playwright tests') and third-person voice, but no WHEN clause and no boundary clause — over-triggers on any browser mention",
+      "structure: override lint 5 down to 4 — 493-line body hugs the 500-line cap and Storage/Emulation/Network/Tabs are pure command dumps that could live in the 10 existing reference files ('references/playwright-tests.md', etc., all verified present); references/ split itself is good",
+      "actionability: quick start, five worked examples, snapshot-diff verify loop ('diff before.yml after.yml'), and a real dep-check fallback ('If global playwright-cli command is not available, try a local version via npx' — lint's dep_check warn is wrong); thin on explicit error handling and anti-patterns",
+      "safety: override lint 4 up to 5 — the secret_proximity hit is reviewed and cleared: 'TOKEN=$(playwright-cli --raw cookie-get session_id)' reads a browser cookie into a shell var, a legitimate documented feature with no hardcoded secret; no piped-remote/base64/sudo/rm-rf patterns",
+      "portability: override lint 5 down to 4 — nonstandard frontmatter field 'allowed-tools: Bash(playwright-cli:*) Bash(npx playwright:*) ...' uses space-separated syntax rather than a plain comma-separated tool list (lint's allowed_tools warn refers here); body itself is cross-platform and even documents Windows quirks ('Escape & with ^& in cmd.exe')"
+    ],
+    "safety_flags": [
+      "secret_proximity: reviewed false positive — 'TOKEN=$(playwright-cli --raw cookie-get session_id)' is legitimate cookie handling, not a credential",
+      "allowed-tools: space-separated non-standard list may break strict parsers expecting comma-separated tool names"
+    ],
+    "evaluator": "session-agentB-2026-11-18",
+    "evaluated_at": "2026-11-18"
+  },
+  "field": {
+    "effectiveness": 0,
+    "efficiency": 0,
+    "reliability": 0,
+    "n_reports": 0
+  },
+  "conflict_events": [],
+  "final": 84,
+  "confidence": 0.3,
+  "history": [
+    {
+      "at": "2026-11-18",
+      "event": "seed",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "note": "imported from skills.sh catalog — pending static evaluation"
+    },
+    {
+      "at": "2026-11-18",
+      "event": "static-eval",
+      "final": 84,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "note": "by session-agentB-2026-11-18 (flags: secret_proximity: reviewed false positive — 'TOKEN=$(playwright-cli --raw cookie-get session_id)' is legitimate cookie handling, not a credential; allowed-tools: space-separated non-standard list may break strict parsers expecting comma-separated tool names)"
+    }
+  ],
+  "reports": [],
+  "updated": "2026-11-18"
+}

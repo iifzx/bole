@@ -27,6 +27,8 @@
 const fs = require("fs");
 const path = require("path");
 
+const crypto = require("crypto");
+
 const KNOWN_FM_KEYS = ["name", "description", "allowed-tools", "license", "metadata"];
 const STOPWORDS = new Set(["the", "a", "an", "and", "or", "for", "to", "of", "in", "on", "with", "when", "use", "used", "using", "this", "that", "it", "its", "is", "are", "be", "been", "can", "could", "should", "would", "will", "if", "as", "by", "at", "from", "your", "you", "we", "our", "i", "not", "no", "into", "about", "than", "then", "there", "their", "they", "them", "has", "have", "had", "do", "does", "did", "so", "such", "also", "any", "all", "more", "most", "other", "some", "what", "which", "who", "how", "skill", "skills", "agent", "agents"]);
 const ACTION_VERBS = /^(creates?|edits?|builds?|manages?|provides?|helps?|covers?|handles?|analyz|extracts?|converts?|generates?|designs?|writes?|reviews?|validates?|orchestrates?|searches?|finds?|scans?|monitors?|controls?|tests?|debugs?|deploys?|formats?|transforms?|comprehensives?|complete|professional|use|stop|applies?|supports?|automates?|fixes?|checks?|reads?|view|manages?|run|runs?|installs?|cleans?|tracks?|processes?|renders?|parses?|query|queries|routes?|restyles?|splits?|merges?|fills?|exports?|imports?|audits?|routs?)/i;
@@ -255,6 +257,37 @@ function grade(score100) {
     : score100 >= 65 ? "D" : score100 >= 60 ? "D-" : "F";
 }
 
+/** Canonical content hash: BOM stripped, CRLF→LF, SHA-256 (spec shared with watch.js). */
+const round2 = (x) => Math.round(x * 100) / 100;
+const today = () => {
+  const d = new Date();
+  const p = (n) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
+};
+
+function readJson(file) {
+  let raw;
+  try {
+    raw = fs.readFileSync(file, "utf8");
+  } catch (e) {
+    throw new Fail(`cannot read ${file}: ${e.message}`);
+  }
+  try {
+    return JSON.parse(raw.replace(/^\uFEFF/, ""));
+  } catch (e) {
+    throw new Fail(`${file}: invalid JSON (${e.message})`);
+  }
+}
+
+function assert(cond, msg) {
+  if (!cond) throw new Fail(msg);
+}
+
+function contentHash(raw) {
+  const normalized = raw.replace(/^\uFEFF/, "").replace(/\r\n/g, "\n");
+  return "sha256:" + crypto.createHash("sha256").update(normalized, "utf8").digest("hex");
+}
+
 function lintSource(raw, label, dir) {
   const { present, fm, body } = parseFrontmatter(raw);
   const { checks, safetyScore, flags } = runChecks({ present, fm, body, dir });
@@ -267,7 +300,7 @@ function lintSource(raw, label, dir) {
     manifest_active: Math.ceil(raw.length / 4),
     note: "chars/4 heuristic; add ~10% for Claude-calibrated counts (borrowed calibration)",
   };
-  return { label, checks, scores, score100, grade: grade(score100), tokens, flags, fm, body };
+  return { label, checks, scores, score100, grade: grade(score100), tokens, flags, fm, body, content_hash: contentHash(raw), description: desc, regions: descriptionRegions(desc) };
 }
 
 function suggestedPatch(r) {
@@ -276,6 +309,7 @@ function suggestedPatch(r) {
       .concat(r.checks.filter((c) => c.dim === dim && c.status === "pass").slice(0, 1).map((c) => `${c.id}: ${c.detail}`));
   return {
     id: `TODO-owner/repo/${r.fm.name || r.label}`,
+    content_hash: r.content_hash,
     static: {
       trigger: r.scores.trigger,
       structure: r.scores.structure,
@@ -293,6 +327,7 @@ function suggestedPatch(r) {
 function printReport(r, json) {
   if (json) { out(JSON.stringify({ ...r, suggested_patch: suggestedPatch(r) }, null, 2)); return; }
   out(`\n== ${r.label} — mechanical score ${r.score100}/100 (${r.grade}) ==`);
+  out(`  pinned          ${r.content_hash}`);
   for (const [dim, s] of Object.entries(r.scores)) out(`  ${dim.padEnd(14)} ${s}/5`);
   out(`  tokens          desc≈${r.tokens.description_permanent}  manifest≈${r.tokens.manifest_active} (${r.tokens.note})`);
   const problems = r.checks.filter((c) => c.status !== "pass");
@@ -376,6 +411,108 @@ async function fetchRaw(url) {
   die(`could not fetch SKILL.md for ${url} (tried refs: ${g.refs.join(", ")})`);
 }
 
+// ------------------------------------------------------------- eval harness --
+
+function descriptionRegions(desc) {
+  const d = String(desc || "").replace(/\s+/g, " ").trim();
+  const boundaryRe = /(?:do not use|don'?t use|not (?:for|when)|avoid (?:using|for))[:\s]+([\s\S]+)$/i;
+  const whenRe = /(?:use (?:this )?(?:when|for|it)|when the user|whenever|trigger on)[:\s]+?([\s\S]+?)(?=$|do not use|don'?t use|not (?:for|when)|avoid (?:using|for))/i;
+  const boundaryM = boundaryRe.exec(d);
+  const whenM = whenRe.exec(d);
+  const firstSentence = (d.split(/[.!?]/)[0] || "").trim();
+  return {
+    trigger: new Set([...tokenize(whenM ? whenM[1] : ""), ...tokenize(firstSentence)]),
+    boundary: new Set(tokenize(boundaryM ? boundaryM[1] : "")),
+  };
+}
+
+const DISTRACTORS = [
+  "write a haiku about the ocean",
+  "explain the theory of relativity to me",
+  "what is the capital of France",
+  "help me draft a wedding toast",
+  "translate this paragraph into German",
+  "recommend a good mystery novel",
+  "how do I boil an egg perfectly",
+  "summarize this meeting transcript",
+  "plan a two-week vacation in Japan",
+  "write a sonnet about autumn leaves",
+];
+
+function cmdEvalInit(r, args) {
+  const name = (r.fm.name || r.label).replace(/[^a-zA-Z0-9._-]/g, "-");
+  const outFile = args[0] || `eval-${name}.json`;
+  const trig = [...r.regions.trigger].slice(0, 10);
+  const should = [];
+  for (let i = 0; i < 10; i++) {
+    should.push(trig[i] ? `auto — refine by hand: help me with ${trig[i]}` : `auto — refine by hand: task ${i + 1} that must trigger this skill`);
+  }
+  const shouldNot = [];
+  for (let i = 0; i < 5; i++) shouldNot.push(DISTRACTORS[i]);
+  const bnd = [...r.regions.boundary].slice(0, 5);
+  for (let i = 0; i < 5; i++) {
+    shouldNot.push(bnd[i] ? `auto — refine by hand: ${bnd[i]} (boundary case)` : DISTRACTORS[5 + i]);
+  }
+  const spec = {
+    skill: r.label,
+    content_hash: r.content_hash,
+    note: "scaffold auto-generated from the description — REFINE EVERY QUERY BY HAND, then `lint.js eval run`",
+    should_trigger: should,
+    should_not_trigger: shouldNot,
+  };
+  fs.writeFileSync(outFile, JSON.stringify(spec, null, 2) + "\n");
+  out(`scaffold written to ${outFile}`);
+  out("next: refine the 20 queries by hand, then: node lint.js eval run <path-or-url> " + outFile);
+}
+
+function cmdEvalRun(r, args) {
+  const evalFile = args.find((a) => a.endsWith(".json"));
+  if (!evalFile) die("eval run: eval JSON file required (see `eval init`)");
+  const spec = readJson(evalFile);
+  assert(Array.isArray(spec.should_trigger) && spec.should_trigger.length >= 5, "eval: should_trigger needs >= 5 queries");
+  assert(Array.isArray(spec.should_not_trigger) && spec.should_not_trigger.length >= 5, "eval: should_not_trigger needs >= 5 queries");
+  const results = [];
+  let passed = 0;
+  for (const q of spec.should_trigger) {
+    const toks = tokenize(q).filter((t) => !t.startsWith("auto"));
+    const hit = toks.filter((t) => r.regions.trigger.has(t)).length;
+    const alignment = round2(hit / Math.max(1, toks.length));
+    const ok = toks.length > 0 && alignment >= 0.5;
+    results.push({ cls: "should", q, ok, alignment });
+    if (ok) passed++;
+  }
+  for (const q of spec.should_not_trigger) {
+    const toks = tokenize(q).filter((t) => !t.startsWith("auto"));
+    const boundaryHit = toks.some((t) => r.regions.boundary.has(t));
+    const hit = toks.filter((t) => r.regions.trigger.has(t)).length;
+    const alignment = round2(hit / Math.max(1, toks.length));
+    const ok = boundaryHit || alignment < 0.5;
+    results.push({ cls: "should_not", q, ok, alignment, boundaryHit });
+    if (ok) passed++;
+  }
+  const rate = round2(passed / results.length);
+  const jsonOut = args.includes("--json");
+  if (jsonOut) {
+    out(JSON.stringify({
+      trigger_rate: rate,
+      n_queries: results.length,
+      should_pass: results.filter((x) => x.cls === "should" && x.ok).length + "/" + spec.should_trigger.length,
+      shouldnt_pass: results.filter((x) => x.cls === "should_not" && x.ok).length + "/" + spec.should_not_trigger.length,
+      per_query: results,
+      record_block: { trigger_eval: { rate, n_queries: results.length, ran_at: today() } },
+      note: "text-alignment heuristic against the description regions — measures routing intent, not live model routing",
+    }, null, 2));
+    return;
+  }
+  out(`\n== trigger eval — ${r.label} ==`);
+  for (const x of results) {
+    out(`  ${x.ok ? "PASS" : "FAIL"}  ${x.cls.padEnd(10)} align=${x.alignment.toFixed(2)}${x.boundaryHit ? " (boundary)" : ""}  "${String(x.q).slice(0, 60)}"`);
+  }
+  out(`  trigger_rate: ${(rate * 100).toFixed(0)}%  (${passed}/${results.length})`);
+  out("  record block for the ledger: {\"trigger_eval\": {\"rate\": " + rate + ", \"n_queries\": " + results.length + ", \"ran_at\": \"" + today() + "\"}}");
+  if (rate < 0.6) out("  ! rate < 0.6 — description/routing needs rework before trusting this skill's trigger");
+}
+
 // -------------------------------------------------------------------- main --
 
 function main(argv) {
@@ -388,22 +525,33 @@ function main(argv) {
 
   (async () => {
     if (cmd === "conflicts") { cmdConflicts(args[1]); return; }
-    if (cmd !== "check") {
-      out("usage: lint.js check <path|--url <github-url>> [--json] [--min-score N]\n       lint.js conflicts [folder-of-skills]");
+    if (cmd !== "check" && cmd !== "eval") {
+      out("usage: lint.js check <path|--url <github-url>> [--json] [--min-score N]\n" +
+          "       lint.js eval init <path|--url <github-url>> [outfile]\n" +
+          "       lint.js eval run <path|--url <github-url>> <eval.json> [--json]\n" +
+          "       lint.js conflicts [folder-of-skills]");
       process.exit(cmd === undefined ? 0 : 2);
     }
-    let r;
     const urlIdx = argv.indexOf("--url");
+    const pathArg = cmd === "eval" ? args[2] : args[1];
+    let r;
     if (urlIdx >= 0) {
       const remote = await fetchRaw(argv[urlIdx + 1]);
       r = lintSource(remote.raw, remote.label, null);
-    } else if (args[1]) {
-      const p = path.resolve(args[1]);
+    } else if (pathArg) {
+      const p = path.resolve(pathArg);
       const dir = fs.existsSync(p) && fs.statSync(p).isDirectory() ? p : path.dirname(p);
       const file = fs.statSync(p).isDirectory() ? path.join(p, "SKILL.md") : p;
       if (!fs.existsSync(file)) die(`no SKILL.md at ${file}`);
       r = lintSource(fs.readFileSync(file, "utf8"), path.basename(dir || file), dir);
-    } else { die("check: provide a path or --url <github-url>"); }
+    } else { die("provide a path or --url <github-url>"); }
+    if (cmd === "eval") {
+      const sub = args[1];
+      if (sub === "init") cmdEvalInit(r, args.slice(3));
+      else if (sub === "run") cmdEvalRun(r, args.slice(3));
+      else die("eval: subcommand must be init or run — usage: lint.js eval init|run <path|--url …> [file]");
+      return;
+    }
     printReport(r, json);
     if (minScore !== null && r.score100 < minScore) {
       process.stderr.write(`FAIL: mechanical score ${r.score100} < gate ${minScore}\n`);

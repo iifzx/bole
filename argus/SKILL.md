@@ -50,13 +50,19 @@ grow the **相马经 (Horse Ledger)** — the community score database shipped i
 - Formulas and schemas: `references/scoring.md` (authoritative).
 - CLI (run from this skill's directory):
   - `node scripts/ledger.js` — `validate-all` · `add <report.json>` ·
-    `static <patch.json>` · `build-index [--check]` · `show <id>` · `recompute`
+    `static <patch.json>` · `build-index [--check]` · `show <id>` ·
+    `recompute` · `mark-stale <id> <sha256:...>`
   - `node scripts/lint.js check <path|--url <github-url>>` — mechanical
-    pre-lint (~40 borrowed checks; `--json` emits a suggested static patch)
+    pre-lint (~40 borrowed checks; `--json` emits a suggested static patch
+    with the content hash that pins the score)
+  - `node scripts/lint.js eval init|run <path|--url …>` — trigger-eval
+    harness; 20 refined queries → `trigger_rate` for the record
   - `node scripts/lint.js conflicts` — trigger-surface overlap across ledger
     entries (skills shadowing each other)
   - `node scripts/import.js skills-sh "<kw>" --top 5` / `skillsmp --creator <n>`
     / `pending` — bulk-import candidates from catalogs as pending entries
+  - `node scripts/watch.js` — re-hash upstream skills; reports drift with
+    ready `mark-stale` commands
 
 Confidence in words: `< 0.4` provisional → re-verify before trusting ·
 `0.4–0.7` usable, with caveats · `> 0.7` battle-tested.
@@ -102,7 +108,12 @@ Confidence in words: `< 0.4` provisional → re-verify before trusting ·
    "evaluator": "session-<timestamp>"}}
   ```
 
-  Save as a temp patch file, then `node scripts/ledger.js static <patch.json>`.
+  Save as a temp patch file, then `node scripts/ledger.js static <patch.json>`
+  (the patch's `content_hash` pins the score to the exact content judged —
+  the ledger detects later upstream drift and halves confidence until you
+  re-evaluate). Then run the trigger harness (`lint.js eval init` → refine →
+  `eval run`) and put the `trigger_eval` block into the record. When settling
+  `safety ≤ 3`, follow the consensus rule in `references/rubric.md` Phase 0.7.
 - Any §D-0 red line → stop, warn, show the finding, point to
   `cisco-ai-defense/skill-scanner` for a deep scan. Final is capped at 40.
 

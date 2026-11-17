@@ -66,6 +66,14 @@
       "confidence": 0.5,
       "n_reports": 2,
       "note": "2026-11-14T16-20-00 (partial) by seed-example"
+    },
+    {
+      "at": "2026-11-18",
+      "event": "hash-pin",
+      "final": 88,
+      "confidence": 0.5,
+      "n_reports": 2,
+      "note": "content hash pinned from live upstream (anthropics/skills/main/skills/pdf/SKILL.md)"
     }
   ],
   "reports": [
@@ -73,5 +81,8 @@
     "2026-11-14T16-20-00.json"
   ],
   "updated": "2026-11-18",
-  "conflict_events": []
+  "conflict_events": [],
+  "content_hash": "sha256:d1c7caf5f35eb7d37877dd7fc33a095037be2b34fb5d2f7f4d43bde3165bb4ee",
+  "hash_checked_at": "2026-11-18",
+  "hash_source_url": "https://raw.githubusercontent.com/anthropics/skills/main/skills/pdf/SKILL.md"
 }

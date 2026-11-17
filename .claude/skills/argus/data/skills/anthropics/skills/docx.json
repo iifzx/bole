@@ -1,0 +1,57 @@
+{
+  "id": "anthropics/skills/docx",
+  "name": "docx",
+  "source": "github",
+  "url": "https://github.com/anthropics/skills",
+  "description": "Complete DOCX document creation, editing, and analysis: track changes, comments, formatting preservation, and format conversion.",
+  "best_for": [
+    "docx",
+    "word",
+    "document-creation",
+    "track-changes",
+    "office"
+  ],
+  "popularity": {
+    "stars": null,
+    "installs": null,
+    "checked_at": "2026-11-18"
+  },
+  "static": {
+    "trigger": 5,
+    "structure": 4,
+    "actionability": 4,
+    "safety": 5,
+    "portability": 5,
+    "notes": [
+      "trigger: clear what + when, strong keyword coverage for Word/document tasks",
+      "structure: mostly well split; some workflow detail still inline, hence 4",
+      "actionability: workflows present (edit vs create vs convert); a few branches assume OOXML familiarity",
+      "safety: no destructive or networked patterns; file overwrite paths are explicit",
+      "portability: standard frontmatter and common Python tooling"
+    ],
+    "safety_flags": [],
+    "evaluator": "seed-static",
+    "evaluated_at": "2026-11-18"
+  },
+  "field": {
+    "effectiveness": 0,
+    "efficiency": 0,
+    "reliability": 0,
+    "n_reports": 0
+  },
+  "final": 92,
+  "confidence": 0.3,
+  "history": [
+    {
+      "at": "2026-11-18",
+      "event": "seed",
+      "final": 92,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "note": "illustrative seed entry: static rubric reading of SKILL.md, provisional until field reports arrive"
+    }
+  ],
+  "reports": [],
+  "updated": "2026-11-18",
+  "conflict_events": []
+}

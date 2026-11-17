@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "skills": {
+    "argus": {
+      "source": "iifzx/bole",
+      "commit": "0e30e8f4238548ecae2417ecc54bd757ae60efb7",
+      "sourceType": "github",
+      "skillPath": "argus/SKILL.md",
+      "computedHash": "9c3f7b435fa1b43b338929c1e351aa206a1e3036bf00ec2dfb551658590e5608"
+    }
+  }
+}

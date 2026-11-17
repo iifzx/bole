@@ -52,8 +52,19 @@
       "confidence": 0.3,
       "n_reports": 0,
       "note": "by session-agentC-2026-11-18"
+    },
+    {
+      "at": "2026-11-18",
+      "event": "hash-pin",
+      "final": 60,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "note": "content hash pinned from live upstream (claude-office-skills/skills/main/xlsx-manipulation/SKILL.md)"
     }
   ],
   "reports": [],
-  "updated": "2026-11-18"
+  "updated": "2026-11-18",
+  "content_hash": "sha256:754d8df9a75b287608503b9c25a2aa124ef6a3e9fa54d59a8cc63cb2e0acadd5",
+  "hash_checked_at": "2026-11-18",
+  "hash_source_url": "https://raw.githubusercontent.com/claude-office-skills/skills/main/xlsx-manipulation/SKILL.md"
 }

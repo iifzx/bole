@@ -24,10 +24,30 @@
       "portability: minimal standard frontmatter (name/description/license MIT), cross-platform incl. Docker and arm64, local profiles free; but a mandatory per-launch license check ('An API key is required at every launch... there is no offline mode') ties the skill to antibrow.com availability."
     ],
     "safety_flags": [
-      "evasion-capability-core: skill content teaches what bot detectors cross-check and how the kernel defeats each — 'What detection actually tests' table plus 'antibrow answers each of these in the kernel from one persona sampled from one real machine'; description explicitly targets 'when a scraper or agent is blocked by an incoherent headless fingerprint'; dual-use, not merely an automation wrapper.",
-      "headless-detection-avoidance: explicit instruction on hiding headless automation — 'headless mode moves the window off-screen on Windows and renders to a virtual display on Linux rather than using --headless=new'.",
-      "multi-account-unlinking: related skill marketed as 'multi-account-isolation - the operational checklist for keeping accounts unlinked' with trigger terms '防关联', '多账号'; bounded in-body to 'Accounts you own, or operate with the holder's authorization'.",
-      "closed-source-runtime-download: unverifiable kernel binary fetched at run time — 'a closed-source Chromium build the pinned package retrieves on first launch'; skill partially mitigates via integrity pinning ('npm view anti-detect-browser@2.8.0 dist.integrity')."
+      {
+        "severity": "medium",
+        "finding": "evasion-capability-core-skill-content",
+        "detail": "evasion-capability-core: skill content teaches what bot detectors cross-check and how the kernel defeats each — 'What detection actually tests' table plus 'antibrow answers each of these in the kernel from one persona sampled from one real machine'; description explicitly targets 'when a scraper or agent is blocked by an incoherent headless fingerprint'; dual-use, not merely an automation wrapper.",
+        "quote": ""
+      },
+      {
+        "severity": "medium",
+        "finding": "headless-detection-avoidance-explicit-instruction",
+        "detail": "headless-detection-avoidance: explicit instruction on hiding headless automation — 'headless mode moves the window off-screen on Windows and renders to a virtual display on Linux rather than using --headless=new'.",
+        "quote": ""
+      },
+      {
+        "severity": "medium",
+        "finding": "multi-account-unlinking-related-skill",
+        "detail": "multi-account-unlinking: related skill marketed as 'multi-account-isolation - the operational checklist for keeping accounts unlinked' with trigger terms '防关联', '多账号'; bounded in-body to 'Accounts you own, or operate with the holder's authorization'.",
+        "quote": ""
+      },
+      {
+        "severity": "medium",
+        "finding": "closed-source-runtime-download-unverifiable",
+        "detail": "closed-source-runtime-download: unverifiable kernel binary fetched at run time — 'a closed-source Chromium build the pinned package retrieves on first launch'; skill partially mitigates via integrity pinning ('npm view anti-detect-browser@2.8.0 dist.integrity').",
+        "quote": ""
+      }
     ],
     "evaluator": "session-agentC-2026-11-18",
     "evaluated_at": "2026-11-18"
@@ -57,8 +77,19 @@
       "confidence": 0.3,
       "n_reports": 0,
       "note": "by session-agentC-2026-11-18 (flags: evasion-capability-core: skill content teaches what bot detectors cross-check and how the kernel defeats each — 'What detection actually tests' table plus 'antibrow answers each of these in the kernel from one persona sampled from one real machine'; description explicitly targets 'when a scraper or agent is blocked by an incoherent headless fingerprint'; dual-use, not merely an automation wrapper.; headless-detection-avoidance: explicit instruction on hiding headless automation — 'headless mode moves the window off-screen on Windows and renders to a virtual display on Linux rather than using --headless=new'.; multi-account-unlinking: related skill marketed as 'multi-account-isolation - the operational checklist for keeping accounts unlinked' with trigger terms '防关联', '多账号'; bounded in-body to 'Accounts you own, or operate with the holder's authorization'.; closed-source-runtime-download: unverifiable kernel binary fetched at run time — 'a closed-source Chromium build the pinned package retrieves on first launch'; skill partially mitigates via integrity pinning ('npm view anti-detect-browser@2.8.0 dist.integrity').)"
+    },
+    {
+      "at": "2026-11-18",
+      "event": "hash-pin",
+      "final": 80,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "note": "content hash pinned from live upstream (antibrow/anti-detect-browser-skills/master/anti-detect-browser/SKILL.md)"
     }
   ],
   "reports": [],
-  "updated": "2026-11-18"
+  "updated": "2026-11-18",
+  "content_hash": "sha256:5fabadf20b5a3e07c1924fac1e65342e33814615f9bc70d61d8faac892d8790d",
+  "hash_checked_at": "2026-11-18",
+  "hash_source_url": "https://raw.githubusercontent.com/antibrow/anti-detect-browser-skills/master/anti-detect-browser/SKILL.md"
 }

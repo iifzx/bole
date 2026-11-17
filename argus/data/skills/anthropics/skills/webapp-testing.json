@@ -52,8 +52,19 @@
       "confidence": 0.3,
       "n_reports": 0,
       "note": "by session-agentB-2026-11-18"
+    },
+    {
+      "at": "2026-11-18",
+      "event": "hash-pin",
+      "final": 92,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "note": "content hash pinned from live upstream (anthropics/skills/main/skills/webapp-testing/SKILL.md)"
     }
   ],
   "reports": [],
-  "updated": "2026-11-18"
+  "updated": "2026-11-18",
+  "content_hash": "sha256:51b7349e77ec63b7744a6f63647e7566a0b4d2e301121cc10e8c2113af6556a2",
+  "hash_checked_at": "2026-11-18",
+  "hash_source_url": "https://raw.githubusercontent.com/anthropics/skills/main/skills/webapp-testing/SKILL.md"
 }

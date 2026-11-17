@@ -1,0 +1,59 @@
+{
+  "id": "anthropics/skills/brand-guidelines",
+  "name": "brand-guidelines",
+  "source": "skillsmp",
+  "url": "https://github.com/anthropics/skills/tree/main/skills/brand-guidelines",
+  "description": "Applies Anthropic's official brand colors and typography to any sort of artifact that may benefit from having Anthropic's look-and-feel. Use it when brand colors or style guidelines, visual formatting, or company design standards apply.",
+  "best_for": [],
+  "popularity": {
+    "stars": 193219,
+    "installs": null,
+    "checked_at": "2026-11-18"
+  },
+  "static": {
+    "trigger": 4,
+    "structure": 5,
+    "actionability": 3,
+    "safety": 5,
+    "portability": 5,
+    "notes": [
+      "trigger 4 (override down from lint 5): concise, third-person, front-loaded what+when ('Use it when brand colors or style guidelines, visual formatting, or company design standards apply') but no boundary clause at all, and 'any sort of artifact that may benefit' is broad enough to over-trigger on generic styling asks.",
+      "structure 5: 69 lines, single-file appropriate, no bloat, no rotting dates; the '**Keywords**: branding, corporate identity, visual identity...' line is mild keyword stuffing but harmless.",
+      "actionability 3 (agree with lint): directly usable palette/typography reference (hex codes like 'Dark: `#141413`', heading/body font mapping with fallbacks) but zero numbered workflow, no verify loop, no anti-patterns, no error handling, and a soft dependency named without install/check guidance ('Applied via python-pptx's RGBColor class').",
+      "safety 5: static style reference — no network calls, no shell, no secrets.",
+      "portability 5: font fallbacks keep it environment-agnostic ('Automatically falls back to Arial/Georgia if custom fonts unavailable'), standard frontmatter, no paths."
+    ],
+    "safety_flags": [],
+    "evaluator": "session-agentA-2026-11-18",
+    "evaluated_at": "2026-11-18"
+  },
+  "field": {
+    "effectiveness": 0,
+    "efficiency": 0,
+    "reliability": 0,
+    "n_reports": 0
+  },
+  "conflict_events": [],
+  "final": 88,
+  "confidence": 0.3,
+  "history": [
+    {
+      "at": "2026-11-18",
+      "event": "seed",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "note": "imported from skillsmp catalog — pending static evaluation"
+    },
+    {
+      "at": "2026-11-18",
+      "event": "static-eval",
+      "final": 88,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "note": "by session-agentA-2026-11-18"
+    }
+  ],
+  "reports": [],
+  "updated": "2026-11-18"
+}

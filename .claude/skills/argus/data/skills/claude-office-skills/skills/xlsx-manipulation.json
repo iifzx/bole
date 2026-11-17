@@ -1,0 +1,59 @@
+{
+  "id": "claude-office-skills/skills/xlsx-manipulation",
+  "name": "xlsx-manipulation",
+  "source": "skills.sh",
+  "url": "https://skills.sh/claude-office-skills/skills/xlsx-manipulation",
+  "description": "",
+  "best_for": [],
+  "popularity": {
+    "stars": null,
+    "installs": 6900,
+    "checked_at": "2026-11-18"
+  },
+  "static": {
+    "trigger": 2,
+    "structure": 3,
+    "actionability": 3,
+    "safety": 5,
+    "portability": 2,
+    "notes": [
+      "trigger: what-only 79-char description with no WHEN or boundary clause — 'Create, edit, and manipulate Excel spreadsheets programmatically using openpyxl'; will over-trigger on any spreadsheet ask.",
+      "structure: body 445 lines under the 500 limit but a monolithic API cheat-sheet with no references/ split — lint: '445 lines with no split into references/'; non-standard comment banner inside frontmatter ('# CLAUDE OFFICE SKILL - Enhanced Metadata v2.0').",
+      "actionability: 34 code blocks plus Common Patterns and a '## Limitations' list, but no verify loop or error handling and dep is declared ('pip install openpyxl') without any install check; lint's dep_check/anti_patterns warns are partially false (Limitations = anti-patterns list).",
+      "safety: fully local openpyxl usage — no network calls, no secrets, no dangerous shell patterns anywhere in the body.",
+      "portability: 10 unknown frontmatter keys (version/author/category/tags/department/models/mcp/capabilities/languages) including a bogus MCP claim 'mcp: server: office-mcp' and rot-prone 'models: recommended: - claude-sonnet-4'; body itself is portable."
+    ],
+    "safety_flags": [],
+    "evaluator": "session-agentC-2026-11-18",
+    "evaluated_at": "2026-11-18"
+  },
+  "field": {
+    "effectiveness": 0,
+    "efficiency": 0,
+    "reliability": 0,
+    "n_reports": 0
+  },
+  "conflict_events": [],
+  "final": 60,
+  "confidence": 0.3,
+  "history": [
+    {
+      "at": "2026-11-18",
+      "event": "seed",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "note": "imported from skills.sh catalog — pending static evaluation"
+    },
+    {
+      "at": "2026-11-18",
+      "event": "static-eval",
+      "final": 60,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "note": "by session-agentC-2026-11-18"
+    }
+  ],
+  "reports": [],
+  "updated": "2026-11-18"
+}

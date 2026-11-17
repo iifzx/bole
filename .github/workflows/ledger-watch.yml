@@ -1,0 +1,90 @@
+name: ledger-watch
+
+# Weekly drift watcher.
+#
+# 1. Re-validate the whole ledger (`validate-all` + `build-index --check`).
+# 2. Run the repo-provided drift watcher and capture its stdout.
+# 3. If drift was found, create or update a "Ledger drift report" issue.
+#
+# NOTE: `argus/scripts/watch.js` is provided by the repo itself — this workflow
+# only runs it and files the report. A missing or failing script must not kill
+# the job, hence the `|| exit_code=$?` guard below (an empty report is treated
+# as "no drift" rather than filed as an empty issue).
+
+on:
+  schedule:
+    - cron: "0 3 * * 1" # Mondays 03:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the ledger
+        uses: actions/checkout@v4
+
+      - name: Set up Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Validate ledger data
+        run: |
+          node argus/scripts/ledger.js validate-all
+          node argus/scripts/ledger.js build-index --check
+
+      - name: Run drift watcher
+        id: watch
+        run: |
+          exit_code=0
+          node argus/scripts/watch.js > watch-report.md || exit_code=$?
+          if [ "$exit_code" -ne 0 ]; then
+            echo "watch.js exited with code $exit_code (non-fatal)" >&2
+          fi
+          drift=true
+          if [ ! -s watch-report.md ]; then drift=false; fi
+          if grep -qx "NO-DRIFT" watch-report.md 2>/dev/null; then drift=false; fi
+          echo "exit_code=$exit_code" >> "$GITHUB_OUTPUT"
+          echo "drift=$drift" >> "$GITHUB_OUTPUT"
+
+      - name: Create or update the drift report issue
+        if: steps.watch.outputs.drift == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require("fs");
+            const title = "Ledger drift report";
+            const report = fs.readFileSync("watch-report.md", "utf8").trim();
+            const date = new Date().toISOString().slice(0, 10);
+            const exitCode = "${{ steps.watch.outputs.exit_code }}";
+            const section = "## " + date + " (watch.js exit code: " + exitCode + ")\n\n" + report + "\n";
+
+            const { data: openIssues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: "open",
+              per_page: 100
+            });
+            const existing = openIssues.filter((i) => i.pull_request === undefined && i.title === title)[0];
+
+            if (existing) {
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: existing.number,
+                body: (existing.body ? existing.body + "\n\n---\n\n" : "") + section
+              });
+              core.notice("Updated drift report issue #" + existing.number);
+            } else {
+              const { data: created } = await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: title,
+                body: section
+              });
+              core.notice("Created drift report issue #" + created.number);
+            }

@@ -49,7 +49,14 @@ data/
     "safety": 5,
     "portability": 5,
     "notes": ["short evidence-backed remarks, one per noteworthy dimension"],
-    "safety_flags": [],
+    "safety_flags": [
+      {
+        "severity": "medium",
+        "finding": "declared-third-party-egress",
+        "detail": "--ocr hosted uploads scanned pages to firecrawl.dev",
+        "quote": "npx -y @firecrawl/anydoc"
+      }
+    ],
     "evaluator": "seed-static",
     "evaluated_at": "2026-11-18"
   },
@@ -60,6 +67,11 @@ data/
     "n_reports": 2
   },
   "conflict_events": [],
+  "content_hash": "sha256:3f7a…",
+  "hash_checked_at": "2026-11-18",
+  "trigger_eval": { "rate": 0.85, "n_queries": 20, "ran_at": "2026-11-18" },
+  "duplicate_of": null,
+  "stale": false,
   "final": 88,
   "confidence": 0.5,
   "history": [
@@ -86,8 +98,11 @@ Field rules:
 | `best_for` | string[] | 2–8 lowercase keywords; the index is grepped on these |
 | `popularity` | object | optional; **display metadata only — never an input to any score** |
 | `static.*` | int 1–5 | the five rubric dimensions (see `rubric.md`); `null` until first static evaluation |
-| `static.safety_flags` | string[] | non-empty ⇒ red-line alert, see §6 |
+| `static.safety_flags` | object[] | `{severity: info\|low\|medium\|high\|critical, finding: kebab-id, detail, quote?}`; any **high/critical** flag ⇒ red line (§6) |
 | `static.evaluator` | string | provenance: `seed-static`, `mechanical-lint` (then judgment must review it), `session-2026-11-18T14-05-00Z`, … |
+| `content_hash` | string | `sha256:<64hex>` of the SKILL.md **at evaluation time** (BOM strip + CRLF→LF, same spec as `watch.js`); pins the score to the exact content judged |
+| `trigger_eval` | object | optional; `{rate 0-1, n_queries, ran_at}` from `lint.js eval run` — real numbers behind the trigger dimension |
+| `duplicate_of` | string | set automatically when a registered `content_hash` matches another record (fork/copy detection) |
 | `field.*` | number 1–5 | means over reports, 2 decimals; `0` when `n_reports` is 0 |
 | `conflict_events` | string[] | `reported_at` stamps of reports whose effectiveness clashed with the pre-existing aggregate (§5); persists the penalty so it is reproducible |
 | `final` | int 0–100 | derived, see §4 |
@@ -163,29 +178,40 @@ disagreement: if n_reports ≥ 2 and population stddev of per-report
 conflict:    on add, a report whose effectiveness differs from the
              pre-existing aggregate by ≥ 2 is recorded in `conflict_events`;
              every such event  →  confidence ×= 0.85
+drift:       upstream SKILL.md changed since evaluation (`stale: true`, set
+             by `ledger.js mark-stale` after `watch.js` detects drift)
+              →  confidence ×= 0.50 until re-evaluation re-pins the hash
 staleness:   `recompute` only — if updated is > 180 days old
               →  confidence ×= 0.90
 field-only:  if static = null, cap confidence at 0.70
 ```
 
 Confidence is a **pure function of the stored data** (static, reports,
-`conflict_events`, dates) — `validate-all` recomputes it and rejects any
-drift. Nothing about the score is remembered outside the record.
+`conflict_events`, `stale`, dates) — `validate-all` recomputes it and rejects
+any drift. Nothing about the score is remembered outside the record.
 
 Interpretation: `< 0.4` provisional — re-verify on the spot before trusting;
 `0.4–0.7` usable with caveats; `> 0.7` battle-tested.
 
 ## 6. Safety red lines (overrides everything)
 
-If the static evaluation finds any red-line pattern from `rubric.md §D-0`
-(prompt injection, data exfiltration, obfuscated/destructive commands, or
-an install-time script doing more than declared):
+Safety findings carry **severity** — `info / low / medium / high / critical`
+(borrowed from cisco-ai-defense/skill-scanner). Red-line patterns to look
+for are listed in `rubric.md §D-0` (prompt injection, data exfiltration,
+obfuscated/destructive commands, install-time overreach, credential access).
 
-1. `static.safety ≤ 2`, `safety_flags` lists the concrete findings
-2. `final` is capped at `40` regardless of other dimensions
-3. The skill must not be recommended silently — surface the flag, warn the
-   user, and suggest a deeper scan with
+1. Any **high/critical** flag ⇒ red line: `final` capped at `40`; the skill
+   must not be recommended silently — surface the finding, warn the user,
+   and suggest a deeper scan with
    [cisco-ai-defense/skill-scanner](https://github.com/cisco-ai-defense/skill-scanner)
+2. **Safety-judgment consensus**: before settling `safety ≤ 3`, run 2–3
+   independent judging passes and require majority agreement (borrowed from
+   the scanner's LLM-consensus mode)
+3. info/low/medium flags are recorded for transparency and do **not** cap
+
+Rules-only static analysis is provably weak (the scanner measures 7.7% HIGH
+recall without its LLM judge) — deep suspicious content should be delegated
+to it, not re-guessed here.
 
 ## 7. Provenance & honesty
 

@@ -52,8 +52,19 @@
       "confidence": 0.3,
       "n_reports": 0,
       "note": "by session-agentA-2026-11-18"
+    },
+    {
+      "at": "2026-11-18",
+      "event": "hash-pin",
+      "final": 88,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "note": "content hash pinned from live upstream (anthropics/skills/main/skills/brand-guidelines/SKILL.md)"
     }
   ],
   "reports": [],
-  "updated": "2026-11-18"
+  "updated": "2026-11-18",
+  "content_hash": "sha256:1120b3769e2985cefb3d25be981b1f914abeba57ae079b83c20c666c164fa9fe",
+  "hash_checked_at": "2026-11-18",
+  "hash_source_url": "https://raw.githubusercontent.com/anthropics/skills/main/skills/brand-guidelines/SKILL.md"
 }

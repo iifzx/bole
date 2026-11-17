@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-11-18T02:21:55",
+  "generated_at": "2026-11-18T02:45:40",
   "count": 18,
   "skills": [
     {
@@ -10,7 +10,9 @@
       "confidence": 0.3,
       "n_reports": 0,
       "best_for": [],
-      "updated": "2026-11-18"
+      "updated": "2026-11-18",
+      "stale": false,
+      "duplicate_of": null
     },
     {
       "id": "affaan-m/ecc/nutrient-document-processing",
@@ -19,7 +21,9 @@
       "confidence": 0.3,
       "n_reports": 0,
       "best_for": [],
-      "updated": "2026-11-18"
+      "updated": "2026-11-18",
+      "stale": false,
+      "duplicate_of": null
     },
     {
       "id": "anthropics/skills/academy-guide",
@@ -28,7 +32,9 @@
       "confidence": 0.3,
       "n_reports": 0,
       "best_for": [],
-      "updated": "2026-11-18"
+      "updated": "2026-11-18",
+      "stale": false,
+      "duplicate_of": null
     },
     {
       "id": "anthropics/skills/algorithmic-art",
@@ -37,7 +43,9 @@
       "confidence": 0.3,
       "n_reports": 0,
       "best_for": [],
-      "updated": "2026-11-18"
+      "updated": "2026-11-18",
+      "stale": false,
+      "duplicate_of": null
     },
     {
       "id": "anthropics/skills/brand-guidelines",
@@ -46,7 +54,9 @@
       "confidence": 0.3,
       "n_reports": 0,
       "best_for": [],
-      "updated": "2026-11-18"
+      "updated": "2026-11-18",
+      "stale": false,
+      "duplicate_of": null
     },
     {
       "id": "anthropics/skills/canvas-design",
@@ -55,7 +65,9 @@
       "confidence": 0.3,
       "n_reports": 0,
       "best_for": [],
-      "updated": "2026-11-18"
+      "updated": "2026-11-18",
+      "stale": false,
+      "duplicate_of": null
     },
     {
       "id": "anthropics/skills/claude-api",
@@ -64,7 +76,9 @@
       "confidence": 0.3,
       "n_reports": 0,
       "best_for": [],
-      "updated": "2026-11-18"
+      "updated": "2026-11-18",
+      "stale": false,
+      "duplicate_of": null
     },
     {
       "id": "anthropics/skills/docx",
@@ -79,7 +93,9 @@
         "track-changes",
         "office"
       ],
-      "updated": "2026-11-18"
+      "updated": "2026-11-18",
+      "stale": false,
+      "duplicate_of": null
     },
     {
       "id": "anthropics/skills/pdf",
@@ -95,7 +111,9 @@
         "table-extraction",
         "document-processing"
       ],
-      "updated": "2026-11-18"
+      "updated": "2026-11-18",
+      "stale": false,
+      "duplicate_of": null
     },
     {
       "id": "anthropics/skills/pptx",
@@ -110,7 +128,9 @@
         "powerpoint",
         "deck"
       ],
-      "updated": "2026-11-18"
+      "updated": "2026-11-18",
+      "stale": false,
+      "duplicate_of": null
     },
     {
       "id": "anthropics/skills/webapp-testing",
@@ -119,7 +139,9 @@
       "confidence": 0.3,
       "n_reports": 0,
       "best_for": [],
-      "updated": "2026-11-18"
+      "updated": "2026-11-18",
+      "stale": false,
+      "duplicate_of": null
     },
     {
       "id": "anthropics/skills/xlsx",
@@ -128,7 +150,9 @@
       "confidence": 0.3,
       "n_reports": 0,
       "best_for": [],
-      "updated": "2026-11-18"
+      "updated": "2026-11-18",
+      "stale": false,
+      "duplicate_of": null
     },
     {
       "id": "antibrow/anti-detect-browser-skills/anti-detect-browser",
@@ -137,7 +161,9 @@
       "confidence": 0.3,
       "n_reports": 0,
       "best_for": [],
-      "updated": "2026-11-18"
+      "updated": "2026-11-18",
+      "stale": false,
+      "duplicate_of": null
     },
     {
       "id": "claude-office-skills/skills/xlsx-manipulation",
@@ -146,7 +172,9 @@
       "confidence": 0.3,
       "n_reports": 0,
       "best_for": [],
-      "updated": "2026-11-18"
+      "updated": "2026-11-18",
+      "stale": false,
+      "duplicate_of": null
     },
     {
       "id": "firecrawl/anydoc/convert-documents-to-markdown",
@@ -155,7 +183,9 @@
       "confidence": 0.3,
       "n_reports": 0,
       "best_for": [],
-      "updated": "2026-11-18"
+      "updated": "2026-11-18",
+      "stale": false,
+      "duplicate_of": null
     },
     {
       "id": "magentosh/superpowers/agent-browser",
@@ -164,7 +194,9 @@
       "confidence": 0.3,
       "n_reports": 0,
       "best_for": [],
-      "updated": "2026-11-18"
+      "updated": "2026-11-18",
+      "stale": false,
+      "duplicate_of": "101-skills/superpowers/agent-browser"
     },
     {
       "id": "microsoft/playwright-cli/playwright-cli",
@@ -173,16 +205,20 @@
       "confidence": 0.3,
       "n_reports": 0,
       "best_for": [],
-      "updated": "2026-11-18"
+      "updated": "2026-11-18",
+      "stale": false,
+      "duplicate_of": null
     },
     {
       "id": "wecomteam/wecom-cli/wecomcli-sheet",
       "name": "wecomcli-sheet",
       "final": 96,
-      "confidence": 0.3,
+      "confidence": 0.15,
       "n_reports": 0,
       "best_for": [],
-      "updated": "2026-11-18"
+      "updated": "2026-11-18",
+      "stale": true,
+      "duplicate_of": null
     }
   ]
 }

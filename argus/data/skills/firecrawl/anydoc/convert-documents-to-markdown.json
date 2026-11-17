@@ -24,9 +24,24 @@
       "portability: standard frontmatter (name/description/license/metadata.author), Node 20+ requirement, no absolute or platform-locked paths"
     ],
     "safety_flags": [
-      "secret_proximity: reviewed false positive — --api-key/FIRECRAWL_API_KEY are parameter names, no hardcoded secret",
-      "declared-third-party-egress: --ocr hosted uploads scanned pages to firecrawl.dev; declared in-text and opt-in but the skill never instructs the agent to ask the user before sending document contents",
-      "unpinned-npx: 'npx -y @firecrawl/anydoc' executes the latest npm package at runtime with no version pin"
+      {
+        "severity": "low",
+        "finding": "secret-proximity-reviewed-false-positive",
+        "detail": "secret_proximity: reviewed false positive — --api-key/FIRECRAWL_API_KEY are parameter names, no hardcoded secret",
+        "quote": ""
+      },
+      {
+        "severity": "medium",
+        "finding": "declared-third-party-egress-ocr",
+        "detail": "declared-third-party-egress: --ocr hosted uploads scanned pages to firecrawl.dev; declared in-text and opt-in but the skill never instructs the agent to ask the user before sending document contents",
+        "quote": ""
+      },
+      {
+        "severity": "medium",
+        "finding": "unpinned-npx-npx-y-firecrawl",
+        "detail": "unpinned-npx: 'npx -y @firecrawl/anydoc' executes the latest npm package at runtime with no version pin",
+        "quote": ""
+      }
     ],
     "evaluator": "session-agentB-2026-11-18",
     "evaluated_at": "2026-11-18"
@@ -56,8 +71,19 @@
       "confidence": 0.3,
       "n_reports": 0,
       "note": "by session-agentB-2026-11-18 (flags: secret_proximity: reviewed false positive — --api-key/FIRECRAWL_API_KEY are parameter names, no hardcoded secret; declared-third-party-egress: --ocr hosted uploads scanned pages to firecrawl.dev; declared in-text and opt-in but the skill never instructs the agent to ask the user before sending document contents; unpinned-npx: 'npx -y @firecrawl/anydoc' executes the latest npm package at runtime with no version pin)"
+    },
+    {
+      "at": "2026-11-18",
+      "event": "hash-pin",
+      "final": 92,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "note": "content hash pinned from live upstream (firecrawl/anydoc/main/skills/convert-documents-to-markdown/SKILL.md)"
     }
   ],
   "reports": [],
-  "updated": "2026-11-18"
+  "updated": "2026-11-18",
+  "content_hash": "sha256:04cc0f3587ec792c83e4af942f88594205f360cddd540a3d869e28c58292bc6a",
+  "hash_checked_at": "2026-11-18",
+  "hash_source_url": "https://raw.githubusercontent.com/firecrawl/anydoc/main/skills/convert-documents-to-markdown/SKILL.md"
 }

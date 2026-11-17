@@ -1,0 +1,188 @@
+{
+  "version": 1,
+  "generated_at": "2026-11-18T02:21:55",
+  "count": 18,
+  "skills": [
+    {
+      "id": "101-skills/superpowers/agent-browser",
+      "name": "agent-browser",
+      "final": 80,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-18"
+    },
+    {
+      "id": "affaan-m/ecc/nutrient-document-processing",
+      "name": "nutrient-document-processing",
+      "final": 88,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-18"
+    },
+    {
+      "id": "anthropics/skills/academy-guide",
+      "name": "academy-guide",
+      "final": 100,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-18"
+    },
+    {
+      "id": "anthropics/skills/algorithmic-art",
+      "name": "algorithmic-art",
+      "final": 88,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-18"
+    },
+    {
+      "id": "anthropics/skills/brand-guidelines",
+      "name": "brand-guidelines",
+      "final": 88,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-18"
+    },
+    {
+      "id": "anthropics/skills/canvas-design",
+      "name": "canvas-design",
+      "final": 92,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-18"
+    },
+    {
+      "id": "anthropics/skills/claude-api",
+      "name": "claude-api",
+      "final": 92,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-18"
+    },
+    {
+      "id": "anthropics/skills/docx",
+      "name": "docx",
+      "final": 92,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "best_for": [
+        "docx",
+        "word",
+        "document-creation",
+        "track-changes",
+        "office"
+      ],
+      "updated": "2026-11-18"
+    },
+    {
+      "id": "anthropics/skills/pdf",
+      "name": "pdf",
+      "final": 88,
+      "confidence": 0.5,
+      "n_reports": 2,
+      "best_for": [
+        "pdf",
+        "merge",
+        "split",
+        "forms",
+        "table-extraction",
+        "document-processing"
+      ],
+      "updated": "2026-11-18"
+    },
+    {
+      "id": "anthropics/skills/pptx",
+      "name": "pptx",
+      "final": 92,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "best_for": [
+        "pptx",
+        "slides",
+        "presentation",
+        "powerpoint",
+        "deck"
+      ],
+      "updated": "2026-11-18"
+    },
+    {
+      "id": "anthropics/skills/webapp-testing",
+      "name": "webapp-testing",
+      "final": 92,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-18"
+    },
+    {
+      "id": "anthropics/skills/xlsx",
+      "name": "xlsx",
+      "final": 100,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-18"
+    },
+    {
+      "id": "antibrow/anti-detect-browser-skills/anti-detect-browser",
+      "name": "anti-detect-browser",
+      "final": 80,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-18"
+    },
+    {
+      "id": "claude-office-skills/skills/xlsx-manipulation",
+      "name": "xlsx-manipulation",
+      "final": 60,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-18"
+    },
+    {
+      "id": "firecrawl/anydoc/convert-documents-to-markdown",
+      "name": "convert-documents-to-markdown",
+      "final": 92,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-18"
+    },
+    {
+      "id": "magentosh/superpowers/agent-browser",
+      "name": "agent-browser",
+      "final": 80,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-18"
+    },
+    {
+      "id": "microsoft/playwright-cli/playwright-cli",
+      "name": "playwright-cli",
+      "final": 84,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-18"
+    },
+    {
+      "id": "wecomteam/wecom-cli/wecomcli-sheet",
+      "name": "wecomcli-sheet",
+      "final": 96,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-18"
+    }
+  ]
+}

@@ -1,0 +1,243 @@
+name: report-intake
+
+# Turns an issue labeled `field-report` (submitted via the issue form) into a
+# ledger update PR:
+#
+#   parse issue form -> field-report.json -> `node argus/scripts/ledger.js add`
+#   -> PR against main -> comment the PR link back on the issue.
+#
+# Validation failures (bad form data or a ledger rejection) fail the job and
+# leave a friendly comment on the issue; fixing the fields and re-applying the
+# label re-runs the intake.
+
+on:
+  issues:
+    types: [labeled]
+
+permissions:
+  contents: write       # push the intake branch
+  issues: write         # comment on the report issue
+  pull-requests: write  # open the ledger update PR
+
+concurrency:
+  group: report-intake-${{ github.event.issue.number }}
+  cancel-in-progress: false
+
+jobs:
+  intake:
+    if: github.event.label.name == 'field-report'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the ledger
+        uses: actions/checkout@v4
+
+      - name: Set up Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Parse issue form into a field report
+        id: parse
+        uses: actions/github-script@v7
+        env:
+          REPORT_FILE: field-report.json
+        with:
+          script: |
+            const fs = require("fs");
+            const pad = (n) => String(n).padStart(2, "0");
+            const norm = (s) => s.trim().toLowerCase().replace(/\s*\(optional\)\s*$/i, "").trim();
+
+            // Issue forms render the body as "### <label>" sections. Textarea
+            // values that contain blank lines are wrapped in a ``` fence by GitHub.
+            function splitSections(body) {
+              const sections = [];
+              let current = null;
+              let inFence = false;
+              for (const line of body.split(/\r?\n/)) {
+                if (/^```\s*$/.test(line)) inFence = !inFence;
+                if (!inFence && /^### /.test(line)) {
+                  current = { label: line.slice(4).trim(), lines: [] };
+                  sections.push(current);
+                  continue;
+                }
+                if (current) current.lines.push(line);
+              }
+              const out = {};
+              for (const s of sections) {
+                let value = s.lines.join("\n").trim();
+                const fenced = value.match(/^```[^\n]*\n([\s\S]*)\n```$/);
+                if (fenced) value = fenced[1].trim();
+                out[norm(s.label)] = value;
+              }
+              return out;
+            }
+
+            const sections = splitSections(context.payload.issue.body || "");
+            const get = (label) => sections[norm(label)] || "";
+            const reject = (msg) => {
+              core.setOutput("ok", "false");
+              core.setOutput("error", msg);
+            };
+
+            // --- skill id
+            const skillId = get("Skill id").replace(/[`*]/g, "").trim();
+            if (!/^[a-zA-Z0-9][a-zA-Z0-9._-]*(\/[a-zA-Z0-9][a-zA-Z0-9._-]*)+$/.test(skillId)) {
+              return reject('"Skill id" must look like <owner>/<repo>/<skill> (e.g. anthropics/skills/pdf); got "' + (skillId || "(empty)") + '".');
+            }
+
+            // --- task
+            const task = get("What did you attempt?").trim();
+            if (!task) {
+              return reject('"What did you attempt?" is empty — describe the concrete task you used the skill for.');
+            }
+            if (task.length > 500) {
+              return reject('"What did you attempt?" is over 500 characters — the ledger enforces this limit. Please shorten it.');
+            }
+
+            // --- verdict
+            const verdict = get("Verdict").trim().toLowerCase();
+            if (!["worked", "partial", "failed"].includes(verdict)) {
+              return reject('Verdict must be one of: worked, partial, failed; got "' + (verdict || "(empty)") + '".');
+            }
+
+            // --- scores (rendered as strings "1".."5" by the dropdowns)
+            const score = (label) => {
+              const raw = get(label);
+              const n = Number.parseInt(raw, 10);
+              if (!Number.isInteger(n) || n < 1 || n > 5) {
+                reject('"' + label + '" must be a whole number 1-5; got "' + (raw || "(empty)") + '".');
+                return null;
+              }
+              return n;
+            };
+            const effectiveness = score("Effectiveness");
+            if (effectiveness === null) return;
+            const efficiency = score("Efficiency");
+            if (efficiency === null) return;
+            const reliability = score("Reliability");
+            if (reliability === null) return;
+
+            // --- evidence (ledger rejects < 10 chars; the form promises ~30, enforce the promise)
+            const evidence = get("Evidence").trim();
+            if (evidence.length < 30) {
+              return reject("Evidence is too short (minimum ~30 characters). Concrete facts only: what you ran, what happened, errors seen, time/token cost. Vague praise is rejected.");
+            }
+
+            // --- environment (optional): "agent: X, os: Y" -> {agent, os}; anything else is omitted
+            const envRaw = get("Environment");
+            const environment = {};
+            const agent = envRaw.match(/\bagent:\s*([^,]+)/i);
+            const os = envRaw.match(/\bos:\s*([^,]+)/i);
+            if (agent) environment.agent = agent[1].trim();
+            if (os) environment.os = os[1].trim();
+
+            // --- reporter (optional)
+            const reporter = get("Reporter").trim() || "anonymous";
+
+            // --- reported_at: UTC now as YYYY-MM-DDTHH-mm-ss (ledger filename/stamp format)
+            const now = new Date();
+            const reportedAt =
+              now.getUTCFullYear() + "-" + pad(now.getUTCMonth() + 1) + "-" + pad(now.getUTCDate()) +
+              "T" + pad(now.getUTCHours()) + "-" + pad(now.getUTCMinutes()) + "-" + pad(now.getUTCSeconds());
+
+            const report = {
+              id: skillId,
+              reported_at: reportedAt,
+              task: task,
+              verdict: verdict,
+              scores: { effectiveness: effectiveness, efficiency: efficiency, reliability: reliability },
+              evidence: evidence,
+              ...(Object.keys(environment).length ? { environment: environment } : {}),
+              reporter: reporter,
+            };
+
+            fs.writeFileSync(process.env.REPORT_FILE, JSON.stringify(report, null, 2) + "\n");
+            core.setOutput("ok", "true");
+            core.setOutput("skill_id", skillId);
+            core.setOutput("reported_at", reportedAt);
+
+      - name: Stop if the form could not be parsed
+        id: gate
+        if: steps.parse.outputs.ok == 'false'
+        run: |
+          echo "::error::Field report failed pre-validation — see the comment on the issue"
+          exit 1
+
+      - name: Merge the field report into the ledger
+        id: add
+        if: steps.parse.outputs.ok == 'true'
+        run: |
+          node argus/scripts/ledger.js add field-report.json 2>ledger-add-error.log || { cat ledger-add-error.log >&2; exit 1; }
+          rm -f ledger-add-error.log
+
+      - name: Comment a friendly error on the issue
+        if: failure() && (steps.parse.outputs.ok == 'false' || steps.add.conclusion == 'failure')
+        uses: actions/github-script@v7
+        env:
+          PARSE_ERROR: ${{ steps.parse.outputs.error }}
+        with:
+          script: |
+            const fs = require("fs");
+            let detail = (process.env.PARSE_ERROR || "").trim();
+            if (!detail) {
+              try { detail = fs.readFileSync("ledger-add-error.log", "utf8").trim(); } catch (e) { /* no log captured */ }
+            }
+            if (!detail) detail = "The ledger rejected the report — see the workflow run logs for details.";
+            const body = [
+              "Thanks for the field report — the ledger could not accept it yet.",
+              "",
+              "```",
+              detail.split("\n").slice(0, 15).join("\n"),
+              "```",
+              "",
+              "Checklist: a skill id like `owner/repo/skill`, whole-number scores 1-5, and concrete evidence (minimum ~30 characters — vague praise is rejected).",
+              "",
+              "To fix: edit the issue fields above, then remove and re-add the `field-report` label — the intake will re-run automatically."
+            ].join("\n");
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: body
+            });
+
+      - name: Create the ledger update PR
+        id: cpr
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          base: main
+          branch: ledger/intake-${{ github.event.issue.number }}
+          delete-branch: true
+          commit-message: "ledger: field report from #${{ github.event.issue.number }}"
+          title: "Ledger update: field report for ${{ steps.parse.outputs.skill_id }} (#${{ github.event.issue.number }})"
+          body: |
+            ## Ledger update — field report intake
+
+            Merges the field report submitted in #${{ github.event.issue.number }} into the 相马经 ledger:
+
+            - Skill: `${{ steps.parse.outputs.skill_id }}`
+            - New evidence file under `argus/data/reports/`, plus the recomputed record and `index.json`
+
+            Merging this PR recomputes `final` and `confidence` for the skill.
+            Scores are evidence-backed and star-free.
+
+            Closes #${{ github.event.issue.number }}
+
+      - name: Comment on the issue with the PR link
+        if: steps.cpr.outputs.pull-request-number != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prNumber = "${{ steps.cpr.outputs.pull-request-number }}";
+            const prUrl = "${{ steps.cpr.outputs.pull-request-url }}";
+            const body =
+              "Field report validated and merged into ledger update PR #" + prNumber + " — " + prUrl + "\n\n" +
+              "Merging it will recompute `final` and `confidence` for `" + "${{ steps.parse.outputs.skill_id }}" + "`. " +
+              "Thanks for feeding the 相马经!";
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: body
+            });

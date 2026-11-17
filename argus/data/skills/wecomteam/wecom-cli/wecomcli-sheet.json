@@ -35,7 +35,7 @@
   },
   "conflict_events": [],
   "final": 96,
-  "confidence": 0.3,
+  "confidence": 0.15,
   "history": [
     {
       "at": "2026-11-18",
@@ -52,8 +52,29 @@
       "confidence": 0.3,
       "n_reports": 0,
       "note": "by session-agentB-2026-11-18"
+    },
+    {
+      "at": "2026-11-18",
+      "event": "hash-pin",
+      "final": 96,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "note": "content hash pinned from live upstream (wecomteam/wecom-cli/main/skills/wecomcli-sheet/SKILL.md)"
+    },
+    {
+      "at": "2026-11-18",
+      "event": "score-stale",
+      "final": 96,
+      "confidence": 0.15,
+      "n_reports": 0,
+      "note": "upstream changed (was sha256:d7d91fed671…, now sha256:00590381b58…) — confidence halved pending re-evaluation"
     }
   ],
   "reports": [],
-  "updated": "2026-11-18"
+  "updated": "2026-11-18",
+  "content_hash": "sha256:d7d91fed671ed6df7da9c2bc1e0cc27404cc42920e8ad558175a5ed8d94bb636",
+  "hash_checked_at": "2026-11-18",
+  "hash_source_url": "https://raw.githubusercontent.com/wecomteam/wecom-cli/main/skills/wecomcli-sheet/SKILL.md",
+  "stale": true,
+  "stale_hash": "sha256:00590381b58f30a9ea617bce5f2b47a010d35b84b8502a64b271354f348a49ed"
 }

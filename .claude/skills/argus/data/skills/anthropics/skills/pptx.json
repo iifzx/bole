@@ -1,0 +1,57 @@
+{
+  "id": "anthropics/skills/pptx",
+  "name": "pptx",
+  "source": "github",
+  "url": "https://github.com/anthropics/skills",
+  "description": "Presentation toolkit: create new decks, read and edit existing ones, extract text and speaker notes, and restyle slides.",
+  "best_for": [
+    "pptx",
+    "slides",
+    "presentation",
+    "powerpoint",
+    "deck"
+  ],
+  "popularity": {
+    "stars": null,
+    "installs": null,
+    "checked_at": "2026-11-18"
+  },
+  "static": {
+    "trigger": 5,
+    "structure": 4,
+    "actionability": 5,
+    "safety": 5,
+    "portability": 4,
+    "notes": [
+      "trigger: explicit what + when with strong deck/slide keyword coverage",
+      "structure: good reference split; some guidance assumes reading multiple files in sequence",
+      "actionability: step-by-step create/edit/restyle workflows with concrete tool invocations",
+      "safety: clean; no undeclared network or destructive patterns",
+      "portability: depends on specific layout tooling being present, hence 4"
+    ],
+    "safety_flags": [],
+    "evaluator": "seed-static",
+    "evaluated_at": "2026-11-18"
+  },
+  "field": {
+    "effectiveness": 0,
+    "efficiency": 0,
+    "reliability": 0,
+    "n_reports": 0
+  },
+  "final": 92,
+  "confidence": 0.3,
+  "history": [
+    {
+      "at": "2026-11-18",
+      "event": "seed",
+      "final": 92,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "note": "illustrative seed entry: static rubric reading of SKILL.md, provisional until field reports arrive"
+    }
+  ],
+  "reports": [],
+  "updated": "2026-11-18",
+  "conflict_events": []
+}
