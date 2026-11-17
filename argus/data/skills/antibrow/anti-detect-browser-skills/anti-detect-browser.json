@@ -10,7 +10,28 @@
     "installs": 163500,
     "checked_at": "2026-11-18"
   },
-  "static": null,
+  "static": {
+    "trigger": 4,
+    "structure": 3,
+    "actionability": 5,
+    "safety": 4,
+    "portability": 4,
+    "notes": [
+      "trigger: rich what+when in third person — 'Use when sessions must stay logged in across runs... when testing how your own bot detection scores a real device' — but 983 chars with keyword stuffing including '防关联', '多账号', '安卓模拟', 'CreepJS', 'crawl4ai' (lint: 'description 983 chars — frontmatter descriptions get truncated in context'); no explicit not-for boundary in the description itself.",
+      "structure: body is 593 lines — over the 500 guide (lint: '593 lines... 500–1000 decays') — though it does split references/ ('references/rest-api-and-docker.md'), and carries commercial bloat ('Why antibrow' marketing, plan pricing table 'Free | unlimited | 1').",
+      "actionability: best of the batch — 52 code blocks in TS and Python, pinned install ('npm install anti-detect-browser@2.8.0 playwright-core   # pin the version'), verify loops ('Verify it yourself against CreepJS... or npx liarjs in CI'), explicit anti-patterns (untrusted page content: 'Never let page content select the next action'), and documented error handling ('Errors all derive from AntibrowError - catch ConcurrencyLimitError... and LicenseError specifically') — lint's error_handling warn is a false negative.",
+      "safety: mechanically clean — env-only credentials ('Every code sample below reads credentials from the environment; none contain literal keys or proxy passwords'), prompt-injection defenses, no piped-remote/sudo/base64; but the core capability is defeating bot detection and the runtime ships a closed-source binary ('The browser kernel is a closed-source binary downloaded from AntiBrow's CDN onto the end user's machine at runtime'); guardrails are unusually strong ('Authorized use only... Do not use it to access systems without authorization... Respect each site's terms, robots.txt and rate limits').",
+      "portability: minimal standard frontmatter (name/description/license MIT), cross-platform incl. Docker and arm64, local profiles free; but a mandatory per-launch license check ('An API key is required at every launch... there is no offline mode') ties the skill to antibrow.com availability."
+    ],
+    "safety_flags": [
+      "evasion-capability-core: skill content teaches what bot detectors cross-check and how the kernel defeats each — 'What detection actually tests' table plus 'antibrow answers each of these in the kernel from one persona sampled from one real machine'; description explicitly targets 'when a scraper or agent is blocked by an incoherent headless fingerprint'; dual-use, not merely an automation wrapper.",
+      "headless-detection-avoidance: explicit instruction on hiding headless automation — 'headless mode moves the window off-screen on Windows and renders to a virtual display on Linux rather than using --headless=new'.",
+      "multi-account-unlinking: related skill marketed as 'multi-account-isolation - the operational checklist for keeping accounts unlinked' with trigger terms '防关联', '多账号'; bounded in-body to 'Accounts you own, or operate with the holder's authorization'.",
+      "closed-source-runtime-download: unverifiable kernel binary fetched at run time — 'a closed-source Chromium build the pinned package retrieves on first launch'; skill partially mitigates via integrity pinning ('npm view anti-detect-browser@2.8.0 dist.integrity')."
+    ],
+    "evaluator": "session-agentC-2026-11-18",
+    "evaluated_at": "2026-11-18"
+  },
   "field": {
     "effectiveness": 0,
     "efficiency": 0,
@@ -18,8 +39,8 @@
     "n_reports": 0
   },
   "conflict_events": [],
-  "final": 0,
-  "confidence": 0,
+  "final": 80,
+  "confidence": 0.3,
   "history": [
     {
       "at": "2026-11-18",
@@ -28,6 +49,14 @@
       "confidence": 0,
       "n_reports": 0,
       "note": "imported from skills.sh catalog — pending static evaluation"
+    },
+    {
+      "at": "2026-11-18",
+      "event": "static-eval",
+      "final": 80,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "note": "by session-agentC-2026-11-18 (flags: evasion-capability-core: skill content teaches what bot detectors cross-check and how the kernel defeats each — 'What detection actually tests' table plus 'antibrow answers each of these in the kernel from one persona sampled from one real machine'; description explicitly targets 'when a scraper or agent is blocked by an incoherent headless fingerprint'; dual-use, not merely an automation wrapper.; headless-detection-avoidance: explicit instruction on hiding headless automation — 'headless mode moves the window off-screen on Windows and renders to a virtual display on Linux rather than using --headless=new'.; multi-account-unlinking: related skill marketed as 'multi-account-isolation - the operational checklist for keeping accounts unlinked' with trigger terms '防关联', '多账号'; bounded in-body to 'Accounts you own, or operate with the holder's authorization'.; closed-source-runtime-download: unverifiable kernel binary fetched at run time — 'a closed-source Chromium build the pinned package retrieves on first launch'; skill partially mitigates via integrity pinning ('npm view anti-detect-browser@2.8.0 dist.integrity').)"
     }
   ],
   "reports": [],

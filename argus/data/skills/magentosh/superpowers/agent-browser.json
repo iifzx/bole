@@ -10,7 +10,23 @@
     "installs": 176500,
     "checked_at": "2026-11-18"
   },
-  "static": null,
+  "static": {
+    "trigger": 4,
+    "structure": 5,
+    "actionability": 4,
+    "safety": 4,
+    "portability": 3,
+    "notes": [
+      "trigger: what+when with explicit keyword list — 'Use for: web automation, data extraction, testing, agent browsing, research. Triggers: browser, web automation, scrape...'; third person, front-loaded; no boundary clause.",
+      "structure: 283-line body, six references/ docs plus three templates/ ('references/snapshot-refs.md | Ref lifecycle, invalidation rules, troubleshooting'), no bloat or stale dates.",
+      "actionability: numbered core workflow (1. Open / 2. Interact / 3. Re-snapshot / 4. Close), 26 code blocks, explicit anti-pattern ('Important: Refs are invalidated after navigation. Always re-snapshot'); no error handling; dep stated ('Requires inference.sh CLI (belt)') but not checked.",
+      "safety: no dangerous shell patterns, placeholder creds only, but all browsing routes through third-party commercial cloud ('Browser automation for AI agents via inference.sh') and install runs remote code ('npx skills add belt-sh/cli'); allowed-tools 'Bash(belt *)' wildcard.",
+      "portability: standard frontmatter, no hard paths, but every operation needs the vendor belt CLI ('belt login' → 'belt app run agent-browser') — functional lock to inference.sh; provenance: byte-identical copy of 101-skills/superpowers agent-browser (fork chain 101-skills → skills-101 → magentosh), not an independent skill."
+    ],
+    "safety_flags": [],
+    "evaluator": "session-agentC-2026-11-18",
+    "evaluated_at": "2026-11-18"
+  },
   "field": {
     "effectiveness": 0,
     "efficiency": 0,
@@ -18,8 +34,8 @@
     "n_reports": 0
   },
   "conflict_events": [],
-  "final": 0,
-  "confidence": 0,
+  "final": 80,
+  "confidence": 0.3,
   "history": [
     {
       "at": "2026-11-18",
@@ -28,6 +44,14 @@
       "confidence": 0,
       "n_reports": 0,
       "note": "imported from skills.sh catalog — pending static evaluation"
+    },
+    {
+      "at": "2026-11-18",
+      "event": "static-eval",
+      "final": 80,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "note": "by session-agentC-2026-11-18"
     }
   ],
   "reports": [],

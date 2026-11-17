@@ -10,7 +10,23 @@
     "installs": 196000,
     "checked_at": "2026-11-18"
   },
-  "static": null,
+  "static": {
+    "trigger": 4,
+    "structure": 5,
+    "actionability": 4,
+    "safety": 4,
+    "portability": 3,
+    "notes": [
+      "trigger: what+when with an explicit keyword list — 'Use for: web automation, data extraction, testing, agent browsing, research. Triggers: browser, web automation, scrape, navigate...'; third person, front-loaded; no boundary clause, and the 'Triggers:' block is mild keyword stuffing.",
+      "structure: 283-line body with real progressive disclosure — six references/ docs plus three templates/ scripts ('references/commands.md | Full function reference with all options'), no bloat or stale dates.",
+      "actionability: numbered core workflow (1. Open / 2. Interact / 3. Re-snapshot / 4. Close), 26 code blocks, and one explicit anti-pattern ('Refs are invalidated after navigation. Always re-snapshot'); no error-handling guidance at all; dep is stated ('Requires inference.sh CLI (belt)') but never checked.",
+      "safety: no dangerous shell patterns and only placeholder creds ('text': 'password123' in an example), but all browsing egresses through a third-party commercial cloud ('Browser automation for AI agents via inference.sh') and setup runs remote code ('npx skills add belt-sh/cli'); allowed-tools 'Bash(belt *)' is a broad wildcard grant.",
+      "portability: standard frontmatter (name/description/allowed-tools) and no hard paths, but every single operation requires the inference.sh belt cloud CLI ('belt login' → 'belt app run agent-browser'), so the skill is unusable without a vendor account — functional platform lock."
+    ],
+    "safety_flags": [],
+    "evaluator": "session-agentC-2026-11-18",
+    "evaluated_at": "2026-11-18"
+  },
   "field": {
     "effectiveness": 0,
     "efficiency": 0,
@@ -18,8 +34,8 @@
     "n_reports": 0
   },
   "conflict_events": [],
-  "final": 0,
-  "confidence": 0,
+  "final": 80,
+  "confidence": 0.3,
   "history": [
     {
       "at": "2026-11-18",
@@ -28,6 +44,14 @@
       "confidence": 0,
       "n_reports": 0,
       "note": "imported from skills.sh catalog — pending static evaluation"
+    },
+    {
+      "at": "2026-11-18",
+      "event": "static-eval",
+      "final": 80,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "note": "by session-agentC-2026-11-18"
     }
   ],
   "reports": [],

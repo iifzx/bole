@@ -10,7 +10,23 @@
     "installs": 12000,
     "checked_at": "2026-11-18"
   },
-  "static": null,
+  "static": {
+    "trigger": 4,
+    "structure": 5,
+    "actionability": 4,
+    "safety": 4,
+    "portability": 5,
+    "notes": [
+      "trigger: states what+when in third person — 'Use when converting, OCRing, extracting from, redacting, signing, or filling documents via the Nutrient DWS API'; lint's desc_what warn is a false negative (opens with the verb chain 'Process, convert, OCR, extract, redact'); missing a boundary clause.",
+      "structure: tight 163-line single file, clean sectioning (Setup/Operations/MCP/When to Use/Links), no bloat or stale dates — lint: 'no explainer bloat headers'.",
+      "actionability: curl recipe per operation with supported-input list ('Supported inputs: PDF, DOCX, XLSX, PPTX...') and redaction presets, plus MCP alternative; but no verify loop, no error handling, no dep check — lint: 'no verify/repeat loop'.",
+      "safety: every operation uploads the document to a commercial cloud endpoint (api.nutrient.io) — declared up front ('This skill integrates with the Nutrient commercial API. Review their terms before use.'); lint flagged 12 secret+network proximity lines, all legitimate Bearer usage of $NUTRIENT_API_KEY, though 'export NUTRIENT_API_KEY=\"pdf_live_...\"' invites pasting a literal key into shell history.",
+      "portability: minimal standard frontmatter (name, description, metadata.origin), plain curl + optional npx MCP server, no absolute or platform-locked paths (only the placeholder 'SANDBOX_PATH: /path/to/working/directory')."
+    ],
+    "safety_flags": [],
+    "evaluator": "session-agentC-2026-11-18",
+    "evaluated_at": "2026-11-18"
+  },
   "field": {
     "effectiveness": 0,
     "efficiency": 0,
@@ -18,8 +34,8 @@
     "n_reports": 0
   },
   "conflict_events": [],
-  "final": 0,
-  "confidence": 0,
+  "final": 88,
+  "confidence": 0.3,
   "history": [
     {
       "at": "2026-11-18",
@@ -28,6 +44,14 @@
       "confidence": 0,
       "n_reports": 0,
       "note": "imported from skills.sh catalog — pending static evaluation"
+    },
+    {
+      "at": "2026-11-18",
+      "event": "static-eval",
+      "final": 88,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "note": "by session-agentC-2026-11-18"
     }
   ],
   "reports": [],
