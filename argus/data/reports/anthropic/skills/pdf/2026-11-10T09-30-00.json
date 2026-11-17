@@ -1,0 +1,17 @@
+{
+  "id": "anthropic/skills/pdf",
+  "reported_at": "2026-11-10T09-30-00",
+  "task": "Merge 12 scanned PDF statements and extract the invoice total column into a table",
+  "verdict": "worked",
+  "scores": {
+    "effectiveness": 5,
+    "efficiency": 4,
+    "reliability": 5
+  },
+  "evidence": "All 12 files merged in order in one pass; per-file table extraction needed a fallback to the OCR path for 2 low-quality scans, but the skill documented that fallback itself. Total runtime well under manual copy-paste effort.",
+  "environment": {
+    "agent": "zcode",
+    "os": "win32"
+  },
+  "reporter": "seed-example"
+}

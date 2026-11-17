@@ -1,0 +1,23 @@
+name: ledger
+
+on:
+  pull_request:
+    paths:
+      - "argus/**"
+  push:
+    branches: [main]
+    paths:
+      - "argus/**"
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Validate ledger data
+        run: node argus/scripts/ledger.js validate-all
+      - name: Check index sync
+        run: node argus/scripts/ledger.js build-index --check

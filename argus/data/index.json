@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "generated_at": "2026-11-18T01:50:43",
+  "count": 3,
+  "skills": [
+    {
+      "id": "anthropic/skills/docx",
+      "name": "docx",
+      "final": 92,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "best_for": [
+        "docx",
+        "word",
+        "document-creation",
+        "track-changes",
+        "office"
+      ],
+      "updated": "2026-11-18"
+    },
+    {
+      "id": "anthropic/skills/pdf",
+      "name": "pdf",
+      "final": 88,
+      "confidence": 0.5,
+      "n_reports": 2,
+      "best_for": [
+        "pdf",
+        "merge",
+        "split",
+        "forms",
+        "table-extraction",
+        "document-processing"
+      ],
+      "updated": "2026-11-18"
+    },
+    {
+      "id": "anthropic/skills/pptx",
+      "name": "pptx",
+      "final": 92,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "best_for": [
+        "pptx",
+        "slides",
+        "presentation",
+        "powerpoint",
+        "deck"
+      ],
+      "updated": "2026-11-18"
+    }
+  ]
+}
