@@ -259,7 +259,9 @@ function recomputeRecord(rec, reports) {
     rec.confidence = round2(Math.min(0.95, conf));
   }
 
-  if (rec.static && rec.static.safety_flags.length > 0) rec.final = Math.min(rec.final, 40); // §6 red line
+  // §6 red line: cap applies only when the safety dimension itself scored <= 2;
+  // advisory flags at safety >= 3 are transparency, not a verdict
+  if (rec.static && rec.static.safety <= 2 && rec.static.safety_flags.length > 0) rec.final = Math.min(rec.final, 40);
   rec.updated = today();
   return rec;
 }
@@ -366,7 +368,8 @@ function cmdStatic(patchFile) {
   buildIndex(false);
   console.log(`${isNew ? "created record" : "updated record"} ${target.id}`);
   console.log(`  static=${static100(target)?.toFixed(1)}  final=${target.final}  confidence=${target.confidence}`);
-  if (st.safety_flags.length > 0) console.log(`  !! RED LINE — final capped at 40; do not recommend silently (${st.safety_flags.join("; ")})`);
+  if (st.safety <= 2 && st.safety_flags.length > 0) console.log(`  !! RED LINE — final capped at 40; do not recommend silently (${st.safety_flags.join("; ")})`);
+  else if (st.safety_flags.length > 0) console.log(`  note: ${st.safety_flags.length} advisory safety flag(s) recorded for transparency (safety=${st.safety}, no cap)`);
 }
 
 function buildIndex(check) {

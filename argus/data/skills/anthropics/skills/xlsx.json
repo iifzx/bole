@@ -10,7 +10,23 @@
     "installs": 200800,
     "checked_at": "2026-11-18"
   },
-  "static": null,
+  "static": {
+    "trigger": 5,
+    "structure": 5,
+    "actionability": 5,
+    "safety": 5,
+    "portability": 5,
+    "notes": [
+      "trigger: override lint 4 up to 5 — lint's desc_boundary warn is a false negative, the description ends with an explicit boundary clause ('Do NOT trigger when the primary deliverable is a Word document, HTML report, standalone Python script...'); what+when explicit; third-person warn is a false positive ('my' occurs inside the quoted user phrase 'the xlsx in my downloads')",
+      "structure: 104 dense lines, task-routing table up front, scripts/recalc.py verified to exist ('Script paths below are relative to this skill's directory'), no rotting dates; 950-char description is long but the routing-critical sentence is the first one",
+      "actionability: override lint 4 up to 5 — mandatory verify loop ('A green recalc proves your formulas evaluate, not that they are right. Write 2-3 formulas first and check'), rich error semantics ('never treat a clean exit as a clean workbook'), explicit dep policy ('Only if an import fails... pip install the missing package'); lint's numbered_steps/error_handling warns miss the prose-style checklist and gotchas",
+      "safety: no network calls, no dangerous patterns, destructive-op guardrails ('data_only=True is destructive if you save')",
+      "portability: standard frontmatter, relative script paths, LibreOffice dependency declared and auto-configured ('soffice, auto-configured for sandboxed environments')"
+    ],
+    "safety_flags": [],
+    "evaluator": "session-agentB-2026-11-18",
+    "evaluated_at": "2026-11-18"
+  },
   "field": {
     "effectiveness": 0,
     "efficiency": 0,
@@ -18,8 +34,8 @@
     "n_reports": 0
   },
   "conflict_events": [],
-  "final": 0,
-  "confidence": 0,
+  "final": 100,
+  "confidence": 0.3,
   "history": [
     {
       "at": "2026-11-18",
@@ -28,6 +44,14 @@
       "confidence": 0,
       "n_reports": 0,
       "note": "imported from skills.sh catalog — pending static evaluation"
+    },
+    {
+      "at": "2026-11-18",
+      "event": "static-eval",
+      "final": 100,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "note": "by session-agentB-2026-11-18"
     }
   ],
   "reports": [],

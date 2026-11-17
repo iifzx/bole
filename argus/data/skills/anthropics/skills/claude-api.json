@@ -10,7 +10,23 @@
     "installs": null,
     "checked_at": "2026-11-18"
   },
-  "static": null,
+  "static": {
+    "trigger": 4,
+    "structure": 4,
+    "actionability": 5,
+    "safety": 5,
+    "portability": 5,
+    "notes": [
+      "trigger 4: description exceeds the 1024-char limit at 1068 chars (lint FAIL, real — routers may truncate), but lint's desc_boundary warn is a false positive: 'SKIP only when another provider is being worked on (overrides all triggers)' is an explicit boundary clause, and the TRIGGER list is front-loaded and precise.",
+      "structure 4: 609-line body sits in the 500-1000 decay zone with dense run-on paragraphs (e.g. the single-paragraph Defaults section); lint's progressive_disclosure warn is a false positive — 'Every `{lang}/...`, `shared/...`, and `curl/...` path cited in this document is relative to this skill's base directory' means the split exists, just not named references/; the date-anchored model table ('cached: 2026-10-06') is mitigated by a live-sources WebFetch pointer.",
+      "actionability 5: numbered subcommand workflows with explicit step orders (Step 0 scope confirmation, 'Read `shared/model-migration.md` immediately'), per-language code tables across 7 SDKs, exception-chain guidance ('Write a most-specific-first chain - e.g. `NotFoundError` -> `RateLimitError` -> `APIStatusError`'), ~25 explicit pitfalls, and a network-failure fallback ('run the compiler or interpreter on it, and iterate on the error output').",
+      "safety 5 (override up from lint 4 after review): the 5 secret_proximity hits are standard auth documentation with deliberate token hygiene — 'Always pass `--access-token`; the no-flag form prints JSON, not a bare token' — no secret values, no env-dump, no exfiltration or piped-remote patterns; vault design keeps secrets out of sandboxes ('substituted at egress, never visible in the sandbox').",
+      "portability 5: standard frontmatter, no absolute paths (homedir-relative 'it stores a profile under `~/.config/anthropic/`'), 7-language and multi-cloud (Bedrock/Vertex/Foundry) coverage with per-platform client tables."
+    ],
+    "safety_flags": [],
+    "evaluator": "session-agentA-2026-11-18",
+    "evaluated_at": "2026-11-18"
+  },
   "field": {
     "effectiveness": 0,
     "efficiency": 0,
@@ -18,8 +34,8 @@
     "n_reports": 0
   },
   "conflict_events": [],
-  "final": 0,
-  "confidence": 0,
+  "final": 92,
+  "confidence": 0.3,
   "history": [
     {
       "at": "2026-11-18",
@@ -28,6 +44,14 @@
       "confidence": 0,
       "n_reports": 0,
       "note": "imported from skillsmp catalog — pending static evaluation"
+    },
+    {
+      "at": "2026-11-18",
+      "event": "static-eval",
+      "final": 92,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "note": "by session-agentA-2026-11-18"
     }
   ],
   "reports": [],

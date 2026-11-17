@@ -10,7 +10,27 @@
     "installs": 13700,
     "checked_at": "2026-11-18"
   },
-  "static": null,
+  "static": {
+    "trigger": 4,
+    "structure": 5,
+    "actionability": 5,
+    "safety": 4,
+    "portability": 5,
+    "notes": [
+      "trigger: excellent what+when with format enumeration ('Use when a task needs the contents of an office document, spreadsheet, presentation, ebook, or PDF you cannot read directly') but genuinely no boundary clause — lint's desc_boundary warn is correct here, only the implicit 'you cannot read directly' limits scope",
+      "structure: 26 lines, zero bloat, every rule load-bearing; lean enough that a references/ split is unnecessary",
+      "actionability: numbered rules with exit codes and stderr contract documented ('Exit codes: 0 success, 1 the document could not be converted, 2 usage error, 3 pages of a PDF need OCR... Failures print one anydoc: <message> line to stderr' — lint's error_handling warn is wrong), dep check ('It needs Node 20+'), and context-hygiene guidance ('write to a file with -o and read the parts you need')",
+      "safety: keep lint 4 — secret_proximity hit reviewed and cleared ('Pass --api-key or set FIRECRAWL_API_KEY' are parameter names, not secrets), but the documented fallback sends document contents to a third party ('Rerun with --ocr hosted to send it to Firecrawl Parse') with no ask-user-first instruction, and 'npx -y @firecrawl/anydoc' fetches an unpinned package from npm at runtime",
+      "portability: standard frontmatter (name/description/license/metadata.author), Node 20+ requirement, no absolute or platform-locked paths"
+    ],
+    "safety_flags": [
+      "secret_proximity: reviewed false positive — --api-key/FIRECRAWL_API_KEY are parameter names, no hardcoded secret",
+      "declared-third-party-egress: --ocr hosted uploads scanned pages to firecrawl.dev; declared in-text and opt-in but the skill never instructs the agent to ask the user before sending document contents",
+      "unpinned-npx: 'npx -y @firecrawl/anydoc' executes the latest npm package at runtime with no version pin"
+    ],
+    "evaluator": "session-agentB-2026-11-18",
+    "evaluated_at": "2026-11-18"
+  },
   "field": {
     "effectiveness": 0,
     "efficiency": 0,
@@ -18,8 +38,8 @@
     "n_reports": 0
   },
   "conflict_events": [],
-  "final": 0,
-  "confidence": 0,
+  "final": 92,
+  "confidence": 0.3,
   "history": [
     {
       "at": "2026-11-18",
@@ -28,6 +48,14 @@
       "confidence": 0,
       "n_reports": 0,
       "note": "imported from skills.sh catalog — pending static evaluation"
+    },
+    {
+      "at": "2026-11-18",
+      "event": "static-eval",
+      "final": 92,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "note": "by session-agentB-2026-11-18 (flags: secret_proximity: reviewed false positive — --api-key/FIRECRAWL_API_KEY are parameter names, no hardcoded secret; declared-third-party-egress: --ocr hosted uploads scanned pages to firecrawl.dev; declared in-text and opt-in but the skill never instructs the agent to ask the user before sending document contents; unpinned-npx: 'npx -y @firecrawl/anydoc' executes the latest npm package at runtime with no version pin)"
     }
   ],
   "reports": [],

@@ -10,7 +10,23 @@
     "installs": null,
     "checked_at": "2026-11-18"
   },
-  "static": null,
+  "static": {
+    "trigger": 4,
+    "structure": 4,
+    "actionability": 4,
+    "safety": 5,
+    "portability": 5,
+    "notes": [
+      "trigger 4 (agree with lint): strong front-loaded when-clause ('Use this when users request creating art using code, generative art, algorithmic art, flow fields, or particle systems') but no boundary clause, and the opener is the gerund 'Creating algorithmic art using p5.js' rather than an imperative action verb.",
+      "structure 4 (override down from lint 5): 400-line single file kept under the limit but heavy with self-repeating craftsmanship directives ('repeat phrases like \"meticulously crafted algorithm\", \"the product of deep computational expertise\"') and five inline philosophy examples that belong in references/; templates/ assets only partially compensate.",
+      "actionability 4 (override down from lint 5): 10 code blocks, numbered two-step workflow, explicit anti-patterns ('❌ Creating HTML from scratch'), and a requirements checklist ('Seed controls must work (prev/next/random/jump/display)'), but no failure path for the assumed dependency — 'p5.js from CDN - always available' — and no dep/version check.",
+      "safety 5: only network access is the pinned p5.js CDN (cdnjs.cloudflare.com); no secrets, no shell, no dangerous patterns.",
+      "portability 5: relative template paths ('templates/viewer.html'), self-contained artifact that works 'immediately in claude.ai artifacts or any browser', standard frontmatter."
+    ],
+    "safety_flags": [],
+    "evaluator": "session-agentA-2026-11-18",
+    "evaluated_at": "2026-11-18"
+  },
   "field": {
     "effectiveness": 0,
     "efficiency": 0,
@@ -18,8 +34,8 @@
     "n_reports": 0
   },
   "conflict_events": [],
-  "final": 0,
-  "confidence": 0,
+  "final": 88,
+  "confidence": 0.3,
   "history": [
     {
       "at": "2026-11-18",
@@ -28,6 +44,14 @@
       "confidence": 0,
       "n_reports": 0,
       "note": "imported from skillsmp catalog — pending static evaluation"
+    },
+    {
+      "at": "2026-11-18",
+      "event": "static-eval",
+      "final": 88,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "note": "by session-agentA-2026-11-18"
     }
   ],
   "reports": [],

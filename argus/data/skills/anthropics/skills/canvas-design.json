@@ -10,7 +10,23 @@
     "installs": null,
     "checked_at": "2026-11-18"
   },
-  "static": null,
+  "static": {
+    "trigger": 5,
+    "structure": 4,
+    "actionability": 4,
+    "safety": 5,
+    "portability": 5,
+    "notes": [
+      "trigger 5: what+when front-loaded ('Create beautiful visual art in .png and .pdf documents... when the user asks to create a poster, piece of art, design, or other static piece') plus a negative-constraint boundary: 'never copying existing artists' work to avoid copyright violations'.",
+      "structure 4 (override down from lint 5): otherwise clean 129-line two-step layout, but it embeds a fabricated user turn — 'The user ALREADY said \"It isn't perfect enough. It must be pristine, a masterpiece if craftsmanship\"' — a manufactured-dialogue anti-pattern, and buries the './canvas-fonts' directory dependency mid-paragraph.",
+      "actionability 4 (agree with lint): numbered two-step workflow, explicit anti-patterns ('avoid adding more graphics; instead refine what has been created'), and a forced second-pass verify loop ('Take a second pass. Go back to the code and refine/polish further'), but 0 code examples, no error handling, and no handling for a missing fonts dir ('Search the `./canvas-fonts` directory' assumes it exists).",
+      "safety 5: no dangerous patterns; one mild undeclared network instruction — 'Download and use whatever fonts are needed' — with unspecified sources, mitigated by the bundled-fonts-first policy.",
+      "portability 5: relative paths only ('./canvas-fonts'), platform-neutral outputs (.md/.pdf/.png), standard frontmatter."
+    ],
+    "safety_flags": [],
+    "evaluator": "session-agentA-2026-11-18",
+    "evaluated_at": "2026-11-18"
+  },
   "field": {
     "effectiveness": 0,
     "efficiency": 0,
@@ -18,8 +34,8 @@
     "n_reports": 0
   },
   "conflict_events": [],
-  "final": 0,
-  "confidence": 0,
+  "final": 92,
+  "confidence": 0.3,
   "history": [
     {
       "at": "2026-11-18",
@@ -28,6 +44,14 @@
       "confidence": 0,
       "n_reports": 0,
       "note": "imported from skillsmp catalog — pending static evaluation"
+    },
+    {
+      "at": "2026-11-18",
+      "event": "static-eval",
+      "final": 92,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "note": "by session-agentA-2026-11-18"
     }
   ],
   "reports": [],
