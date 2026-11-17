@@ -96,11 +96,19 @@ cp -r bole/argus ~/.agents/skills/argus     # ZCode / Claude Code / Codex 等通
 ├── argus/                  # skill 本体（安装单元）
 │   ├── SKILL.md            # 三模式工作流
 │   ├── references/         # 评分公式 · rubric · 检索源（按需读取）
-│   ├── scripts/ledger.js   # 相马经维护 CLI（零依赖）
+│   ├── scripts/
+│   │   ├── ledger.js       # 相马经维护 CLI（零依赖）
+│   │   ├── lint.js         # 机械预检引擎：~40 条规则，输出建议评分 patch
+│   │   └── import.js       # 外部目录批量导入（SkillsMP / skills.sh → 待评估条目）
 │   └── data/               # 相马经数据库（随 skill 分发）
 ├── CONTRIBUTING.md         # 如何回填实测报告
 └── .github/workflows/      # CI：校验数据 + 索引同步检查
 ```
+
+**借来的数据库，改造后使用**：`import.js` 从 SkillsMP（免费 REST API）和
+skills.sh 批量拉取候选，只借**覆盖面**和**流行度元数据**，一条评分都不借
+——所有导入条目落地为「待评估」（final 0 / 置信度 0），必须先过机械 lint +
+人工判断 rubric 才有资格影响推荐。原则一句话：**借覆盖，不借排名**。
 
 ## 贡献 / Contribute
 
@@ -111,15 +119,21 @@ cp -r bole/argus ~/.agents/skills/argus     # ZCode / Claude Code / Codex 等通
 
 ## 致谢 / Credits
 
+Argus 站在这些轮子上（借用机制均已改造并注明出处）：
+
 - [agentscope-ai/OpenJudge · find-skills-combo](https://github.com/agentscope-ai/OpenJudge/blob/main/skills/find-skills-combo/SKILL.md)
   —— 任务分解 + 候选矩阵机制的灵感来源；Argus 把它的"现场发挥"落地成
   持久化、可积累的证据账本；
-- [sayed3li97/skillscore](https://github.com/sayed3li97/skillscore) /
-  [joeynyc/skillscore](https://github.com/joeynyc/skillscore) —— 静态评分
-  维度设计的参考；
+- [sayed3li97/skillscore](https://github.com/sayed3li97/skillscore)
+  —— 27 条规则 × 7 类别的静态评分设计、token 预算估算、触发面冲突检测，
+  改造映射进 `lint.js` 与我们的 5 维 rubric；
+- [joeynyc/skillscore](https://github.com/joeynyc/skillscore)
+  —— 邻近秘密外泄检测（≤5 行）、提权/无界循环检查、可移植性规则、
+  A+~F 等级表，同样改造进 `lint.js` 与展示层；
+- [SkillsMP](https://skillsmp.com) / [skills.sh](https://skills.sh)
+  —— 免费目录 API 作为导入原料源（只借覆盖，不借排名）；
 - [cisco-ai-defense/skill-scanner](https://github.com/cisco-ai-defense/skill-scanner)
-  —— 安全深扫推荐工具；
-- [skills.sh](https://skills.sh)（Vercel）—— 二级检索源。
+  —— 安全深扫推荐工具。
 
 ## License
 

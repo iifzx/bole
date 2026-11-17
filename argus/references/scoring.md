@@ -82,12 +82,12 @@ Field rules:
 | Field | Type | Rules |
 |---|---|---|
 | `id` | string | kebab-ish path, must equal path-derived id |
-| `source` | enum | `github` \| `skills.sh` \| `clawhub` \| `manual` \| `unknown` |
+| `source` | enum | `github` \| `skills.sh` \| `skillsmp` \| `clawhub` \| `manual` \| `unknown` |
 | `best_for` | string[] | 2–8 lowercase keywords; the index is grepped on these |
 | `popularity` | object | optional; **display metadata only — never an input to any score** |
 | `static.*` | int 1–5 | the five rubric dimensions (see `rubric.md`); `null` until first static evaluation |
 | `static.safety_flags` | string[] | non-empty ⇒ red-line alert, see §6 |
-| `static.evaluator` | string | provenance, e.g. `seed-static`, `session-2026-11-18T14-05-00Z` |
+| `static.evaluator` | string | provenance: `seed-static`, `mechanical-lint` (then judgment must review it), `session-2026-11-18T14-05-00Z`, … |
 | `field.*` | number 1–5 | means over reports, 2 decimals; `0` when `n_reports` is 0 |
 | `conflict_events` | string[] | `reported_at` stamps of reports whose effectiveness clashed with the pre-existing aggregate (§5); persists the penalty so it is reproducible |
 | `final` | int 0–100 | derived, see §4 |
@@ -138,10 +138,21 @@ field_100  = mean(effectiveness, efficiency, reliability) × 20
 final = round( 0.4 × static_100 + 0.6 × field_100 )   if n_reports > 0
 final = round( static_100 )                            if n_reports = 0  (provisional)
 final = round( field_100 )                             if static = null  (field-only)
+final = 0                                              if static = null AND n_reports = 0
 ```
 
 The 0.6 weight on field data is deliberate: **real-world results outweigh
 static prose analysis**. A skill with only static evaluation is provisional.
+
+**Pending entries** (imported from external catalogs, never yet evaluated)
+carry `static: null`, `n_reports: 0`, `final: 0`, `confidence: 0` — visible
+in the index as *unevaluated*, never mistaken for a real score.
+
+**Letter grades** (display only, scale borrowed from joeynyc/skillscore):
+
+| A+ | A | A- | B+ | B | B- | C+ | C | C- | D | D- | F |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| ≥97 | 93–96 | 90–92 | 87–89 | 83–86 | 80–82 | 77–79 | 73–76 | 70–72 | 65–69 | 60–64 | <60 |
 
 ## 5. Confidence (0–1)
 
@@ -179,9 +190,35 @@ an install-time script doing more than declared):
 ## 7. Provenance & honesty
 
 - `evaluator` marks who scored: `seed-static` for the original seed entries,
-  `session-<timestamp>` for live evaluations.
+  `mechanical-lint` for a baseline produced by `scripts/lint.js` (must be
+  reviewed with judgment before it is trusted), `session-<timestamp>` for
+  live evaluations.
 - Seed records are illustrative examples of the schema — their static scores
   are documented static readings of the SKILL.md text, not community verdicts
   (hence low confidence).
 - Never invent reports. A report is written only after a real use. A report
   with empty or generic `evidence` must be rejected.
+
+## 8. Borrowed databases, upgraded (import pipeline)
+
+`scripts/import.js` pulls candidate skills from existing catalogs into the
+ledger as **pending** entries:
+
+```bash
+node scripts/import.js skillsmp --creator anthropics --limit 5   # SkillsMP REST API
+node scripts/import.js skills-sh "playwright" --top 5            # skills.sh CLI output
+node scripts/import.js pending                                    # list unevaluated entries
+```
+
+The design rule: **borrow coverage, never borrow rankings.** External
+catalogs (SkillsMP, skills.sh, ClawHub) supply three things and only three:
+
+1. **Discovery** — what exists at all
+2. **Identity** — canonical `owner/repo/skill` ids and URLs
+3. **Popularity metadata** — installs/stars, stored under `popularity` for
+   display only
+
+Everything else about a skill is re-derived here: the entry lands as
+`final: 0, confidence: 0` (pending) and must pass the mechanical lint plus
+judgment (`rubric.md`) before it can influence a recommendation. Import caps
+(`--limit`, `--top`) keep the ledger a curated shortlist, not a catalog dump.

@@ -7,6 +7,33 @@ following the anchors. Inspired by OpenJudge-style judging and the static-rule
 design of the `skillscore` tools — but scores must be **yours, with evidence**,
 not copied from anywhere.
 
+## Phase 0 — run the mechanical lint first
+
+`node scripts/lint.js check <path-or-dir>` (or `check --url <github-url>`)
+runs ~40 deterministic checks borrowed and remapped from
+[sayed3li97/skillscore](https://github.com/sayed3li97/skillscore) (27-rule
+point rubric, token budgeting) and
+[joeynyc/skillscore](https://github.com/joeynyc/skillscore) (proximity
+secret-exfil detection, privilege/loop checks, portability rules):
+
+- frontmatter validity, name/description limits, unknown-key typo detection
+- description quality: WHAT verb, WHEN clause, boundary clause, front-loaded
+  keywords, third-person voice
+- body hygiene: length decay, progressive disclosure, broken relative links,
+  explainer bloat, rotting dates, Windows/absolute paths
+- instruction design: numbered steps, code examples, feedback loops,
+  anti-patterns, error handling, dependency checks
+- safety: §D-0 pattern scan, secret+network proximity (≤5 lines), piped
+  remote execution, `sudo`, `rm -rf`, env dumps, undocumented bundled scripts
+
+The lint emits a `suggested_patch` (`--json`) with per-dimension suggestions
+and `evaluator: "mechanical-lint"`. **Your job is the judgment half**: read
+the skill yourself, raise or lower each dimension where the mechanical read
+is wrong (lint cannot judge whether instructions are actually good), keep the
+evidence lines, set `evaluator` to `session-<timestamp>`, and register the
+merged evaluation with `node ledger.js static <patch.json>`. A mechanical
+baseline registered unreviewed is a bug, not a shortcut.
+
 Output a JSON block in this exact shape (goes into the record's `static`):
 
 ```json

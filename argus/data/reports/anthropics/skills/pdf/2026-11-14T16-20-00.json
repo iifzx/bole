@@ -1,5 +1,5 @@
 {
-  "id": "anthropic/skills/pdf",
+  "id": "anthropics/skills/pdf",
   "reported_at": "2026-11-14T16-20-00",
   "task": "Fill a government form PDF with structured data and keep it signable",
   "verdict": "partial",

@@ -1,0 +1,35 @@
+{
+  "id": "anthropics/skills/canvas-design",
+  "name": "canvas-design",
+  "source": "skillsmp",
+  "url": "https://github.com/anthropics/skills/tree/main/skills/canvas-design",
+  "description": "Create beautiful visual art in .png and .pdf documents using design philosophy. You should use this skill when the user asks to create a poster, piece of art, design, or other static piece. Create original visual designs, never copying existing artists' work to avoid copyright violations.",
+  "best_for": [],
+  "popularity": {
+    "stars": 193219,
+    "installs": null,
+    "checked_at": "2026-11-18"
+  },
+  "static": null,
+  "field": {
+    "effectiveness": 0,
+    "efficiency": 0,
+    "reliability": 0,
+    "n_reports": 0
+  },
+  "conflict_events": [],
+  "final": 0,
+  "confidence": 0,
+  "history": [
+    {
+      "at": "2026-11-18",
+      "event": "seed",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "note": "imported from skillsmp catalog — pending static evaluation"
+    }
+  ],
+  "reports": [],
+  "updated": "2026-11-18"
+}

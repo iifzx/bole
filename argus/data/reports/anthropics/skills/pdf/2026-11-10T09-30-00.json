@@ -1,5 +1,5 @@
 {
-  "id": "anthropic/skills/pdf",
+  "id": "anthropics/skills/pdf",
   "reported_at": "2026-11-10T09-30-00",
   "task": "Merge 12 scanned PDF statements and extract the invoice total column into a table",
   "verdict": "worked",

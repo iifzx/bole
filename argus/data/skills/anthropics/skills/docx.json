@@ -1,15 +1,15 @@
 {
-  "id": "anthropic/skills/pptx",
-  "name": "pptx",
+  "id": "anthropics/skills/docx",
+  "name": "docx",
   "source": "github",
   "url": "https://github.com/anthropics/skills",
-  "description": "Presentation toolkit: create new decks, read and edit existing ones, extract text and speaker notes, and restyle slides.",
+  "description": "Complete DOCX document creation, editing, and analysis: track changes, comments, formatting preservation, and format conversion.",
   "best_for": [
-    "pptx",
-    "slides",
-    "presentation",
-    "powerpoint",
-    "deck"
+    "docx",
+    "word",
+    "document-creation",
+    "track-changes",
+    "office"
   ],
   "popularity": {
     "stars": null,
@@ -19,15 +19,15 @@
   "static": {
     "trigger": 5,
     "structure": 4,
-    "actionability": 5,
+    "actionability": 4,
     "safety": 5,
-    "portability": 4,
+    "portability": 5,
     "notes": [
-      "trigger: explicit what + when with strong deck/slide keyword coverage",
-      "structure: good reference split; some guidance assumes reading multiple files in sequence",
-      "actionability: step-by-step create/edit/restyle workflows with concrete tool invocations",
-      "safety: clean; no undeclared network or destructive patterns",
-      "portability: depends on specific layout tooling being present, hence 4"
+      "trigger: clear what + when, strong keyword coverage for Word/document tasks",
+      "structure: mostly well split; some workflow detail still inline, hence 4",
+      "actionability: workflows present (edit vs create vs convert); a few branches assume OOXML familiarity",
+      "safety: no destructive or networked patterns; file overwrite paths are explicit",
+      "portability: standard frontmatter and common Python tooling"
     ],
     "safety_flags": [],
     "evaluator": "seed-static",

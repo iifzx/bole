@@ -29,7 +29,7 @@ const STALE_DAYS = 180;
 const DIMENSIONS_STATIC = ["trigger", "structure", "actionability", "safety", "portability"];
 const DIMENSIONS_FIELD = ["effectiveness", "efficiency", "reliability"];
 const HISTORY_EVENTS = ["seed", "static-eval", "report-added", "recompute", "score-conflict"];
-const SOURCES = ["github", "skills.sh", "clawhub", "manual", "unknown"];
+const SOURCES = ["github", "skills.sh", "skillsmp", "clawhub", "manual", "unknown"];
 const VERDICTS = ["worked", "partial", "failed"];
 
 // ---------------------------------------------------------------- helpers --
@@ -243,16 +243,21 @@ function recomputeRecord(rec, reports) {
 
   const s = static100(rec);
   const f = n ? mean(DIMENSIONS_FIELD.map((d) => vals[d])) * 20 : null;
-  rec.final = s === null ? Math.round(f) : f === null ? Math.round(s) : Math.round(0.4 * s + 0.6 * f);
-
-  let conf = Math.min(0.95, 0.3 + 0.1 * n);
-  if (n >= 2 && stddev(reports.map((r) => r.rep.scores.effectiveness)) >= 1.0) conf *= 0.8;
-  const known = new Set(reports.map((r) => r.rep.reported_at));
-  const conflicts = (rec.conflict_events || []).filter((stamp) => known.has(stamp)).length;
-  conf *= Math.pow(0.85, conflicts);
-  if (rec.updated && Date.parse(today()) - Date.parse(rec.updated) > STALE_DAYS * 86400000) conf *= 0.9;
-  if (s === null) conf = Math.min(conf, 0.7);
-  rec.confidence = round2(Math.min(0.95, conf));
+  // pending skeleton (no static, no reports): final 0, confidence 0 — imported, unevaluated
+  if (s === null && f === null) {
+    rec.final = 0;
+    rec.confidence = 0;
+  } else {
+    rec.final = s === null ? Math.round(f) : f === null ? Math.round(s) : Math.round(0.4 * s + 0.6 * f);
+    let conf = Math.min(0.95, 0.3 + 0.1 * n);
+    if (n >= 2 && stddev(reports.map((r) => r.rep.scores.effectiveness)) >= 1.0) conf *= 0.8;
+    const known = new Set(reports.map((r) => r.rep.reported_at));
+    const conflicts = (rec.conflict_events || []).filter((stamp) => known.has(stamp)).length;
+    conf *= Math.pow(0.85, conflicts);
+    if (rec.updated && Date.parse(today()) - Date.parse(rec.updated) > STALE_DAYS * 86400000) conf *= 0.9;
+    if (s === null) conf = Math.min(conf, 0.7);
+    rec.confidence = round2(Math.min(0.95, conf));
+  }
 
   if (rec.static && rec.static.safety_flags.length > 0) rec.final = Math.min(rec.final, 40); // §6 red line
   rec.updated = today();

@@ -48,9 +48,15 @@ grow the **相马经 (Horse Ledger)** — the community score database shipped i
   evidence links.
 - `data/reports/…` — append-only field reports; the evidence chain.
 - Formulas and schemas: `references/scoring.md` (authoritative).
-- CLI (run from this skill's directory): `node scripts/ledger.js`
-  `validate-all` · `add <report.json>` · `static <patch.json>` ·
-  `build-index [--check]` · `show <id>` · `recompute`
+- CLI (run from this skill's directory):
+  - `node scripts/ledger.js` — `validate-all` · `add <report.json>` ·
+    `static <patch.json>` · `build-index [--check]` · `show <id>` · `recompute`
+  - `node scripts/lint.js check <path|--url <github-url>>` — mechanical
+    pre-lint (~40 borrowed checks; `--json` emits a suggested static patch)
+  - `node scripts/lint.js conflicts` — trigger-surface overlap across ledger
+    entries (skills shadowing each other)
+  - `node scripts/import.js skills-sh "<kw>" --top 5` / `skillsmp --creator <n>`
+    / `pending` — bulk-import candidates from catalogs as pending entries
 
 Confidence in words: `< 0.4` provisional → re-verify before trusting ·
 `0.4–0.7` usable, with caveats · `> 0.7` battle-tested.
@@ -69,18 +75,25 @@ Confidence in words: `< 0.4` provisional → re-verify before trusting ·
 **Phase 2 · Search** (`references/sources.md`, in order):
 
 1. The ledger first — grep `data/index.json` for every subtask's keywords.
+   Pending entries (final 0) are candidates awaiting evaluation, not scores.
 2. `npx skills find "<keywords>"` with precision-first keyword tiers: exact
    match → functional match → domain match. Broaden only when a tier returns
    fewer than 3 candidates. Run independent tiers in parallel.
-3. Web fallback: SkillsMP, awesome-agent-skills, GitHub topics.
+3. Broad coverage needed (rare domain, many candidates)? Bulk-import with
+   `node scripts/import.js skills-sh "<kw>" --top 5` or
+   `skillsmp --creator <name>` — then evaluate the top candidates.
+4. Web fallback: SkillsMP, awesome-agent-skills, GitHub topics.
 
 **Phase 3 · Evaluate every candidate** (no candidate is exempt):
 
 - Ledger hit with `confidence ≥ 0.4` → use it, show its evidence.
 - Ledger hit with `confidence < 0.4` → promising but unproven: re-verify with
   the rubric now, and prepare a ledger update.
-- No entry → score on the spot with `references/rubric.md`, then **register
-  the score** so the next user starts from your judgment:
+- No entry (or pending) → **mechanical lint first** (`node scripts/lint.js
+  check --url <github-url>` for remote candidates), then judge on top per
+  `references/rubric.md` (lint's suggested dimensions are a baseline you
+  must review, not final), then **register the score** so the next user
+  starts from your judgment:
 
   ```json
   {"id": "owner/repo/skill", "static": {"trigger": 4, "structure": 3,
@@ -95,6 +108,8 @@ Confidence in words: `< 0.4` provisional → re-verify before trusting ·
 
 **Phase 4 · Compose** (multi-subtask asks only):
 
+- Run `node scripts/lint.js conflicts` — if two candidates' trigger surfaces
+  overlap ≥ 60%, flag that installing both may shadow one.
 - Build the Subtask × Candidate matrix. Two metrics per candidate:
   **Breadth** = how many subtasks it covers · **Peak** = how many subtasks it
   is the top pick for. Prune candidates rated Low everywhere.
@@ -112,10 +127,12 @@ popularity(参考)`. End by telling the user: *试完回来告诉我效果，我
    scripts if present).
 2. Ledger check → show the entry with evidence. Low confidence → re-verify
    with the rubric now.
-3. No entry → full rubric evaluation (`references/rubric.md`), register it
-   as in FIND Phase 3.
-4. Verdict: final + confidence, strongest and weakest dimensions, any safety
-   flags, and a one-line Bole verdict — 千里马 / 良驹 / 驽马 / 病马(红旗).
+3. No entry or pending → mechanical lint first (`node scripts/lint.js check
+   <path|--url ...>`), then full judgment per `references/rubric.md`, then
+   register the merged evaluation as in FIND Phase 3.
+4. Verdict: final + letter grade + confidence, strongest and weakest
+   dimensions, any safety flags, and a one-line Bole verdict — 千里马 / 良驹 /
+   驽马 / 病马(红旗).
 
 ## Mode REPORT — close the loop (this is how the ledger grows)
 

@@ -1,0 +1,35 @@
+{
+  "id": "firecrawl/anydoc/convert-documents-to-markdown",
+  "name": "convert-documents-to-markdown",
+  "source": "skills.sh",
+  "url": "https://skills.sh/firecrawl/anydoc/convert-documents-to-markdown",
+  "description": "",
+  "best_for": [],
+  "popularity": {
+    "stars": null,
+    "installs": 13700,
+    "checked_at": "2026-11-18"
+  },
+  "static": null,
+  "field": {
+    "effectiveness": 0,
+    "efficiency": 0,
+    "reliability": 0,
+    "n_reports": 0
+  },
+  "conflict_events": [],
+  "final": 0,
+  "confidence": 0,
+  "history": [
+    {
+      "at": "2026-11-18",
+      "event": "seed",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "note": "imported from skills.sh catalog — pending static evaluation"
+    }
+  ],
+  "reports": [],
+  "updated": "2026-11-18"
+}

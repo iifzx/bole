@@ -30,14 +30,30 @@ Broaden only when a tier returns fewer than 3 candidates. First run downloads
 the package; if `npx` is unavailable or the network is blocked, fall back to
 Tier 3.
 
+## Tier 2.5 — programmatic import (bulk metadata, zero rankings)
+
+When a task needs broad coverage (rare domain, many candidates), import the
+catalogs programmatically instead of eyeballing search output:
+
+```bash
+node scripts/import.js skills-sh "playwright" --top 5          # skills.sh top-by-installs per keyword
+node scripts/import.js skillsmp --creator anthropics --limit 5 # SkillsMP REST API (anon: 50 req/day)
+node scripts/import.js pending                                 # what still awaits evaluation
+```
+
+Imported entries land as **pending** (`final: 0, confidence: 0`) with
+popularity metadata only. They become usable candidates only after the lint +
+rubric pass. The standing rule: **borrow coverage, never borrow rankings** —
+an install count from any registry never becomes a score here.
+
 ## Tier 3 — Web search (fallback & coverage)
 
 Use whatever web tools the session offers (WebSearch / WebFetch):
 
-- [skillsmp.com](https://skillsmp.com) — GitHub-crawled skills search engine
+- [skillsmp.com](https://skillsmp.com) — GitHub-crawled skills search engine; free REST API at `/api/v1/skills/search` (OpenAPI: `/openapi.json`)
 - [github.com/topics/agent-skills](https://github.com/topics/agent-skills) — GitHub topic index
 - [VoltAgent/awesome-agent-skills](https://github.com/VoltAgent/awesome-agent-skills) — curated catalog (human-PR curation ≈ a weak prior, not a score)
-- ClawHub — OpenClaw community hub
+- ClawHub ([clawhub.ai](https://clawhub.ai)) — OpenClaw community hub; signed manifests / moderated releases / audit records as **trust signals**, but no public quality scores
 
 ## Never search by popularity
 

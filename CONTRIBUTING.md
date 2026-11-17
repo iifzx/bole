@@ -63,17 +63,21 @@ locally and commit the regenerated index.
 
 ## 3. Re-evaluating an existing score (static)
 
-Run the rubric in [`argus/references/rubric.md`](argus/references/rubric.md)
-yourself (or via Argus RATE mode), then:
+Pending entries (`import.js` imports, `final: 0`) and stale scores both need
+this flow. Run the mechanical lint + rubric:
 
 ```bash
+node argus/scripts/lint.js check --url https://github.com/<owner>/<repo>/tree/main/<skill>
+# review the suggested_patch with judgment (references/rubric.md Phase 0),
+# then register the merged evaluation:
 node argus/scripts/ledger.js static <patch.json>
-# patch: {"id": "...", "static": {...5 dimensions, notes, safety_flags, evaluator...}}
 ```
 
 Set `evaluator` to something identifiable (`session-<timestamp>` or your
-handle). If you find a §D-0 red-line pattern, record it in `safety_flags` —
-the score caps itself at 40 and the flag becomes a loud warning for everyone.
+handle — a `mechanical-lint` baseline registered without judgment review is
+considered a bug). If you find a §D-0 red-line pattern, record it in
+`safety_flags` — the score caps itself at 40 and the flag becomes a loud
+warning for everyone.
 
 ## 4. Ledger governance
 

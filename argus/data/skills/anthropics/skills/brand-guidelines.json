@@ -1,0 +1,35 @@
+{
+  "id": "anthropics/skills/brand-guidelines",
+  "name": "brand-guidelines",
+  "source": "skillsmp",
+  "url": "https://github.com/anthropics/skills/tree/main/skills/brand-guidelines",
+  "description": "Applies Anthropic's official brand colors and typography to any sort of artifact that may benefit from having Anthropic's look-and-feel. Use it when brand colors or style guidelines, visual formatting, or company design standards apply.",
+  "best_for": [],
+  "popularity": {
+    "stars": 193219,
+    "installs": null,
+    "checked_at": "2026-11-18"
+  },
+  "static": null,
+  "field": {
+    "effectiveness": 0,
+    "efficiency": 0,
+    "reliability": 0,
+    "n_reports": 0
+  },
+  "conflict_events": [],
+  "final": 0,
+  "confidence": 0,
+  "history": [
+    {
+      "at": "2026-11-18",
+      "event": "seed",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "note": "imported from skillsmp catalog — pending static evaluation"
+    }
+  ],
+  "reports": [],
+  "updated": "2026-11-18"
+}

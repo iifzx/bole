@@ -1,5 +1,5 @@
 {
-  "id": "anthropic/skills/pdf",
+  "id": "anthropics/skills/pdf",
   "name": "pdf",
   "source": "github",
   "url": "https://github.com/anthropics/skills",
