@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "generated_at": "2026-11-18T02:45:40",
-  "count": 18,
+  "generated_at": "2026-11-19T00:07:08",
+  "count": 19,
   "skills": [
     {
       "id": "101-skills/superpowers/agent-browser",
@@ -188,6 +188,24 @@
       "duplicate_of": null
     },
     {
+      "id": "iifzx/bole/argus",
+      "name": "argus",
+      "final": 96,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "best_for": [
+        "skill-discovery",
+        "skill-evaluation",
+        "skill-scoring",
+        "skill-ledger",
+        "skill-search",
+        "相马"
+      ],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null
+    },
+    {
       "id": "magentosh/superpowers/agent-browser",
       "name": "agent-browser",
       "final": 80,
@@ -213,11 +231,11 @@
       "id": "wecomteam/wecom-cli/wecomcli-sheet",
       "name": "wecomcli-sheet",
       "final": 96,
-      "confidence": 0.15,
+      "confidence": 0.3,
       "n_reports": 0,
       "best_for": [],
-      "updated": "2026-11-18",
-      "stale": true,
+      "updated": "2026-11-19",
+      "stale": false,
       "duplicate_of": null
     }
   ]

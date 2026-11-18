@@ -31,7 +31,9 @@ const crypto = require("crypto");
 
 const KNOWN_FM_KEYS = ["name", "description", "allowed-tools", "license", "metadata"];
 const STOPWORDS = new Set(["the", "a", "an", "and", "or", "for", "to", "of", "in", "on", "with", "when", "use", "used", "using", "this", "that", "it", "its", "is", "are", "be", "been", "can", "could", "should", "would", "will", "if", "as", "by", "at", "from", "your", "you", "we", "our", "i", "not", "no", "into", "about", "than", "then", "there", "their", "they", "them", "has", "have", "had", "do", "does", "did", "so", "such", "also", "any", "all", "more", "most", "other", "some", "what", "which", "who", "how", "skill", "skills", "agent", "agents"]);
-const ACTION_VERBS = /^(creates?|edits?|builds?|manages?|provides?|helps?|covers?|handles?|analyz|extracts?|converts?|generates?|designs?|writes?|reviews?|validates?|orchestrates?|searches?|finds?|scans?|monitors?|controls?|tests?|debugs?|deploys?|formats?|transforms?|comprehensives?|complete|professional|use|stop|applies?|supports?|automates?|fixes?|checks?|reads?|view|manages?|run|runs?|installs?|cleans?|tracks?|processes?|renders?|parses?|query|queries|routes?|restyles?|splits?|merges?|fills?|exports?|imports?|audits?|routs?)/i;
+// English + Chinese action verbs (Chinese list added after live false-warns on
+// Chinese descriptions — agent-verified gap, 2026-11-18)
+const ACTION_VERBS = /^(creates?|edits?|builds?|manages?|provides?|helps?|covers?|handles?|analyz|extracts?|converts?|generates?|designs?|writes?|reviews?|validates?|orchestrates?|searches?|finds?|scans?|monitors?|controls?|tests?|debugs?|deploys?|formats?|transforms?|comprehensives?|complete|professional|use|stop|applies?|supports?|automates?|fixes?|checks?|reads?|view|run|runs?|installs?|cleans?|tracks?|processes?|renders?|parses?|query|queries|routes?|restyles?|splits?|merges?|fills?|exports?|imports?|audits?|routs?|处理|创建|编辑|提供|支持|管理|转换|生成|设计|提取|合并|拆分|审查|验证|搜索|查找|扫描|监控|测试|调试|部署|格式化|写入|读取|自动化|分析|修复|检查|对比|比较|识别|翻译|总结|撰写|优化|编排|调度|爬取|抓取|下载|上传|操作|构建|解读|评测|评分|评估|推荐|执行|发送|接收|整理|清洗|标注)/;
 
 class Fail extends Error {}
 
@@ -52,12 +54,20 @@ function levenshtein(a, b) {
 }
 
 function tokenize(text) {
-  return String(text)
-    .toLowerCase()
-    .split(/[^a-z0-9\u4e00-\u9fff]+/)
-    .filter((w) => w.length > 2 && !STOPWORDS.has(w))
-    .map((w) => (w.length > 4 ? w.replace(/(ings?|ies|ing|es|s)$/, "") : w))
-    .filter(Boolean);
+  // Chinese runs have no spaces: emit overlapping 2-grams so alignment scoring
+  // can match (found via live eval — whole-sentence tokens never aligned)
+  const out = [];
+  for (const w of String(text).toLowerCase().split(/[^a-z0-9\u4e00-\u9fff]+/)) {
+    if (!w) continue;
+    if (/^[\u4e00-\u9fff]+$/.test(w)) {
+      if (w.length === 1) continue;
+      if (w.length === 2) { out.push(w); continue; }
+      for (let i = 0; i + 2 <= w.length; i++) out.push(w.slice(i, i + 2));
+    } else if (w.length > 2 && !STOPWORDS.has(w)) {
+      out.push(w.length > 4 ? w.replace(/(ings?|ies|ing|es|s)$/, "") : w);
+    }
+  }
+  return out;
 }
 
 function parseFrontmatter(raw) {
@@ -138,9 +148,12 @@ function runChecks({ present, fm, body, dir }) {
   if (descBody) {
     add("desc_what", "trigger", ACTION_VERBS.test(descBody.slice(0, 60)) ? "pass" : "warn",
       ACTION_VERBS.test(descBody.slice(0, 60)) ? "opens with an action verb (states WHAT)" : "opening does not state WHAT with an action verb");
-    add("desc_when", "trigger", /use (this )?(when|for|it)|when the user|whenever|trigger|用于|使用场景|何时/i.test(descBody) ? "pass" : "warn",
-      /use (this )?(when|for|it)|when the user|whenever|trigger|用于|使用场景|何时/i.test(descBody) ? "states WHEN to trigger" : "no WHEN clause — routing will be weak");
-    const firstPerson = /\b(i|we|my|our|mine)\b/i.test(descBody);
+    add("desc_when", "trigger", /use (this )?(when|for|it)|when the user|whenever|trigger|用于|使用场景|何时|当用户|适用于|触发/i.test(descBody) ? "pass" : "warn",
+      /use (this )?(when|for|it)|when the user|whenever|trigger|用于|使用场景|何时|当用户|适用于|触发/i.test(descBody) ? "states WHEN to trigger" : "no WHEN clause — routing will be weak");
+    // strip quoted user utterances ("how do I…", 「…」, “…”) before the first-person test —
+    // quoted phrases are evidence of routing intent, not the skill's own voice
+    const unquoted = descBody.replace(/"[^"]*"|“[^”]*”|「[^」]*」|『[^』]*』/g, " ");
+    const firstPerson = /\b(i|we|my|our|mine)\b|我们|我的/i.test(unquoted);
     add("desc_third_person", "trigger", firstPerson ? "warn" : "pass", firstPerson ? "first-person voice in description breaks routing convention" : "third-person voice");
     const first60 = descBody.slice(0, 60);
     add("desc_frontloaded", "trigger", tokenize(first60).length >= 2 ? "pass" : "warn",
@@ -184,14 +197,14 @@ function runChecks({ present, fm, body, dir }) {
     /^\s*\d+[.)]\s+\S/m.test(body) ? "numbered workflow steps present" : /^\s*-\s+\[[ x]\]/m.test(body) ? "checklist present" : "no numbered steps or checklists found");
   const fences = contentBlocks(body).filter((b) => b.fence).length;
   add("code_example", "actionability", fences > 0 ? "pass" : "warn", `${fences} fenced code block(s)`);
-  add("feedback_loop", "actionability", /verify|validate|check (that|the)|confirm|re-?run|repeat|再次|校验|验证/i.test(text) ? "pass" : "warn",
-    /verify|validate|check (that|the)|confirm|re-?run|repeat|再次|校验|验证/i.test(text) ? "verification/feedback loop present" : "no verify/repeat loop — errors surface late");
-  add("anti_patterns", "actionability", /anti-?pattern|avoid|never|do not|don'?t|常见错误|避免/i.test(text) ? "pass" : "warn",
-    /anti-?pattern|avoid|never|do not|don'?t|常见错误|避免/i.test(text) ? "anti-patterns stated explicitly" : "no explicit anti-patterns — agent must guess the failure modes");
-  add("error_handling", "actionability", /try\s*[{(]|set -e|\|\| (exit|return|fallback)/.test(text) ? "pass" : "warn",
-    /try\s*[{(]|set -e|\|\| (exit|return|fallback)/.test(text) ? "error handling visible in code examples" : "no error-handling markers in examples");
-  add("dep_check", "actionability", /--version|command -v|which |python3? -c |node -e /.test(text) ? "pass" : "warn",
-    /--version|command -v|which |python3? -c |node -e /.test(text) ? "dependency verification present" : "no dependency checks — skills fail mysteriously on other machines");
+  add("feedback_loop", "actionability", /verify|validate|check (that|the)|confirm|re-?run|repeat|再次|校验|验证|确认|复查/i.test(text) ? "pass" : "warn",
+    /verify|validate|check (that|the)|confirm|re-?run|repeat|再次|校验|验证|确认|复查/i.test(text) ? "verification/feedback loop present" : "no verify/repeat loop — errors surface late");
+  add("anti_patterns", "actionability", /anti-?pattern|avoid|never|do not|don'?t|常见错误|避免|禁止|不要|切勿|反模式|禁忌|误区|陷阱|一律不要/i.test(text) ? "pass" : "warn",
+    /anti-?pattern|avoid|never|do not|don'?t|常见错误|避免|禁止|不要|切勿|反模式|禁忌|误区|陷阱|一律不要/i.test(text) ? "anti-patterns stated explicitly" : "no explicit anti-patterns — agent must guess the failure modes");
+  add("error_handling", "actionability", /try\s*[{(]|set -e|\|\| (exit|return|fallback)|重试|失败时|出错|异常处理|错误处理|回退|降级|报错/.test(text) ? "pass" : "warn",
+    /try\s*[{(]|set -e|\|\| (exit|return|fallback)|重试|失败时|出错|异常处理|错误处理|回退|降级|报错/.test(text) ? "error handling visible in examples/prose" : "no error-handling markers in examples");
+  add("dep_check", "actionability", /--version|command -v|which |python3? -c |node -e |依赖|前置要求|已安装/.test(text) ? "pass" : "warn",
+    /--version|command -v|which |python3? -c |node -e |依赖|前置要求|已安装/.test(text) ? "dependency verification present" : "no dependency checks — skills fail mysteriously on other machines");
 
   // ---- safety (borrowed: proximity exfil, escalation, §D-0 patterns) ----
   const scanText = body; // scripts content would need fetching; SKILL.md body first
@@ -415,11 +428,13 @@ async function fetchRaw(url) {
 
 function descriptionRegions(desc) {
   const d = String(desc || "").replace(/\s+/g, " ").trim();
-  const boundaryRe = /(?:do not use|don'?t use|not (?:for|when)|avoid (?:using|for))[:\s]+([\s\S]+)$/i;
-  const whenRe = /(?:use (?:this )?(?:when|for|it)|when the user|whenever|trigger on)[:\s]+?([\s\S]+?)(?=$|do not use|don'?t use|not (?:for|when)|avoid (?:using|for))/i;
+  // boundary + when patterns in English AND Chinese (live-calibrated on wecomcli-sheet:
+  // its when-clause starts with 用于, its boundary routes with 改用/使用 …)
+  const boundaryRe = /(?:do not use|don'?t use|not (?:for|when)|avoid (?:using|for)|改用|不适用|请?勿|避免)[:\s]*([\s\S]+)$/i;
+  const whenRe = /(?:use (?:this )?(?:when|for|it)|when the user|whenever|trigger(?:s)? on|用于|当用户|应使用(?:本)?技能|适用于|触发词?[:：]?)[:\s]*([\s\S]+?)(?=$|do not use|don'?t use|not (?:for|when)|avoid (?:using|for)|改用|不适用)/i;
   const boundaryM = boundaryRe.exec(d);
   const whenM = whenRe.exec(d);
-  const firstSentence = (d.split(/[.!?]/)[0] || "").trim();
+  const firstSentence = (d.split(/[.!?。！？]/)[0] || "").trim();
   return {
     trigger: new Set([...tokenize(whenM ? whenM[1] : ""), ...tokenize(firstSentence)]),
     boundary: new Set(tokenize(boundaryM ? boundaryM[1] : "")),
@@ -465,6 +480,16 @@ function cmdEvalInit(r, args) {
   out("next: refine the 20 queries by hand, then: node lint.js eval run <path-or-url> " + outFile);
 }
 
+// Chinese-majority queries: bigram filler dilutes the alignment ratio, so the
+// pass bar is lower (live-calibrated: 0.3 separates real trigger queries from
+// distractors where English 0.5 left every Chinese query failing)
+const zhRatio = (s) => {
+  const zh = (s.match(/[\u4e00-\u9fff]/g) || []).length;
+  const latin = (s.match(/[a-zA-Z0-9]/g) || []).length;
+  return zh / (zh + latin || 1);
+};
+const alignThreshold = (q) => (zhRatio(q) >= 0.3 ? 0.3 : 0.5);
+
 function cmdEvalRun(r, args) {
   const evalFile = args.find((a) => a.endsWith(".json"));
   if (!evalFile) die("eval run: eval JSON file required (see `eval init`)");
@@ -477,7 +502,7 @@ function cmdEvalRun(r, args) {
     const toks = tokenize(q).filter((t) => !t.startsWith("auto"));
     const hit = toks.filter((t) => r.regions.trigger.has(t)).length;
     const alignment = round2(hit / Math.max(1, toks.length));
-    const ok = toks.length > 0 && alignment >= 0.5;
+    const ok = toks.length > 0 && alignment >= alignThreshold(q);
     results.push({ cls: "should", q, ok, alignment });
     if (ok) passed++;
   }
@@ -486,12 +511,12 @@ function cmdEvalRun(r, args) {
     const boundaryHit = toks.some((t) => r.regions.boundary.has(t));
     const hit = toks.filter((t) => r.regions.trigger.has(t)).length;
     const alignment = round2(hit / Math.max(1, toks.length));
-    const ok = boundaryHit || alignment < 0.5;
+    const ok = boundaryHit || alignment < alignThreshold(q);
     results.push({ cls: "should_not", q, ok, alignment, boundaryHit });
     if (ok) passed++;
   }
   const rate = round2(passed / results.length);
-  const jsonOut = args.includes("--json");
+  const jsonOut = process.argv.includes("--json");
   if (jsonOut) {
     out(JSON.stringify({
       trigger_rate: rate,

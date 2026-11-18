@@ -1,0 +1,65 @@
+{
+  "id": "iifzx/bole/argus",
+  "name": "argus",
+  "source": "github",
+  "url": "https://github.com/iifzx/bole/tree/main/argus",
+  "description": "Skill scout & quality judge: finds skills for tasks and scores them star-free (static rubric + field reports) into the 相马经 ledger.",
+  "best_for": [
+    "skill-discovery",
+    "skill-evaluation",
+    "skill-scoring",
+    "skill-ledger",
+    "skill-search",
+    "相马"
+  ],
+  "popularity": {
+    "stars": null,
+    "installs": null,
+    "checked_at": "2026-11-19"
+  },
+  "static": {
+    "trigger": 4,
+    "structure": 5,
+    "actionability": 5,
+    "safety": 5,
+    "portability": 5,
+    "notes": [
+      "trigger: bilingual trigger phrases in description (帮我找一个能做X的skill / rate/audit / field report); trigger_eval rate 0.6 — Chinese phrase coverage partial",
+      "structure: 193-line body; heavy detail split into references/ (rubric, scoring, sources)",
+      "actionability: numbered phases with commands and JSON shapes; iron rules with why-lines; maintenance section",
+      "safety: §D-0 red lines enforced (cap 40); severity model; consensus rule for safety<=3",
+      "portability: standard frontmatter; zero-dependency Node >=18 scripts; no platform-locked paths"
+    ],
+    "safety_flags": [],
+    "evaluator": "session-2026-11-19",
+    "evaluated_at": "2026-11-19"
+  },
+  "field": {
+    "effectiveness": 0,
+    "efficiency": 0,
+    "reliability": 0,
+    "n_reports": 0
+  },
+  "conflict_events": [],
+  "final": 96,
+  "confidence": 0.3,
+  "history": [
+    {
+      "at": "2026-11-19",
+      "event": "static-eval",
+      "final": 96,
+      "confidence": 0.3,
+      "n_reports": 0,
+      "note": "by session-2026-11-19"
+    }
+  ],
+  "reports": [],
+  "updated": "2026-11-19",
+  "trigger_eval": {
+    "rate": 0.6,
+    "n_queries": 15,
+    "ran_at": "2026-11-19"
+  },
+  "content_hash": "sha256:d2a30a9f2d2ac1cfb4558ec176b7a8b992638adba82bda5c952c387922b90cd3",
+  "hash_checked_at": "2026-11-19"
+}

@@ -400,7 +400,7 @@ function cmdStatic(patchFile) {
   const isNew = rec === null;
   const target = rec || skeletonRecord(patch.id);
   target.static = st;
-  for (const k of ["url", "description", "best_for", "popularity"]) {
+  for (const k of ["url", "description", "best_for", "popularity", "trigger_eval"]) {
     if (patch[k] !== undefined) target[k] = patch[k];
   }
   if (target.source === "unknown" && patch.source && SOURCES.includes(patch.source)) target.source = patch.source;
