@@ -138,6 +138,13 @@
     color: var(--muted);
     font-size: 0.85rem;
   }
+  header { position: relative; }
+  .lang-toggle {
+    position: absolute; right: 0; top: 4px;
+    font: inherit; font-size: 0.8rem; padding: 4px 12px; border-radius: 999px;
+    border: 1px solid var(--border); background: transparent; color: var(--fg);
+    cursor: pointer;
+  }
   #catnav { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 4px; }
   #catnav button {
     font: inherit; font-size: 0.82rem; padding: 4px 12px; border-radius: 999px;
@@ -158,17 +165,18 @@
 <main>
   <header>
     <h1>伯乐 · Argus — 相马经 Ledger</h1>
-    <p class="subtitle">Skill quality, judged by real use — never by stars. 世有伯乐，然后有千里马。</p>
+    <p class="subtitle" id="subtitle">Skill quality, judged by real use — never by stars. 世有伯乐，然后有千里马。</p>
+    <button id="lang-toggle" class="lang-toggle">中文</button>
   </header>
 
   <p id="loading">Loading ledger index…</p>
   <div id="error" class="error" hidden></div>
 
   <section id="stats" class="stats" hidden>
-    <div class="stat"><div class="value" id="stat-total">–</div><div class="label">skills in ledger</div></div>
-    <div class="stat"><div class="value" id="stat-evaluated">–</div><div class="label">evaluated (final &gt; 0)</div></div>
-    <div class="stat"><div class="value" id="stat-pending">–</div><div class="label">pending</div></div>
-    <div class="stat"><div class="value" id="stat-confidence">–</div><div class="label">avg confidence of evaluated</div></div>
+    <div class="stat"><div class="value" id="stat-total">–</div><div class="label" id="stat-label-ledger">skills in ledger</div></div>
+    <div class="stat"><div class="value" id="stat-evaluated">–</div><div class="label" id="stat-label-evaluated">evaluated (final &gt; 0)</div></div>
+    <div class="stat"><div class="value" id="stat-pending">–</div><div class="label" id="stat-label-pending">pending</div></div>
+    <div class="stat"><div class="value" id="stat-confidence">–</div><div class="label" id="stat-label-confidence">avg confidence of evaluated</div></div>
   </section>
 
   <nav id="catnav" hidden></nav>
@@ -195,13 +203,13 @@
     <span><span class="swatch amber"></span>70–79</span>
     <span><span class="swatch orange"></span>60–69</span>
     <span><span class="swatch red"></span>&lt;60</span>
-    <span><span class="swatch grey"></span>0 = pending</span>
-    <span>pending = imported, awaiting rubric evaluation</span>
-    <span id="generated" class="muted"></span>
+    <span><span class="swatch grey"></span><span id="legend-pending0">0 = pending</span></span>
+    <span id="legend-pending-note">pending = imported, awaiting rubric evaluation</span>
+    <span id="generated" class="muted" data-stamp=""></span>
   </section>
 
   <footer>
-    <p>Scores are evidence-backed and star-free. Popularity is never a score. → <a href="https://github.com/iifzx/bole" target="_blank" rel="noopener">docs in the repo</a></p>
+    <p id="footer-text">Scores are evidence-backed and star-free. Popularity is never a score. → <a href="https://github.com/iifzx/bole" target="_blank" rel="noopener">docs in the repo</a></p>
   </footer>
 </main>
 
@@ -214,6 +222,76 @@
   var state = { key: "final", dir: -1, category: "all" };
   var skills = [];
 
+  // ------------------------------------------------------------- i18n ----
+  var I18N = {
+    zh: {
+      subtitle: "Skill 质量由真实使用裁决——绝不看 star。世有伯乐，然后有千里马。",
+      statLedger: "账本收录", statEvaluated: "已评分 (final > 0)", statPending: "待评估", statConf: "已评平均置信度",
+      thId: "Skill ID", thFinal: "综合分", thConf: "置信度", thReports: "实测数", thBest: "擅长领域", thUpdated: "更新",
+      provisional: "初评", usable: "可用", battle: "实战检验", pendingScore: "待评估",
+      groupTail: "个 skill · 平均分", groupEvaluated: "已评",
+      stale: "⚠ 上游已变更", staleTip: "上游 SKILL.md 在评分后发生变更——重评前置信度已减半",
+      dup: "⧉ 复刻自", dupTip: "与另一条账本记录内容逐字节相同",
+      legend0: "0 = 待评估", legendPending: "待评估 = 已收录，等待 rubric 评分",
+      generated: "索引生成于",
+      footer: "分数有证据支撑、与 star 无关——流行度永不入分。→ ",
+      docsRepo: "仓库文档",
+      loading: "正在加载相马经索引…",
+      errorTitle: "无法加载账本索引。",
+      errorFile: "如果你是从磁盘 (file://) 打开的本页，浏览器会拦截 fetch——请通过 HTTP 访问，或直接阅读",
+      langBtn: "English", htmlLang: "zh-CN"
+    },
+    en: {
+      subtitle: "Skill quality, judged by real use — never by stars. 世有伯乐，然后有千里马。",
+      statLedger: "skills in ledger", statEvaluated: "evaluated (final > 0)", statPending: "pending", statConf: "avg confidence of evaluated",
+      thId: "Skill ID", thFinal: "Final", thConf: "Confidence", thReports: "Reports", thBest: "Best for", thUpdated: "Updated",
+      provisional: "provisional", usable: "usable", battle: "battle-tested", pendingScore: "pending",
+      groupTail: " skills · avg final", groupEvaluated: " evaluated",
+      stale: "⚠ stale", staleTip: "Upstream SKILL.md changed since evaluation — confidence halved until re-evaluated",
+      dup: "⧉ dup of", dupTip: "Content-identical to another ledger entry",
+      legend0: "0 = pending", legendPending: "pending = imported, awaiting rubric evaluation",
+      generated: "index generated",
+      footer: "Scores are evidence-backed and star-free. Popularity is never a score. → ",
+      docsRepo: "docs in the repo",
+      loading: "Loading ledger index…",
+      errorTitle: "Could not load the ledger index.",
+      errorFile: "If you opened this page from disk (file://), the fetch is blocked by the browser — serve it over HTTP, or read the data directly in ",
+      langBtn: "中文", htmlLang: "en"
+    }
+  };
+  var ZH_CATS = {
+    "document-processing": "文档处理", "data-analysis": "数据分析", "browser-automation": "浏览器自动化",
+    "testing-qa": "测试 QA", "frontend-ui": "前端 UI", "backend-api": "后端 API",
+    "devops-cloud": "云与运维", "security": "安全", "writing-content": "写作内容",
+    "design-media": "设计媒体", "product-marketing": "增长营销", "meta-tooling": "元工具",
+    "other": "未分类"
+  };
+
+  function t(key) { return I18N[state.lang][key]; }
+  function catLabel(cat) {
+    if (state.lang === "zh") return ZH_CATS[cat] || cat;
+    return cat === "other" ? "uncategorized" : cat.replace(/-/g, " ");
+  }
+  function applyLang() {
+    var d = I18N[state.lang];
+    document.documentElement.lang = d.htmlLang;
+    $("subtitle").textContent = d.subtitle;
+    $("lang-toggle").textContent = d.langBtn;
+    $("loading").textContent = d.loading;
+    $("stat-label-ledger").textContent = d.statLedger;
+    $("stat-label-evaluated").textContent = d.statEvaluated;
+    $("stat-label-pending").textContent = d.statPending;
+    $("stat-label-confidence").textContent = d.statConf;
+    var thMap = { id: d.thId, final: d.thFinal, confidence: d.thConf, n_reports: d.thReports, best_for: d.thBest, updated: d.thUpdated };
+    var ths = document.querySelectorAll("#ledger th[data-key]");
+    for (var i = 0; i < ths.length; i++) ths[i].textContent = thMap[ths[i].getAttribute("data-key")] || "";
+    $("legend-pending0").textContent = d.legend0;
+    $("legend-pending-note").textContent = d.legendPending;
+    $("generated").textContent = d.generated + ($("generated").getAttribute("data-stamp") || "");
+    $("footer-text").innerHTML = d.footer + '<a href="https://github.com/iifzx/bole" target="_blank" rel="noopener">' + d.docsRepo + "</a>";
+    if (!$("table-wrap").hidden) { renderCatNav(); renderTable(); }
+  }
+
   function $(id) { return document.getElementById(id); }
 
   function esc(value) {
@@ -225,9 +303,9 @@
   function toNum(v) { var n = Number(v); return Number.isFinite(n) ? n : 0; }
 
   function confWord(c) {
-    if (c < 0.4) return "provisional";
-    if (c <= 0.7) return "usable";
-    return "battle-tested";
+    if (c < 0.4) return t("provisional");
+    if (c <= 0.7) return t("usable");
+    return t("battle");
   }
 
   function finalClass(final) {
@@ -283,11 +361,11 @@
       .map(function (k) { return '<span class="chip">' + esc(k) + "</span>"; })
       .join(" ");
     var finalCell = final === 0
-      ? '<span class="score grey">pending</span>'
+      ? '<span class="score grey">' + esc(t("pendingScore")) + "</span>"
       : '<span class="score ' + finalClass(final) + '">' + final + "</span>";
     var badges = "";
-    if (s.stale) badges += ' <span class="chip" title="Upstream SKILL.md changed since evaluation — confidence halved until re-evaluated">⚠ stale</span>';
-    if (s.duplicate_of) badges += ' <span class="chip" title="Content-identical to another ledger entry">⧉ dup of ' + esc(s.duplicate_of) + "</span>";
+    if (s.stale) badges += ' <span class="chip" title="' + esc(t("staleTip")) + '">' + esc(t("stale")) + "</span>";
+    if (s.duplicate_of) badges += ' <span class="chip" title="' + esc(t("dupTip")) + '">' + esc(t("dup")) + " " + esc(s.duplicate_of) + "</span>";
     return "<tr>" +
       '<td><a href="' + ownerUrl + '" target="_blank" rel="noopener">' + esc(s.id || "") + "</a>" + badges + "</td>" +
       '<td class="num">' + finalCell + "</td>" +
@@ -299,7 +377,6 @@
   }
 
   function catOf(s) { return s.category || "other"; }
-  function catLabel(cat) { return cat === "other" ? "uncategorized" : cat.replace(/-/g, " "); }
 
   function renderCatNav() {
     var counts = {};
@@ -344,8 +421,8 @@
         ? (evaluated.reduce(function (acc, s) { return acc + toNum(s.final); }, 0) / evaluated.length).toFixed(0)
         : "–";
       out.push('<tr class="cat-row"><td colspan="6">📂 ' + esc(catLabel(cat))
-        + '<span class="avg">' + group.length + " skills · avg final " + avg
-        + " · " + evaluated.length + " evaluated</span></td></tr>");
+        + '<span class="avg">' + group.length + " " + t("groupTail") + " " + avg
+        + " · " + t("groupEvaluated") + " " + evaluated.length + "</span></td></tr>");
       for (var r = 0; r < group.length; r++) out.push(rowHtml(group[r]));
     }
     return out.join("");
@@ -371,9 +448,9 @@
     box.hidden = false;
     var msg = err && err.message ? err.message : String(err);
     box.innerHTML =
-      "<strong>Could not load the ledger index.</strong><br>" +
+      "<strong>" + esc(t("errorTitle")) + "</strong><br>" +
       esc(msg) +
-      '<br>If you opened this page from disk (file://), the fetch is blocked by the browser — serve it over HTTP, or read the data directly in <a href="https://github.com/iifzx/bole/tree/main/argus/data">the repo</a>.';
+      "<br>" + esc(t("errorFile")) + ' <a href="https://github.com/iifzx/bole/tree/main/argus/data">' + esc(t("docsRepo")) + "</a>.";
   }
 
   function onHeaderClick(event) {
@@ -388,6 +465,18 @@
   }
 
   function init() {
+    var saved = null;
+    try { saved = localStorage.getItem("argus-lang"); } catch (e) { /* sandboxed */ }
+    state.lang = saved === "zh" || saved === "en"
+      ? saved
+      : ((navigator.language || "en").toLowerCase().indexOf("zh") === 0 ? "zh" : "en");
+    applyLang();
+    $("lang-toggle").addEventListener("click", function () {
+      state.lang = state.lang === "zh" ? "en" : "zh";
+      try { localStorage.setItem("argus-lang", state.lang); } catch (e) { /* sandboxed */ }
+      applyLang();
+    });
+
     var ths = document.querySelectorAll("#ledger th[data-key]");
     for (var i = 0; i < ths.length; i++) {
       ths[i].addEventListener("click", onHeaderClick);
@@ -406,7 +495,7 @@
         $("catnav").hidden = false;
         $("table-wrap").hidden = false;
         $("legend").hidden = false;
-        if (data.generated_at) $("generated").textContent = "index generated " + data.generated_at;
+        if (data.generated_at) { $("generated").setAttribute("data-stamp", " " + data.generated_at); $("generated").textContent = t("generated") + " " + data.generated_at; }
         renderStats();
         renderCatNav();
         renderTable();
