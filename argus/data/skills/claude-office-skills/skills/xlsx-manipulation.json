@@ -63,8 +63,9 @@
     }
   ],
   "reports": [],
-  "updated": "2026-11-18",
+  "updated": "2026-11-19",
   "content_hash": "sha256:754d8df9a75b287608503b9c25a2aa124ef6a3e9fa54d59a8cc63cb2e0acadd5",
   "hash_checked_at": "2026-11-18",
-  "hash_source_url": "https://raw.githubusercontent.com/claude-office-skills/skills/main/xlsx-manipulation/SKILL.md"
+  "hash_source_url": "https://raw.githubusercontent.com/claude-office-skills/skills/main/xlsx-manipulation/SKILL.md",
+  "category": "document-processing"
 }

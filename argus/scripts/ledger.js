@@ -19,6 +19,7 @@
 
 const fs = require("fs");
 const path = require("path");
+const { CATEGORIES } = require("./taxonomy");
 
 const DATA_DIR = path.resolve(__dirname, "..", "data");
 const SKILLS_DIR = path.join(DATA_DIR, "skills");
@@ -220,6 +221,9 @@ function validateRecord(rec, where) {
     assertSafeId(rec.duplicate_of, `${where}: duplicate_of`);
     assert(rec.duplicate_of !== rec.id, `${where}: a record cannot be its own duplicate`);
   }
+  if (rec.category !== undefined && rec.category !== null) {
+    assert(CATEGORIES.includes(rec.category), `${where}: category must be one of ${CATEGORIES.join("|")}`);
+  }
   if (rec.trigger_eval !== undefined) {
     const t = rec.trigger_eval;
     assert(t && typeof t === "object" && !Array.isArray(t), `${where}: trigger_eval must be an object`);
@@ -400,7 +404,7 @@ function cmdStatic(patchFile) {
   const isNew = rec === null;
   const target = rec || skeletonRecord(patch.id);
   target.static = st;
-  for (const k of ["url", "description", "best_for", "popularity", "trigger_eval"]) {
+  for (const k of ["url", "description", "best_for", "popularity", "trigger_eval", "category"]) {
     if (patch[k] !== undefined) target[k] = patch[k];
   }
   if (target.source === "unknown" && patch.source && SOURCES.includes(patch.source)) target.source = patch.source;
@@ -459,6 +463,7 @@ function buildIndex(check) {
       updated: r.updated,
       stale: !!r.stale,
       duplicate_of: r.duplicate_of || null,
+      category: r.category || null,
     })),
   };
   const serialized = JSON.stringify(index, null, 2) + "\n";

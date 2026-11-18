@@ -1,0 +1,36 @@
+{
+  "id": "addyosmani/agent-skills/security-and-hardening",
+  "name": "security-and-hardening",
+  "source": "skillsmp",
+  "url": "https://github.com/addyosmani/agent-skills/tree/main/skills/security-and-hardening",
+  "description": "Hardens code against vulnerabilities. Use when auditing an input handler for vulnerabilities, when handling user input, authentication, data storage, or external integrations, or when checking a login flow is safe against the OWASP Top Ten. Use when building any feature that accepts untrusted data, manages user sessions or session cookies, or interacts with third-party services. Use when auditing dependencies for known vulnerabilities, triaging package-manager audit findings, or assessing supply-chain risk in a new package. Use when personal data or privacy compliance (GDPR, CCPA) is involved.",
+  "best_for": [],
+  "category": "security",
+  "popularity": {
+    "stars": 116041,
+    "installs": null,
+    "checked_at": "2026-11-19"
+  },
+  "static": null,
+  "field": {
+    "effectiveness": 0,
+    "efficiency": 0,
+    "reliability": 0,
+    "n_reports": 0
+  },
+  "conflict_events": [],
+  "final": 0,
+  "confidence": 0,
+  "history": [
+    {
+      "at": "2026-11-19",
+      "event": "seed",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "note": "imported from skillsmp catalog — pending static evaluation"
+    }
+  ],
+  "reports": [],
+  "updated": "2026-11-19"
+}

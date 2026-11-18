@@ -1,0 +1,36 @@
+{
+  "id": "modelcontextprotocol/servers/security-advisory",
+  "name": "security-advisory",
+  "source": "skillsmp",
+  "url": "https://github.com/modelcontextprotocol/servers/tree/main/.claude/skills/security-advisory",
+  "description": "Take a privately reported vulnerability through this repo's security advisory flow: board it as a draft card, check whether the code is this repo's server or the SDK underneath, accept or reject, fix it in the private fork, release, publish, then turn the card into public tracking. Use when a vulnerability is reported privately; when deciding whether an advisory is ours to fix or belongs to an SDK; when looking up or creating its private fork; when answering a reporter; or when a GHSA-titled board card needs handling.",
+  "best_for": [],
+  "category": "security",
+  "popularity": {
+    "stars": 91939,
+    "installs": null,
+    "checked_at": "2026-11-19"
+  },
+  "static": null,
+  "field": {
+    "effectiveness": 0,
+    "efficiency": 0,
+    "reliability": 0,
+    "n_reports": 0
+  },
+  "conflict_events": [],
+  "final": 0,
+  "confidence": 0,
+  "history": [
+    {
+      "at": "2026-11-19",
+      "event": "seed",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "note": "imported from skillsmp catalog — pending static evaluation"
+    }
+  ],
+  "reports": [],
+  "updated": "2026-11-19"
+}

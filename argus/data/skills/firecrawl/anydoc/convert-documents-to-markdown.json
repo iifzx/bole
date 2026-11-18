@@ -82,8 +82,9 @@
     }
   ],
   "reports": [],
-  "updated": "2026-11-18",
+  "updated": "2026-11-19",
   "content_hash": "sha256:04cc0f3587ec792c83e4af942f88594205f360cddd540a3d869e28c58292bc6a",
   "hash_checked_at": "2026-11-18",
-  "hash_source_url": "https://raw.githubusercontent.com/firecrawl/anydoc/main/skills/convert-documents-to-markdown/SKILL.md"
+  "hash_source_url": "https://raw.githubusercontent.com/firecrawl/anydoc/main/skills/convert-documents-to-markdown/SKILL.md",
+  "category": "document-processing"
 }

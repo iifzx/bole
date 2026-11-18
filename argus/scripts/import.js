@@ -26,6 +26,7 @@
 const fs = require("fs");
 const path = require("path");
 const { spawnSync } = require("child_process");
+const { normalizeCategory, classify } = require("./taxonomy");
 
 const DATA_DIR = path.resolve(__dirname, "..", "data");
 const SKILLS_DIR = path.join(DATA_DIR, "skills");
@@ -45,7 +46,8 @@ function assertSafeSegment(seg, what) {
   }
 }
 
-function skeleton(id, { source, url, description, popularity }) {
+function skeleton(id, { source, url, description, popularity, category }) {
+  const cat = normalizeCategory(category) || classify({ id, name: id.split("/").pop(), description, bestFor: [] });
   return {
     id,
     name: id.split("/").pop(),
@@ -53,6 +55,7 @@ function skeleton(id, { source, url, description, popularity }) {
     url: url || null,
     description: (description || "").replace(/\s+/g, " ").trim(),
     best_for: [],
+    category: cat,
     popularity: { stars: popularity?.stars ?? null, installs: popularity?.installs ?? null, checked_at: today() },
     static: null,
     field: { effectiveness: 0, efficiency: 0, reliability: 0, n_reports: 0 },
@@ -72,6 +75,7 @@ function upsert(rec) {
     cur.popularity = { ...rec.popularity, stars: rec.popularity.stars ?? cur.popularity?.stars ?? null };
     if (!cur.description && rec.description) cur.description = rec.description;
     if (!cur.url && rec.url) cur.url = rec.url;
+    if (!cur.category && rec.category) cur.category = rec.category;
     cur.updated = today();
     fs.writeFileSync(file, JSON.stringify(cur, null, 2) + "\n");
     return "refreshed";
@@ -96,10 +100,16 @@ function parseGithubUrl(u) {
 async function importSkillsmp(args) {
   const get = (k) => { const i = args.indexOf(k); return i >= 0 ? args[i + 1] : null; };
   const creator = get("--creator");
-  if (!creator) throw new Fail("skillsmp: --creator <name> required");
-  const limit = Math.min(Number(get("--limit") || 20), 20);
+  const q = get("--q");
+  if (!creator && !q) throw new Fail("skillsmp: --creator <name> or --q <keyword> required");
+  const limit = Math.min(Number(get("--limit") || 20), 50);
   const page = Number(get("--page") || 1);
-  const url = `https://skillsmp.com/api/v1/skills/search?creator=${encodeURIComponent(creator)}&limit=${limit}&page=${page}`;
+  const category = get("--category") || null;
+  const params = new URLSearchParams({ limit: String(limit), page: String(page) });
+  if (creator) params.set("creator", creator);
+  if (q) params.set("q", q);
+  if (params.get("sortBy") !== "relevance" && !q) params.set("sortBy", "stars");
+  const url = `https://skillsmp.com/api/v1/skills/search?${params.toString()}`;
   out(`GET ${url}`);
   const res = await fetch(url, { signal: AbortSignal.timeout(20000) });
   if (!res.ok) throw new Fail(`SkillsMP returned ${res.status} (anonymous quota: 50 req/day, 10/min)`);
@@ -121,6 +131,7 @@ async function importSkillsmp(args) {
       url: s.githubUrl,
       description: s.description,
       popularity: { stars: typeof s.stars === "number" ? s.stars : null },
+      category: category || (q ? classify({ id, description: s.description }) : null),
     }));
     status === "imported" ? imported++ : refreshed++;
     out(`  ${status.padEnd(9)} ${id}${s.stars ? ` (stars ${s.stars})` : ""}`);
@@ -148,6 +159,9 @@ function importSkillsSh(keywords) {
     top = Number(keywords[topIdx + 1]);
     keywords.splice(topIdx, 2);
   }
+  const catIdx = keywords.indexOf("--category");
+  const category = catIdx >= 0 ? keywords[catIdx + 1] : null;
+  if (catIdx >= 0) keywords.splice(catIdx, 2);
   let imported = 0, refreshed = 0;
   for (const kw of keywords) {
     out(`npx skills find "${kw}" (top ${top} by installs)`);
@@ -173,6 +187,7 @@ function importSkillsSh(keywords) {
         url: `https://skills.sh/${f.owner}/${f.repo}/${f.skill}`,
         description: "",
         popularity: { installs: f.installs },
+        category: category || classify({ id }),
       }));
       status === "imported" ? imported++ : refreshed++;
       count++;
@@ -208,8 +223,8 @@ async function main(argv) {
       case "skills-sh": importSkillsSh(rest); break;
       case "pending": cmdPending(); return;
       default:
-        out(`usage: import.js skillsmp --creator <name> [--limit 20] [--page 1]
-       import.js skills-sh <keyword> [keyword...] [--top 8]
+        out(`usage: import.js skillsmp --creator <name> | --q <keyword> [--limit 20] [--page 1] [--category <cat>]
+       import.js skills-sh <keyword> [keyword...] [--top 8] [--category <cat>]
        import.js pending`);
         process.exit(cmd === undefined ? 0 : 2);
     }

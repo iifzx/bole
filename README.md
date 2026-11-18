@@ -61,6 +61,8 @@ star / 安装量 → 只进 popularity 元数据，永不进分数
 
 **内容指纹防腐**：每次评分都把该 skill 的 SKILL.md 内容哈希（`content_hash`）钉进记录。`watch.js` 每周比对上游——**上游一改，置信度自动减半**，分数永远不替你没见过的内容背书。安全发现带 **severity 五级**（info→critical，借自 Cisco skill-scanner），high+ 才触发红线封顶 40 分。
 
+**领域分类 + 生态数据**：每条记录带任务领域（12 类：文档处理 / 数据分析 / 浏览器自动化 / 测试 QA / 前端 UI / 后端 API / 云与运维 / 安全 / 写作内容 / 设计媒体 / 增长营销 / 元工具），由 [`scripts/taxonomy.js`](argus/scripts/taxonomy.js) 的机械分类器在导入时打标。榜单按领域分组展示；目录覆盖来自 SkillsMP 关键词搜索与 skills.sh 安装量排行——**借覆盖与元数据，永不借排名**（导入一律 pending 待评）。
+
 **成长飞轮**：
 
 ```mermaid

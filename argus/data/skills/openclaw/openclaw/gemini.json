@@ -1,0 +1,36 @@
+{
+  "id": "openclaw/openclaw/gemini",
+  "name": "gemini",
+  "source": "skillsmp",
+  "url": "https://github.com/openclaw/openclaw/tree/main/skills/gemini",
+  "description": "Gemini CLI one-shot prompts, summaries, generation, skills, hooks, MCP, or Gemma routing.",
+  "best_for": [],
+  "category": "meta-tooling",
+  "popularity": {
+    "stars": 394354,
+    "installs": null,
+    "checked_at": "2026-11-19"
+  },
+  "static": null,
+  "field": {
+    "effectiveness": 0,
+    "efficiency": 0,
+    "reliability": 0,
+    "n_reports": 0
+  },
+  "conflict_events": [],
+  "final": 0,
+  "confidence": 0,
+  "history": [
+    {
+      "at": "2026-11-19",
+      "event": "seed",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "note": "imported from skillsmp catalog — pending static evaluation"
+    }
+  ],
+  "reports": [],
+  "updated": "2026-11-19"
+}

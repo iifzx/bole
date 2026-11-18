@@ -1,0 +1,36 @@
+{
+  "id": "affaan-m/ECC/django-security",
+  "name": "django-security",
+  "source": "skillsmp",
+  "url": "https://github.com/affaan-m/ECC/tree/main/docs/ja-JP/skills/django-security",
+  "description": "Django security best practices, authentication, authorization, CSRF protection, SQL injection prevention, XSS prevention, and secure deployment configurations.",
+  "best_for": [],
+  "category": "data-analysis",
+  "popularity": {
+    "stars": 301144,
+    "installs": null,
+    "checked_at": "2026-11-19"
+  },
+  "static": null,
+  "field": {
+    "effectiveness": 0,
+    "efficiency": 0,
+    "reliability": 0,
+    "n_reports": 0
+  },
+  "conflict_events": [],
+  "final": 0,
+  "confidence": 0,
+  "history": [
+    {
+      "at": "2026-11-19",
+      "event": "seed",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "note": "imported from skillsmp catalog — pending static evaluation"
+    }
+  ],
+  "reports": [],
+  "updated": "2026-11-19"
+}

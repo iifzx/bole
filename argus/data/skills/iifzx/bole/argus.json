@@ -64,12 +64,13 @@
   "reports": [
     "2026-11-18T16-13-58.json"
   ],
-  "updated": "2026-11-18",
+  "updated": "2026-11-19",
   "trigger_eval": {
     "rate": 0.6,
     "n_queries": 15,
     "ran_at": "2026-11-19"
   },
   "content_hash": "sha256:d2a30a9f2d2ac1cfb4558ec176b7a8b992638adba82bda5c952c387922b90cd3",
-  "hash_checked_at": "2026-11-19"
+  "hash_checked_at": "2026-11-19",
+  "category": "meta-tooling"
 }

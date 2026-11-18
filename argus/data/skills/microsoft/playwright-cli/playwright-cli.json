@@ -76,8 +76,9 @@
     }
   ],
   "reports": [],
-  "updated": "2026-11-18",
+  "updated": "2026-11-19",
   "content_hash": "sha256:b07a6cbe4e5b638046fe0b9df0e84783cb9899f0aed3db1eef915601c3260a64",
   "hash_checked_at": "2026-11-18",
-  "hash_source_url": "https://raw.githubusercontent.com/microsoft/playwright-cli/main/skills/playwright-cli/SKILL.md"
+  "hash_source_url": "https://raw.githubusercontent.com/microsoft/playwright-cli/main/skills/playwright-cli/SKILL.md",
+  "category": "browser-automation"
 }

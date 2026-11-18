@@ -1,0 +1,36 @@
+{
+  "id": "koala73/worldmonitor/scan-cyber-threats",
+  "name": "scan-cyber-threats",
+  "source": "skillsmp",
+  "url": "https://github.com/koala73/worldmonitor/tree/main/public/.well-known/agent-skills/scan-cyber-threats",
+  "description": "Retrieve active cyber-threat intelligence — malware IOCs, C2 infrastructure, and CISA known-exploited vulnerabilities — filterable by type, source, and severity. Use when the user asks about current cyber threats, IOCs, or actively exploited CVEs.",
+  "best_for": [],
+  "category": "security",
+  "popularity": {
+    "stars": 90504,
+    "installs": null,
+    "checked_at": "2026-11-19"
+  },
+  "static": null,
+  "field": {
+    "effectiveness": 0,
+    "efficiency": 0,
+    "reliability": 0,
+    "n_reports": 0
+  },
+  "conflict_events": [],
+  "final": 0,
+  "confidence": 0,
+  "history": [
+    {
+      "at": "2026-11-19",
+      "event": "seed",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "note": "imported from skillsmp catalog — pending static evaluation"
+    }
+  ],
+  "reports": [],
+  "updated": "2026-11-19"
+}

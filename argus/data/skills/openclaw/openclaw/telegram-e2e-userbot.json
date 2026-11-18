@@ -1,0 +1,36 @@
+{
+  "id": "openclaw/openclaw/telegram-e2e-userbot",
+  "name": "telegram-e2e-userbot",
+  "source": "skillsmp",
+  "url": "https://github.com/openclaw/openclaw/tree/main/.agents/skills/telegram-e2e-userbot",
+  "description": "Prove user-visible OpenClaw Telegram behavior on Telegram's Test Server with Convex-leased team credentials; drive real-user turns and record messages, edits, deletions, reactions, typing, or rich content.",
+  "best_for": [],
+  "category": "frontend-ui",
+  "popularity": {
+    "stars": 394354,
+    "installs": null,
+    "checked_at": "2026-11-19"
+  },
+  "static": null,
+  "field": {
+    "effectiveness": 0,
+    "efficiency": 0,
+    "reliability": 0,
+    "n_reports": 0
+  },
+  "conflict_events": [],
+  "final": 0,
+  "confidence": 0,
+  "history": [
+    {
+      "at": "2026-11-19",
+      "event": "seed",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "note": "imported from skillsmp catalog — pending static evaluation"
+    }
+  ],
+  "reports": [],
+  "updated": "2026-11-19"
+}

@@ -80,9 +80,10 @@
     "2026-11-10T09-30-00.json",
     "2026-11-14T16-20-00.json"
   ],
-  "updated": "2026-11-18",
+  "updated": "2026-11-19",
   "conflict_events": [],
   "content_hash": "sha256:d1c7caf5f35eb7d37877dd7fc33a095037be2b34fb5d2f7f4d43bde3165bb4ee",
   "hash_checked_at": "2026-11-18",
-  "hash_source_url": "https://raw.githubusercontent.com/anthropics/skills/main/skills/pdf/SKILL.md"
+  "hash_source_url": "https://raw.githubusercontent.com/anthropics/skills/main/skills/pdf/SKILL.md",
+  "category": "document-processing"
 }

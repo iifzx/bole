@@ -1,0 +1,36 @@
+{
+  "id": "affaan-m/ECC/seo",
+  "name": "seo",
+  "source": "skillsmp",
+  "url": "https://github.com/affaan-m/ECC/tree/main/docs/ja-JP/skills/seo",
+  "description": "テクニカル SEO、オンページ最適化、構造化データ、Core Web Vitals、およびコンテンツ戦略にわたる SEO 改善の監査、計画、実施。ユーザーが検索可視性の向上、SEO 修正、スキーママークアップ、サイトマップ/robots の作業、またはキーワードマッピングを希望する場合に使用します。",
+  "best_for": [],
+  "category": "writing-content",
+  "popularity": {
+    "stars": 301144,
+    "installs": null,
+    "checked_at": "2026-11-19"
+  },
+  "static": null,
+  "field": {
+    "effectiveness": 0,
+    "efficiency": 0,
+    "reliability": 0,
+    "n_reports": 0
+  },
+  "conflict_events": [],
+  "final": 0,
+  "confidence": 0,
+  "history": [
+    {
+      "at": "2026-11-19",
+      "event": "seed",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "note": "imported from skillsmp catalog — pending static evaluation"
+    }
+  ],
+  "reports": [],
+  "updated": "2026-11-19"
+}

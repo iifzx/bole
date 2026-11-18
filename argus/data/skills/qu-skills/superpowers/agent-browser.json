@@ -1,0 +1,36 @@
+{
+  "id": "qu-skills/superpowers/agent-browser",
+  "name": "agent-browser",
+  "source": "skills.sh",
+  "url": "https://skills.sh/qu-skills/superpowers/agent-browser",
+  "description": "",
+  "best_for": [],
+  "category": "browser-automation",
+  "popularity": {
+    "stars": null,
+    "installs": 143800,
+    "checked_at": "2026-11-19"
+  },
+  "static": null,
+  "field": {
+    "effectiveness": 0,
+    "efficiency": 0,
+    "reliability": 0,
+    "n_reports": 0
+  },
+  "conflict_events": [],
+  "final": 0,
+  "confidence": 0,
+  "history": [
+    {
+      "at": "2026-11-19",
+      "event": "seed",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "note": "imported from skills.sh catalog — pending static evaluation"
+    }
+  ],
+  "reports": [],
+  "updated": "2026-11-19"
+}

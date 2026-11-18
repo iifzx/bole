@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "generated_at": "2026-11-19T00:21:38",
-  "count": 19,
+  "generated_at": "2026-11-19T00:37:11",
+  "count": 80,
   "skills": [
     {
       "id": "101-skills/superpowers/agent-browser",
@@ -10,9 +10,250 @@
       "confidence": 0.3,
       "n_reports": 0,
       "best_for": [],
-      "updated": "2026-11-18",
+      "updated": "2026-11-19",
       "stale": false,
-      "duplicate_of": null
+      "duplicate_of": null,
+      "category": "browser-automation"
+    },
+    {
+      "id": "101-skills/superpowers/web-search",
+      "name": "web-search",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "browser-automation"
+    },
+    {
+      "id": "addyosmani/agent-skills/security-and-hardening",
+      "name": "security-and-hardening",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "security"
+    },
+    {
+      "id": "affaan-m/ECC/data-scraper-agent",
+      "name": "data-scraper-agent",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "backend-api"
+    },
+    {
+      "id": "affaan-m/ECC/django-security",
+      "name": "django-security",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "data-analysis"
+    },
+    {
+      "id": "affaan-m/ECC/docker-patterns",
+      "name": "docker-patterns",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "devops-cloud"
+    },
+    {
+      "id": "affaan-m/ECC/fal-ai-media",
+      "name": "fal-ai-media",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "design-media"
+    },
+    {
+      "id": "affaan-m/ECC/marketing-campaign",
+      "name": "marketing-campaign",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "product-marketing"
+    },
+    {
+      "id": "affaan-m/ECC/mcp-server-patterns",
+      "name": "mcp-server-patterns",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "meta-tooling"
+    },
+    {
+      "id": "affaan-m/ECC/mybatis-patterns",
+      "name": "mybatis-patterns",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "data-analysis"
+    },
+    {
+      "id": "affaan-m/ECC/osint-investigation",
+      "name": "osint-investigation",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "design-media"
+    },
+    {
+      "id": "affaan-m/ECC/postgres-patterns",
+      "name": "postgres-patterns",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "backend-api"
+    },
+    {
+      "id": "affaan-m/ECC/react-native-patterns",
+      "name": "react-native-patterns",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "frontend-ui"
+    },
+    {
+      "id": "affaan-m/ECC/react-patterns",
+      "name": "react-patterns",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "frontend-ui"
+    },
+    {
+      "id": "affaan-m/ECC/react-performance",
+      "name": "react-performance",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "frontend-ui"
+    },
+    {
+      "id": "affaan-m/ECC/react-testing",
+      "name": "react-testing",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "frontend-ui"
+    },
+    {
+      "id": "affaan-m/ECC/security-bounty-hunter",
+      "name": "security-bounty-hunter",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "security"
+    },
+    {
+      "id": "affaan-m/ECC/security-scan",
+      "name": "security-scan",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "security"
+    },
+    {
+      "id": "affaan-m/ECC/seo",
+      "name": "seo",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "writing-content"
+    },
+    {
+      "id": "affaan-m/ECC/tasteforge-video",
+      "name": "tasteforge-video",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "design-media"
+    },
+    {
+      "id": "affaan-m/ECC/visa-doc-translate",
+      "name": "visa-doc-translate",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "design-media"
     },
     {
       "id": "affaan-m/ecc/nutrient-document-processing",
@@ -21,9 +262,22 @@
       "confidence": 0.3,
       "n_reports": 0,
       "best_for": [],
-      "updated": "2026-11-18",
+      "updated": "2026-11-19",
       "stale": false,
-      "duplicate_of": null
+      "duplicate_of": null,
+      "category": "document-processing"
+    },
+    {
+      "id": "antfu/skills/vitest",
+      "name": "vitest",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "testing-qa"
     },
     {
       "id": "anthropics/skills/academy-guide",
@@ -32,9 +286,10 @@
       "confidence": 0.3,
       "n_reports": 0,
       "best_for": [],
-      "updated": "2026-11-18",
+      "updated": "2026-11-19",
       "stale": false,
-      "duplicate_of": null
+      "duplicate_of": null,
+      "category": "writing-content"
     },
     {
       "id": "anthropics/skills/algorithmic-art",
@@ -43,9 +298,10 @@
       "confidence": 0.3,
       "n_reports": 0,
       "best_for": [],
-      "updated": "2026-11-18",
+      "updated": "2026-11-19",
       "stale": false,
-      "duplicate_of": null
+      "duplicate_of": null,
+      "category": "design-media"
     },
     {
       "id": "anthropics/skills/brand-guidelines",
@@ -54,9 +310,10 @@
       "confidence": 0.3,
       "n_reports": 0,
       "best_for": [],
-      "updated": "2026-11-18",
+      "updated": "2026-11-19",
       "stale": false,
-      "duplicate_of": null
+      "duplicate_of": null,
+      "category": "design-media"
     },
     {
       "id": "anthropics/skills/canvas-design",
@@ -65,9 +322,10 @@
       "confidence": 0.3,
       "n_reports": 0,
       "best_for": [],
-      "updated": "2026-11-18",
+      "updated": "2026-11-19",
       "stale": false,
-      "duplicate_of": null
+      "duplicate_of": null,
+      "category": "design-media"
     },
     {
       "id": "anthropics/skills/claude-api",
@@ -76,9 +334,10 @@
       "confidence": 0.3,
       "n_reports": 0,
       "best_for": [],
-      "updated": "2026-11-18",
+      "updated": "2026-11-19",
       "stale": false,
-      "duplicate_of": null
+      "duplicate_of": null,
+      "category": "backend-api"
     },
     {
       "id": "anthropics/skills/docx",
@@ -93,9 +352,10 @@
         "track-changes",
         "office"
       ],
-      "updated": "2026-11-18",
+      "updated": "2026-11-19",
       "stale": false,
-      "duplicate_of": null
+      "duplicate_of": null,
+      "category": "document-processing"
     },
     {
       "id": "anthropics/skills/pdf",
@@ -111,9 +371,10 @@
         "table-extraction",
         "document-processing"
       ],
-      "updated": "2026-11-18",
+      "updated": "2026-11-19",
       "stale": false,
-      "duplicate_of": null
+      "duplicate_of": null,
+      "category": "document-processing"
     },
     {
       "id": "anthropics/skills/pptx",
@@ -128,9 +389,10 @@
         "powerpoint",
         "deck"
       ],
-      "updated": "2026-11-18",
+      "updated": "2026-11-19",
       "stale": false,
-      "duplicate_of": null
+      "duplicate_of": null,
+      "category": "document-processing"
     },
     {
       "id": "anthropics/skills/webapp-testing",
@@ -139,9 +401,10 @@
       "confidence": 0.3,
       "n_reports": 0,
       "best_for": [],
-      "updated": "2026-11-18",
+      "updated": "2026-11-19",
       "stale": false,
-      "duplicate_of": null
+      "duplicate_of": null,
+      "category": "testing-qa"
     },
     {
       "id": "anthropics/skills/xlsx",
@@ -150,9 +413,10 @@
       "confidence": 0.3,
       "n_reports": 0,
       "best_for": [],
-      "updated": "2026-11-18",
+      "updated": "2026-11-19",
       "stale": false,
-      "duplicate_of": null
+      "duplicate_of": null,
+      "category": "document-processing"
     },
     {
       "id": "antibrow/anti-detect-browser-skills/anti-detect-browser",
@@ -161,9 +425,22 @@
       "confidence": 0.3,
       "n_reports": 0,
       "best_for": [],
-      "updated": "2026-11-18",
+      "updated": "2026-11-19",
       "stale": false,
-      "duplicate_of": null
+      "duplicate_of": null,
+      "category": "browser-automation"
+    },
+    {
+      "id": "claude-office-skills/skills/excel-automation",
+      "name": "excel-automation",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "document-processing"
     },
     {
       "id": "claude-office-skills/skills/xlsx-manipulation",
@@ -172,9 +449,22 @@
       "confidence": 0.3,
       "n_reports": 0,
       "best_for": [],
-      "updated": "2026-11-18",
+      "updated": "2026-11-19",
       "stale": false,
-      "duplicate_of": null
+      "duplicate_of": null,
+      "category": "document-processing"
+    },
+    {
+      "id": "deepseek-ai/deepseek-harness/dsh-pre-push-checks",
+      "name": "dsh-pre-push-checks",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "product-marketing"
     },
     {
       "id": "firecrawl/anydoc/convert-documents-to-markdown",
@@ -183,9 +473,22 @@
       "confidence": 0.3,
       "n_reports": 0,
       "best_for": [],
-      "updated": "2026-11-18",
+      "updated": "2026-11-19",
       "stale": false,
-      "duplicate_of": null
+      "duplicate_of": null,
+      "category": "document-processing"
+    },
+    {
+      "id": "harry0703/MoneyPrinterTurbo/skill",
+      "name": "skill",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "product-marketing"
     },
     {
       "id": "iifzx/bole/argus",
@@ -201,9 +504,58 @@
         "skill-search",
         "相马"
       ],
-      "updated": "2026-11-18",
+      "updated": "2026-11-19",
       "stale": false,
-      "duplicate_of": null
+      "duplicate_of": null,
+      "category": "meta-tooling"
+    },
+    {
+      "id": "koala73/worldmonitor/scan-cyber-threats",
+      "name": "scan-cyber-threats",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "security"
+    },
+    {
+      "id": "larksuite/cli/lark-drive",
+      "name": "lark-drive",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "document-processing"
+    },
+    {
+      "id": "larksuite/cli/lark-sheets",
+      "name": "lark-sheets",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "document-processing"
+    },
+    {
+      "id": "lobehub/lobehub/split-micro-app",
+      "name": "split-micro-app",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "writing-content"
     },
     {
       "id": "magentosh/superpowers/agent-browser",
@@ -212,9 +564,46 @@
       "confidence": 0.3,
       "n_reports": 0,
       "best_for": [],
-      "updated": "2026-11-18",
+      "updated": "2026-11-19",
       "stale": false,
-      "duplicate_of": "101-skills/superpowers/agent-browser"
+      "duplicate_of": "101-skills/superpowers/agent-browser",
+      "category": "browser-automation"
+    },
+    {
+      "id": "mattpocock/skills/code-review",
+      "name": "code-review",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "testing-qa"
+    },
+    {
+      "id": "mattpocock/skills/setup-ts-deep-modules",
+      "name": "setup-ts-deep-modules",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "frontend-ui"
+    },
+    {
+      "id": "mattpocock/skills/tdd",
+      "name": "tdd",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "testing-qa"
     },
     {
       "id": "microsoft/playwright-cli/playwright-cli",
@@ -223,9 +612,346 @@
       "confidence": 0.3,
       "n_reports": 0,
       "best_for": [],
-      "updated": "2026-11-18",
+      "updated": "2026-11-19",
       "stale": false,
-      "duplicate_of": null
+      "duplicate_of": null,
+      "category": "browser-automation"
+    },
+    {
+      "id": "modelcontextprotocol/servers/security-advisory",
+      "name": "security-advisory",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "security"
+    },
+    {
+      "id": "morluto/rea/rea-tool-design",
+      "name": "rea-tool-design",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "meta-tooling"
+    },
+    {
+      "id": "nextlevelbuilder/ui-ux-pro-max-skill/brand",
+      "name": "brand",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "product-marketing"
+    },
+    {
+      "id": "nexu-io/open-design/email-marketing",
+      "name": "email-marketing",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "product-marketing"
+    },
+    {
+      "id": "nexu-io/open-design/marketing-psychology",
+      "name": "marketing-psychology",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "product-marketing"
+    },
+    {
+      "id": "nexu-io/open-design/screenshots-marketing",
+      "name": "screenshots-marketing",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "product-marketing"
+    },
+    {
+      "id": "nodejs/node/v8-poc-classification",
+      "name": "v8-poc-classification",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "security"
+    },
+    {
+      "id": "openclaw/openclaw/cloud-image-bake",
+      "name": "cloud-image-bake",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "design-media"
+    },
+    {
+      "id": "openclaw/openclaw/gemini",
+      "name": "gemini",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "meta-tooling"
+    },
+    {
+      "id": "openclaw/openclaw/graincrawl",
+      "name": "graincrawl",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "data-analysis"
+    },
+    {
+      "id": "openclaw/openclaw/imsg",
+      "name": "imsg",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "frontend-ui"
+    },
+    {
+      "id": "openclaw/openclaw/mcporter",
+      "name": "mcporter",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "meta-tooling"
+    },
+    {
+      "id": "openclaw/openclaw/meme-maker",
+      "name": "meme-maker",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "design-media"
+    },
+    {
+      "id": "openclaw/openclaw/notcrawl",
+      "name": "notcrawl",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "data-analysis"
+    },
+    {
+      "id": "openclaw/openclaw/openclaw-docker-e2e-authoring",
+      "name": "openclaw-docker-e2e-authoring",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "devops-cloud"
+    },
+    {
+      "id": "openclaw/openclaw/openclaw-testing",
+      "name": "openclaw-testing",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "devops-cloud"
+    },
+    {
+      "id": "openclaw/openclaw/release-openclaw-plugin-testing",
+      "name": "release-openclaw-plugin-testing",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "devops-cloud"
+    },
+    {
+      "id": "openclaw/openclaw/slacrawl",
+      "name": "slacrawl",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "data-analysis"
+    },
+    {
+      "id": "openclaw/openclaw/telegram-e2e-userbot",
+      "name": "telegram-e2e-userbot",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "frontend-ui"
+    },
+    {
+      "id": "qu-skills/superpowers/agent-browser",
+      "name": "agent-browser",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "browser-automation"
+    },
+    {
+      "id": "riekelt/principal-engineer/writing-unit-tests",
+      "name": "writing-unit-tests",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "testing-qa"
+    },
+    {
+      "id": "ruvnet/ruflo/security-audit",
+      "name": "security-audit",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "security"
+    },
+    {
+      "id": "samber/cc-skills-golang/golang-cli",
+      "name": "golang-cli",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "testing-qa"
+    },
+    {
+      "id": "skills-shell/superpowers/agent-browser",
+      "name": "agent-browser",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "browser-automation"
+    },
+    {
+      "id": "thedaviddias/Front-End-Checklist/meta-title",
+      "name": "meta-title",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "writing-content"
+    },
+    {
+      "id": "thedaviddias/Front-End-Checklist/nap-consistency",
+      "name": "nap-consistency",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "writing-content"
+    },
+    {
+      "id": "thedaviddias/Front-End-Checklist/quality",
+      "name": "quality",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "writing-content"
+    },
+    {
+      "id": "thedaviddias/Front-End-Checklist/reading-level",
+      "name": "reading-level",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "writing-content"
     },
     {
       "id": "wecomteam/wecom-cli/wecomcli-sheet",
@@ -236,7 +962,32 @@
       "best_for": [],
       "updated": "2026-11-19",
       "stale": false,
-      "duplicate_of": null
+      "duplicate_of": null,
+      "category": "document-processing"
+    },
+    {
+      "id": "wecomteam/wecom-unified/wecom-unified",
+      "name": "wecom-unified",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "document-processing"
+    },
+    {
+      "id": "wshobson/agents/code-review-excellence",
+      "name": "code-review-excellence",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "best_for": [],
+      "updated": "2026-11-19",
+      "stale": false,
+      "duplicate_of": null,
+      "category": "document-processing"
     }
   ]
 }

@@ -138,6 +138,20 @@
     color: var(--muted);
     font-size: 0.85rem;
   }
+  #catnav { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 4px; }
+  #catnav button {
+    font: inherit; font-size: 0.82rem; padding: 4px 12px; border-radius: 999px;
+    border: 1px solid var(--border); background: transparent; color: var(--fg);
+    cursor: pointer;
+  }
+  #catnav button .count { color: var(--muted); margin-left: 5px; }
+  #catnav button.active { border-color: var(--fg); font-weight: 600; }
+  tr.cat-row td {
+    background: var(--row-head, rgba(127,127,127,0.08));
+    font-weight: 600; font-size: 0.86rem; letter-spacing: 0.02em;
+    padding-top: 10px; padding-bottom: 10px;
+  }
+  tr.cat-row td .avg { color: var(--muted); font-weight: 400; margin-left: 8px; }
 </style>
 </head>
 <body>
@@ -156,6 +170,8 @@
     <div class="stat"><div class="value" id="stat-pending">–</div><div class="label">pending</div></div>
     <div class="stat"><div class="value" id="stat-confidence">–</div><div class="label">avg confidence of evaluated</div></div>
   </section>
+
+  <nav id="catnav" hidden></nav>
 
   <section id="table-wrap" class="table-scroll" hidden>
     <table id="ledger">
@@ -195,7 +211,7 @@
 
   var INDEX_URL = "https://raw.githubusercontent.com/iifzx/bole/main/argus/data/index.json";
 
-  var state = { key: "final", dir: -1 };
+  var state = { key: "final", dir: -1, category: "all" };
   var skills = [];
 
   function $(id) { return document.getElementById(id); }
@@ -282,8 +298,62 @@
       "</tr>";
   }
 
+  function catOf(s) { return s.category || "other"; }
+  function catLabel(cat) { return cat === "other" ? "uncategorized" : cat.replace(/-/g, " "); }
+
+  function renderCatNav() {
+    var counts = {};
+    for (var i = 0; i < skills.length; i++) {
+      var c = catOf(skills[i]);
+      counts[c] = (counts[c] || 0) + 1;
+    }
+    var cats = Object.keys(counts).sort(function (a, b) { return counts[b] - counts[a] || a.localeCompare(b); });
+    var html = '<button data-cat="all" class="' + (state.category === "all" ? "active" : "") + '">all<span class="count">' + skills.length + "</span></button>";
+    for (var j = 0; j < cats.length; j++) {
+      var c = cats[j];
+      html += '<button data-cat="' + esc(c) + '" class="' + (state.category === c ? "active" : "") + '">'
+        + esc(catLabel(c)) + '<span class="count">' + counts[c] + "</span></button>";
+    }
+    $("catnav").innerHTML = html;
+    var btns = document.querySelectorAll("#catnav button");
+    for (var k = 0; k < btns.length; k++) {
+      btns[k].addEventListener("click", function (ev) {
+        state.category = ev.currentTarget.getAttribute("data-cat") || "all";
+        renderCatNav();
+        renderTable();
+      });
+    }
+  }
+
+  function groupedRows(list) {
+    // group by category (size desc), sort within group by current cmp
+    var counts = {};
+    for (var i = 0; i < list.length; i++) {
+      var c = catOf(list[i]);
+      (counts[c] = counts[c] || []).push(list[i]);
+    }
+    var cats = Object.keys(counts).sort(function (a, b) {
+      return counts[b].length - counts[a].length || a.localeCompare(b);
+    });
+    var out = [];
+    for (var g = 0; g < cats.length; g++) {
+      var cat = cats[g];
+      var group = counts[cat].slice().sort(cmp);
+      var evaluated = group.filter(function (s) { return toNum(s.final) > 0; });
+      var avg = evaluated.length
+        ? (evaluated.reduce(function (acc, s) { return acc + toNum(s.final); }, 0) / evaluated.length).toFixed(0)
+        : "–";
+      out.push('<tr class="cat-row"><td colspan="6">📂 ' + esc(catLabel(cat))
+        + '<span class="avg">' + group.length + " skills · avg final " + avg
+        + " · " + evaluated.length + " evaluated</span></td></tr>");
+      for (var r = 0; r < group.length; r++) out.push(rowHtml(group[r]));
+    }
+    return out.join("");
+  }
+
   function renderTable() {
-    $("tbody").innerHTML = skills.slice().sort(cmp).map(rowHtml).join("");
+    var list = state.category === "all" ? skills : skills.filter(function (s) { return catOf(s) === state.category; });
+    $("tbody").innerHTML = list.length ? groupedRows(list) : '<tr><td colspan="6" class="muted">no skills in this category</td></tr>';
     var ths = document.querySelectorAll("#ledger th[data-key]");
     for (var i = 0; i < ths.length; i++) {
       var th = ths[i];
@@ -337,6 +407,7 @@
         $("legend").hidden = false;
         if (data.generated_at) $("generated").textContent = "index generated " + data.generated_at;
         renderStats();
+        renderCatNav();
         renderTable();
       })
       .catch(showError);

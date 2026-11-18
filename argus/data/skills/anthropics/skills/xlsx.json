@@ -63,8 +63,9 @@
     }
   ],
   "reports": [],
-  "updated": "2026-11-18",
+  "updated": "2026-11-19",
   "content_hash": "sha256:f32b1c2b5d5d31e02964df110d6489613d9345f86830c118cfe24159d8448ce6",
   "hash_checked_at": "2026-11-18",
-  "hash_source_url": "https://raw.githubusercontent.com/anthropics/skills/main/skills/xlsx/SKILL.md"
+  "hash_source_url": "https://raw.githubusercontent.com/anthropics/skills/main/skills/xlsx/SKILL.md",
+  "category": "document-processing"
 }

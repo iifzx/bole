@@ -88,8 +88,9 @@
     }
   ],
   "reports": [],
-  "updated": "2026-11-18",
+  "updated": "2026-11-19",
   "content_hash": "sha256:5fabadf20b5a3e07c1924fac1e65342e33814615f9bc70d61d8faac892d8790d",
   "hash_checked_at": "2026-11-18",
-  "hash_source_url": "https://raw.githubusercontent.com/antibrow/anti-detect-browser-skills/master/anti-detect-browser/SKILL.md"
+  "hash_source_url": "https://raw.githubusercontent.com/antibrow/anti-detect-browser-skills/master/anti-detect-browser/SKILL.md",
+  "category": "browser-automation"
 }

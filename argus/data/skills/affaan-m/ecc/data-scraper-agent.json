@@ -1,0 +1,36 @@
+{
+  "id": "affaan-m/ECC/data-scraper-agent",
+  "name": "data-scraper-agent",
+  "source": "skillsmp",
+  "url": "https://github.com/affaan-m/ECC/tree/main/docs/ja-JP/skills/data-scraper-agent",
+  "description": "任意のパブリックソース（ジョブボード、価格、ニュース、GitHub、スポーツなど）用の完全自動化されたAI搭載データ収集エージェントを構築します。スケジュールでスクレイプし、無料LLM（Gemini Flash）でデータを豊かにし、Notion/Sheets/Supabaseに結果を保存し、ユーザーフィードバックから学習します。GitHub Actions上で100％無料で実行。ユーザーがパブリックデータを自動的に監視、収集、または追跡したい場合に使用します。",
+  "best_for": [],
+  "category": "backend-api",
+  "popularity": {
+    "stars": 301144,
+    "installs": null,
+    "checked_at": "2026-11-19"
+  },
+  "static": null,
+  "field": {
+    "effectiveness": 0,
+    "efficiency": 0,
+    "reliability": 0,
+    "n_reports": 0
+  },
+  "conflict_events": [],
+  "final": 0,
+  "confidence": 0,
+  "history": [
+    {
+      "at": "2026-11-19",
+      "event": "seed",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "note": "imported from skillsmp catalog — pending static evaluation"
+    }
+  ],
+  "reports": [],
+  "updated": "2026-11-19"
+}

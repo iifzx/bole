@@ -96,6 +96,7 @@ Field rules:
 | `id` | string | kebab-ish path, must equal path-derived id |
 | `source` | enum | `github` \| `skills.sh` \| `skillsmp` \| `clawhub` \| `manual` \| `unknown` |
 | `best_for` | string[] | 2–8 lowercase keywords; the index is grepped on these |
+| `category` | string | optional task-domain from the fixed taxonomy in `scripts/taxonomy.js` (document-processing, data-analysis, browser-automation, testing-qa, frontend-ui, backend-api, devops-cloud, security, writing-content, design-media, product-marketing, meta-tooling, other); set at import (source hint + classifier) or during evaluation |
 | `popularity` | object | optional; **display metadata only — never an input to any score** |
 | `static.*` | int 1–5 | the five rubric dimensions (see `rubric.md`); `null` until first static evaluation |
 | `static.safety_flags` | object[] | `{severity: info\|low\|medium\|high\|critical, finding: kebab-id, detail, quote?}`; any **high/critical** flag ⇒ red line (§6) |

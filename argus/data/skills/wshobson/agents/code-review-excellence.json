@@ -1,0 +1,36 @@
+{
+  "id": "wshobson/agents/code-review-excellence",
+  "name": "code-review-excellence",
+  "source": "skills.sh",
+  "url": "https://skills.sh/wshobson/agents/code-review-excellence",
+  "description": "",
+  "best_for": [],
+  "category": "document-processing",
+  "popularity": {
+    "stars": null,
+    "installs": 31300,
+    "checked_at": "2026-11-19"
+  },
+  "static": null,
+  "field": {
+    "effectiveness": 0,
+    "efficiency": 0,
+    "reliability": 0,
+    "n_reports": 0
+  },
+  "conflict_events": [],
+  "final": 0,
+  "confidence": 0,
+  "history": [
+    {
+      "at": "2026-11-19",
+      "event": "seed",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "note": "imported from skills.sh catalog — pending static evaluation"
+    }
+  ],
+  "reports": [],
+  "updated": "2026-11-19"
+}

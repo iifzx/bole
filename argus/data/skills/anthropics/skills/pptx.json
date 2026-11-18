@@ -60,9 +60,10 @@
     }
   ],
   "reports": [],
-  "updated": "2026-11-18",
+  "updated": "2026-11-19",
   "conflict_events": [],
   "content_hash": "sha256:598c981d93f2173b251f86a4bc94e9fb4e4f5ddaa314ba2dd4eca24b7a07808e",
   "hash_checked_at": "2026-11-18",
-  "hash_source_url": "https://raw.githubusercontent.com/anthropics/skills/main/skills/pptx/SKILL.md"
+  "hash_source_url": "https://raw.githubusercontent.com/anthropics/skills/main/skills/pptx/SKILL.md",
+  "category": "document-processing"
 }

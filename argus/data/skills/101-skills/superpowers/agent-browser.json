@@ -7,8 +7,8 @@
   "best_for": [],
   "popularity": {
     "stars": null,
-    "installs": 196000,
-    "checked_at": "2026-11-18"
+    "installs": 196800,
+    "checked_at": "2026-11-19"
   },
   "static": {
     "trigger": 4,
@@ -63,8 +63,9 @@
     }
   ],
   "reports": [],
-  "updated": "2026-11-18",
+  "updated": "2026-11-19",
   "content_hash": "sha256:433ed471ceca49f696ba72856894860594a5dccbcac82da61797ae7a3a3ebfef",
   "hash_checked_at": "2026-11-18",
-  "hash_source_url": "https://raw.githubusercontent.com/101-skills/superpowers/main/tools/utilities/agent-browser/SKILL.md"
+  "hash_source_url": "https://raw.githubusercontent.com/101-skills/superpowers/main/tools/utilities/agent-browser/SKILL.md",
+  "category": "browser-automation"
 }

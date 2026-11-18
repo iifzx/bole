@@ -63,8 +63,9 @@
     }
   ],
   "reports": [],
-  "updated": "2026-11-18",
+  "updated": "2026-11-19",
   "content_hash": "sha256:40537cca17c4aa86e4ce83ced39efcbfb1204905e3cf4c4ff98f2eab011e4b7f",
   "hash_checked_at": "2026-11-18",
-  "hash_source_url": "https://raw.githubusercontent.com/anthropics/skills/main/skills/claude-api/SKILL.md"
+  "hash_source_url": "https://raw.githubusercontent.com/anthropics/skills/main/skills/claude-api/SKILL.md",
+  "category": "backend-api"
 }

@@ -1,0 +1,36 @@
+{
+  "id": "deepseek-ai/deepseek-harness/dsh-pre-push-checks",
+  "name": "dsh-pre-push-checks",
+  "source": "skillsmp",
+  "url": "https://github.com/deepseek-ai/deepseek-harness/tree/master/.agents/skills/dsh-pre-push-checks",
+  "description": "Use before pushing, force-pushing, marking ready for review, or claiming checks pass on a deepseek-harness branch, and immediately after gh stack sync publishes rewritten branches, to select the smallest tests and checks that cover the outgoing or just-published diff without reflexively running the full repository suite.",
+  "best_for": [],
+  "category": "product-marketing",
+  "popularity": {
+    "stars": 279199,
+    "installs": null,
+    "checked_at": "2026-11-19"
+  },
+  "static": null,
+  "field": {
+    "effectiveness": 0,
+    "efficiency": 0,
+    "reliability": 0,
+    "n_reports": 0
+  },
+  "conflict_events": [],
+  "final": 0,
+  "confidence": 0,
+  "history": [
+    {
+      "at": "2026-11-19",
+      "event": "seed",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "note": "imported from skillsmp catalog — pending static evaluation"
+    }
+  ],
+  "reports": [],
+  "updated": "2026-11-19"
+}

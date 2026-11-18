@@ -87,5 +87,6 @@
     "rate": 0.7,
     "n_queries": 10,
     "ran_at": "2026-11-19"
-  }
+  },
+  "category": "document-processing"
 }

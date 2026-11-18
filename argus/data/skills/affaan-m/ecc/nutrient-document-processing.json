@@ -3,12 +3,12 @@
   "name": "nutrient-document-processing",
   "source": "skills.sh",
   "url": "https://skills.sh/affaan-m/ecc/nutrient-document-processing",
-  "description": "",
+  "description": "Process, convert, OCR, extract, redact, sign, and fill documents using the Nutrient DWS API. Works with PDFs, DOCX, XLSX, PPTX, HTML, and images. Use when converting, OCRing, extracting from, redacting, signing, or filling documents via the Nutrient DWS API.",
   "best_for": [],
   "popularity": {
-    "stars": null,
-    "installs": 12000,
-    "checked_at": "2026-11-18"
+    "stars": 301144,
+    "installs": null,
+    "checked_at": "2026-11-19"
   },
   "static": {
     "trigger": 4,
@@ -63,8 +63,9 @@
     }
   ],
   "reports": [],
-  "updated": "2026-11-18",
+  "updated": "2026-11-19",
   "content_hash": "sha256:2a8096af72efaeb29a4221929ac1f1ea9d97b95d44316720764fb7c191c7a5b9",
   "hash_checked_at": "2026-11-18",
-  "hash_source_url": "https://raw.githubusercontent.com/affaan-m/ecc/main/skills/nutrient-document-processing/SKILL.md"
+  "hash_source_url": "https://raw.githubusercontent.com/affaan-m/ecc/main/skills/nutrient-document-processing/SKILL.md",
+  "category": "document-processing"
 }

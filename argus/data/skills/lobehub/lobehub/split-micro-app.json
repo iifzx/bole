@@ -1,0 +1,36 @@
+{
+  "id": "lobehub/lobehub/split-micro-app",
+  "name": "split-micro-app",
+  "source": "skillsmp",
+  "url": "https://github.com/lobehub/lobehub/tree/canary/.agents/skills/split-micro-app",
+  "description": "Use for standalone micro apps: React Router SSR/SSG, Cloud overlays, Workers, CDN/R2, SEO/OG, gateway routes, previews, Docker integration and SSR bundle isolation.",
+  "best_for": [],
+  "category": "writing-content",
+  "popularity": {
+    "stars": 85067,
+    "installs": null,
+    "checked_at": "2026-11-19"
+  },
+  "static": null,
+  "field": {
+    "effectiveness": 0,
+    "efficiency": 0,
+    "reliability": 0,
+    "n_reports": 0
+  },
+  "conflict_events": [],
+  "final": 0,
+  "confidence": 0,
+  "history": [
+    {
+      "at": "2026-11-19",
+      "event": "seed",
+      "final": 0,
+      "confidence": 0,
+      "n_reports": 0,
+      "note": "imported from skillsmp catalog — pending static evaluation"
+    }
+  ],
+  "reports": [],
+  "updated": "2026-11-19"
+}
