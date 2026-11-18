@@ -35,14 +35,14 @@
     "evaluated_at": "2026-11-19"
   },
   "field": {
-    "effectiveness": 0,
-    "efficiency": 0,
-    "reliability": 0,
-    "n_reports": 0
+    "effectiveness": 5,
+    "efficiency": 4,
+    "reliability": 5,
+    "n_reports": 1
   },
   "conflict_events": [],
-  "final": 96,
-  "confidence": 0.3,
+  "final": 94,
+  "confidence": 0.4,
   "history": [
     {
       "at": "2026-11-19",
@@ -51,10 +51,20 @@
       "confidence": 0.3,
       "n_reports": 0,
       "note": "by session-2026-11-19"
+    },
+    {
+      "at": "2026-11-18",
+      "event": "report-added",
+      "final": 94,
+      "confidence": 0.4,
+      "n_reports": 1,
+      "note": "2026-11-18T16-13-58 (worked) by iifzx"
     }
   ],
-  "reports": [],
-  "updated": "2026-11-19",
+  "reports": [
+    "2026-11-18T16-13-58.json"
+  ],
+  "updated": "2026-11-18",
   "trigger_eval": {
     "rate": 0.6,
     "n_queries": 15,

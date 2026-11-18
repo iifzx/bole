@@ -1,0 +1,17 @@
+{
+  "id": "iifzx/bole/argus",
+  "reported_at": "2026-11-18T16-13-58",
+  "task": "Operate the Argus tooling end-to-end during v0.3/v0.4 development: mechanical lint on 15 candidate skills (local + GitHub raw URLs), bilingual trigger evals, conflicts check across the ledger, 12 static/report merges via ledger.js, upstream drift watch, and the PR automation setup.",
+  "verdict": "worked",
+  "scores": {
+    "effectiveness": 5,
+    "efficiency": 4,
+    "reliability": 5
+  },
+  "evidence": "All commands ran: lint.js check/--url on 15 candidates; eval init/run produced trigger_rates (wecomcli 0.7, argus 0.6) after 3 live-calibrated Chinese fixes (verbs, bigram tokenizer, when/boundary regexes); conflicts across 19 records: 0 overlaps; watch.js caught 1 real upstream drift (wecomcli-sheet) -> mark-stale halved confidence -> re-eval re-pinned hash; validate-all + build-index --check green after every mutation. Friction: 3 missing helpers surfaced as runtime errors before gates ran (readJson/assert/round2), and one swallowed --json flag - both fixed same-session.",
+  "environment": {
+    "agent": "zcode",
+    "os": "win32"
+  },
+  "reporter": "iifzx"
+}
