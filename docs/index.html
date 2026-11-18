@@ -403,6 +403,7 @@
         if (!skills.length) throw new Error("index.json contains no skills");
         $("loading").hidden = true;
         $("stats").hidden = false;
+        $("catnav").hidden = false;
         $("table-wrap").hidden = false;
         $("legend").hidden = false;
         if (data.generated_at) $("generated").textContent = "index generated " + data.generated_at;
